@@ -10,10 +10,10 @@ class BufferDataWrapper {
         this.state = state;
     }
 
-    public function initTriangle() {
-        addVertex(-0.1, -.1, 0);
-        addVertex(.1, -.1, 0);
-        addVertex(.1, .1, .1);
+    public function initTriangle(scale, mirror) {
+        addVertex(-scale*mirror, -scale, 0);
+        addVertex(scale*mirror, -scale, 0);
+        addVertex(scale*mirror,scale ,scale );
         indices = [0, 1, 2];
     }
 
@@ -22,8 +22,9 @@ class BufferDataWrapper {
     public inline function addVertex(x, y, w) {
         state.setValue(AttribAliases.NAME_POSITION, idx, x, 0);
         state.setValue(AttribAliases.NAME_POSITION, idx, y, 1);
-        state.setValue(AttribAliases.NAME_SIZE, idx, w, 0);
-        addColor();
+//        state.setValue(AttribAliases.NAME_SIZE, idx, w, 0);
+        if (color != null)
+            addColor();
         idx++;
     }
 
@@ -31,6 +32,6 @@ class BufferDataWrapper {
         state.setValue(AttribAliases.NAME_CLOLOR_IN, idx, color.r, 0);
         state.setValue(AttribAliases.NAME_CLOLOR_IN, idx, color.g, 1);
         state.setValue(AttribAliases.NAME_CLOLOR_IN, idx, color.b, 2);
-        //        state.setValue(ParallaxGlBg.NAME_CLOLOR_IN, idx, a, 3);
+//        state.setValue(ParallaxGlBg.NAME_CLOLOR_IN, idx, a, 3);
     }
 }

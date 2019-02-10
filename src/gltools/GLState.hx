@@ -7,7 +7,7 @@ import lime.utils.ArrayBuffer;
 import lime.utils.ArrayBufferView;
 import lime.utils.DataView;
 
-#if !boo
+#if !boo //define used for ide since IDEA got crazy slow on this import. i use lite wersion of WebGLRenderContext for completion purposes only.
 import lime.graphics.WebGLRenderContext;
 #end
 
@@ -17,13 +17,13 @@ import lime.graphics.WebGLRenderContext;
 **/
 
 class GlState {
-    var gl:WebGLRenderContext ;
+    public var gl:WebGLRenderContext ;
     var attributes:Array<AttributeDescription> = [];
     var attribPointers:Map<String, Int> = new Map();
-    var buffer:GLBuffer;
+    public var buffer:GLBuffer;
     public var program:GLProgram;
     var stride:Int = 0;
-    var data:DataView;
+    var data:DataView; // обертка над эррэйбуфер = абстракт над хакси.йо.байтез
     var bufferData:ArrayBufferView;
 
     public function new(gl:WebGLRenderContext, program:GLProgram) {
@@ -40,33 +40,44 @@ class GlState {
         attributes.push(descr);
     }
 
-    public function rebuildAttributes(vertCount) {
-        var offset = 0;
+    public function rebuildAttributes() {
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        enambleAttributes();
+        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    }
+
+    public function initDataContainer(vertCount){
+        var size = stride * vertCount;
+        var buffer = new ArrayBuffer(size);
+        data = new DataView(buffer);
+    }
+
+    public function enambleAttributes() {
+        var offset = 0;
         for (i in 0...attributes.length) {
             var descr = attributes[i];
             descr.offset = offset;
             gl.enableVertexAttribArray(descr.idx);
-            trace("Reg att: " + descr.name + " " + stride + " " + offset);
             var normalized = ("colorIn" == descr.name);
             gl.vertexAttribPointer(descr.idx, descr.numComponents, descr.getGlType(gl), normalized, stride, offset);
             offset += descr.numComponents * descr.getGlSize(gl);
         }
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
-        var size = stride * vertCount;
-        var buffer = new ArrayBuffer(size);
-        data = new DataView(buffer);
     }
 
     @:access(lime.utils.ArrayBufferView)
     public function initData() {
         bufferData = new ArrayBufferView(null, None);
         bufferData.initBuffer(data.buffer);
-    }
-
-    public function bind() {
+        gl.useProgram(program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         gl.bufferData(gl.ARRAY_BUFFER, bufferData, gl.STATIC_DRAW);
+    }
+
+    @:access(lime.utils.ArrayBufferView)
+    public function bind() {
+        gl.useProgram(program);
+        gl.depthFunc(gl.ALWAYS);
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
     }
 
     public function unbind() {
@@ -76,7 +87,6 @@ class GlState {
     public function setValue(attribName:String, vertIdx:Int, value:Any, cmpIdx = 0) {
         var descr = attributes[attribPointers[attribName]];
         var offset = stride * vertIdx + descr.offset + cmpIdx * descr.getGlSize(gl);
-        trace("Weong: " + offset + " " + value + " " + attribName);
         switch descr.type {
             case int8 : data.setInt8(offset, value);
             case int16 : data.setInt16(offset, value);
