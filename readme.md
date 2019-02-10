@@ -23,6 +23,8 @@ OpenFL 231d183500d2e386c74806dfa4b07632ff7f5259
 
 Lime d9dbea7f6bbfa97a853b98f81bf169bcc0573dd0
 
+hxcpp [4.0.4]
+
 Haxe Compiler 4.0.0-preview.5+7eb789f54
 
 
