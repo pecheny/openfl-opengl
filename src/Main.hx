@@ -1,5 +1,4 @@
 package ;
-import flash.display.DisplayObject;
 import openfl.events.Event;
 import oglrenderer.OGLContainerCopy;
 import oglrenderer.OGLContainer;
@@ -14,8 +13,9 @@ class Main extends Sprite{
         b = new OGLContainerCopy();
         addChild(b);
         addChild(a);
-//        addChild(new Pointer());
-//        ups.push(cast b);
+//        addChild(new Pointer()); // uncommenting this line leads to crash
+
+//        ups.push(cast b); // if i call invalidate() (within update() of containers) i loose VBO data of the firs object immediately
 //        ups.push(cast a);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
     }

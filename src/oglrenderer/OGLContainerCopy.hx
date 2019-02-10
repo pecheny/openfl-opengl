@@ -60,7 +60,6 @@ class OGLContainerCopy extends DisplayObject {
               "precision mediump float;" +
             #end
         '
-              varying vec4 ${AttribAliases.NAME_CLOLOR_OUT};
               void main(){
               gl_FragColor = vec4 (1, 1, 1, 1);
               }';
