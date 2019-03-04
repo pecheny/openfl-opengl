@@ -2,6 +2,7 @@ package oglrenderer;
 #if !boo
 import lime.graphics.WebGLRenderContext;
 #end
+import utils.Color;
 import lime.graphics.opengl.GLUniformLocation;
 import gltools.BufferDataWrapper;
 import gltools.AttribAliases;
@@ -69,7 +70,7 @@ class OGLContainer extends DisplayObject {
     }
 
 
-    inline function init(gl:WebGLRenderContext) {
+    public function init(gl:WebGLRenderContext) {
         if (!inited) {
             this.program = createProgram(gl);
 
@@ -81,7 +82,7 @@ class OGLContainer extends DisplayObject {
             state.rebuildAttributes();
             state.unbind();
 
-            state.initDataContainer(1000);
+            state.initDataContainer(3);
             var provider = new BufferDataWrapper(state);
             provider.initTriangle(1, 1);
             state.initData();
@@ -96,16 +97,16 @@ class OGLContainer extends DisplayObject {
 
     }
 
-    function render(event:RenderEvent) {
+    public function render(event:RenderEvent) {
         var renderer:OpenGLRenderer = cast event.renderer;
         var gl:WebGLRenderContext = renderer.gl;
-        init(renderer.gl);
-        if (program == null)
-            return;
+//        init(renderer.gl);
+//        if (program == null)
+//            return;
         state.bind();
         gl.uniform1f(screenTIdx, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
-        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_SHORT, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         state.unbind();
     }

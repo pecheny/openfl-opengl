@@ -22,7 +22,7 @@ class OGLContainerCopy extends DisplayObject {
 
     public function new() {
         super();
-        addEventListener(RenderEvent.RENDER_OPENGL, renderWrapper);
+//        addEventListener(RenderEvent.RENDER_OPENGL, renderWrapper);
     }
 
     public function update() {
@@ -47,11 +47,10 @@ class OGLContainerCopy extends DisplayObject {
     function createProgram(gl:WebGLRenderContext) {
         var vs = '
               attribute vec2 ${AttribAliases.NAME_POSITION};
-              attribute float ${AttribAliases.NAME_SIZE};
               uniform float ${AttribAliases.NAME_SCREENSPACE_T};
 
               void main() {
-                float offset = mod(${AttribAliases.NAME_SCREENSPACE_T} , 1.0) * ${AttribAliases.NAME_SIZE};
+                float offset = mod(${AttribAliases.NAME_SCREENSPACE_T} , 1.0);
                 gl_Position =  vec4(${AttribAliases.NAME_POSITION}.x + offset - 0.5, ${AttribAliases.NAME_POSITION}.y,  0, 1);
               }';
 
@@ -69,7 +68,7 @@ class OGLContainerCopy extends DisplayObject {
     }
     var indices = [];
 
-    inline function init(gl:WebGLRenderContext) {
+    public function init(gl:WebGLRenderContext) {
         if (!inited) {
             this.program = createProgram(gl);
 
@@ -77,13 +76,13 @@ class OGLContainerCopy extends DisplayObject {
             screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
 
             state.addAttribute(AttribAliases.NAME_POSITION, 2, DataType.float32);
-            state.addAttribute(AttribAliases.NAME_SIZE, 1, DataType.float32);
+//            state.addAttribute(AttribAliases.NAME_SIZE, 1, DataType.float32);
             state.rebuildAttributes();
             state.unbind();
 
 
 
-            state.initDataContainer(1000);
+            state.initDataContainer(3);
             var provider = new BufferDataWrapper(state);
             provider.color = null;
             provider.initTriangle(1, -1);
@@ -104,21 +103,21 @@ class OGLContainerCopy extends DisplayObject {
 //        render(renderer) ;
 //    }
 
-    function renderWrapper(event:RenderEvent) {
+    public function render(event:RenderEvent) {
         var renderer:OpenGLRenderer = cast event.renderer;
-        render(renderer);
+        render2(renderer);
     }
 
-    function render(renderer:OpenGLRenderer) {
+    public function render2(renderer:OpenGLRenderer) {
         var gl:WebGLRenderContext = renderer.gl;
-        init(renderer.gl);
-        if (program == null)
-            return;
+//        init(renderer.gl);
+//        if (program == null)
+//            return;
 
         state.bind();
         gl.uniform1f(screenTIdx, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
-        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+        gl.drawElements(gl.TRIANGLES, 3, gl.UNSIGNED_SHORT, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         state.unbind();
     }
