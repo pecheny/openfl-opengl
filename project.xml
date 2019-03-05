@@ -6,5 +6,6 @@
     <window background="0" fps="60" orientation="portrait"/>
     <source path="src"/>
     <haxelib name="openfl"/>
+    <haxedef name = "openfl_disable_context_cache" value = "true" />
 
 </project>
