@@ -76,14 +76,12 @@ class GlState {
     @:access(lime.utils.ArrayBufferView)
     public function bind() {
         gl.useProgram(program);
-        gl.depthFunc(gl.ALWAYS);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         enambleAttributes();
     }
 
     public function unbind() {
         gl.useProgram(null);
-        gl.depthFunc(gl.LESS);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
     }
 
