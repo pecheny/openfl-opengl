@@ -2,7 +2,6 @@ package oglrenderer;
 #if !boo
 import lime.graphics.WebGLRenderContext;
 #end
-import utils.Color;
 import lime.graphics.opengl.GLUniformLocation;
 import gltools.BufferDataWrapper;
 import gltools.AttribAliases;
@@ -57,12 +56,11 @@ class OGLContainer extends DisplayObject {
 
         var fs =
             #if (!desktop || rpi)
-        "precision mediump float;" +
+            "precision mediump float;" +
             #end
-        '
-              varying vec4 ${AttribAliases.NAME_CLOLOR_OUT};
+              'varying vec4 ${AttribAliases.NAME_CLOLOR_OUT};
               void main(){
-              gl_FragColor = ${AttribAliases.NAME_CLOLOR_OUT};
+                 gl_FragColor = ${AttribAliases.NAME_CLOLOR_OUT};
               }';
 
         program = GLProgram.fromSources(gl, vs, fs);
@@ -100,9 +98,9 @@ class OGLContainer extends DisplayObject {
     public function render(event:RenderEvent) {
         var renderer:OpenGLRenderer = cast event.renderer;
         var gl:WebGLRenderContext = renderer.gl;
-//        init(renderer.gl);
-//        if (program == null)
-//            return;
+        init(renderer.gl);
+        if (program == null)
+            return;
         state.bind();
         gl.uniform1f(screenTIdx, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);

@@ -22,7 +22,7 @@ class OGLContainerCopy extends DisplayObject {
 
     public function new() {
         super();
-//        addEventListener(RenderEvent.RENDER_OPENGL, renderWrapper);
+        addEventListener(RenderEvent.RENDER_OPENGL, render);
     }
 
     public function update() {
@@ -58,9 +58,9 @@ class OGLContainerCopy extends DisplayObject {
             #if (!desktop || rpi)
               "precision mediump float;" +
             #end
-        '
+             '
               void main(){
-              gl_FragColor = vec4 (1, 1, 1, 1);
+                  gl_FragColor = vec4 (1, 1, 1, 1);
               }';
 
         program = GLProgram.fromSources(gl, vs, fs);
@@ -71,24 +71,16 @@ class OGLContainerCopy extends DisplayObject {
     public function init(gl:WebGLRenderContext) {
         if (!inited) {
             this.program = createProgram(gl);
-
             state = new GlState(gl, program);
             screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
-
             state.addAttribute(AttribAliases.NAME_POSITION, 2, DataType.float32);
-//            state.addAttribute(AttribAliases.NAME_SIZE, 1, DataType.float32);
             state.rebuildAttributes();
-            state.unbind();
-
-
-
             state.initDataContainer(3);
             var provider = new BufferDataWrapper(state);
             provider.color = null;
             provider.initTriangle(1, -1);
             state.initData();
             state.unbind();
-
             indices = provider.indices;
             indicesBuffer = gl.createBuffer();
             bufferData2 = new UInt16Array(indices);
@@ -99,21 +91,13 @@ class OGLContainerCopy extends DisplayObject {
 
     }
 
-//    override function __renderGL(renderer:OpenGLRenderer):Void {
-//        render(renderer) ;
-//    }
 
     public function render(event:RenderEvent) {
         var renderer:OpenGLRenderer = cast event.renderer;
-        render2(renderer);
-    }
-
-    public function render2(renderer:OpenGLRenderer) {
         var gl:WebGLRenderContext = renderer.gl;
-//        init(renderer.gl);
-//        if (program == null)
-//            return;
-
+        init(renderer.gl);
+        if (program == null)
+            return;
         state.bind();
         gl.uniform1f(screenTIdx, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
