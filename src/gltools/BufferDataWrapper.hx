@@ -32,6 +32,7 @@ class BufferDataWrapper {
         state.setValue(AttribAliases.NAME_CLOLOR_IN, idx, color.r, 0);
         state.setValue(AttribAliases.NAME_CLOLOR_IN, idx, color.g, 1);
         state.setValue(AttribAliases.NAME_CLOLOR_IN, idx, color.b, 2);
+        state.setValue(AttribAliases.NAME_CLOLOR_IN, idx, 255, 3);
 //        state.setValue(ParallaxGlBg.NAME_CLOLOR_IN, idx, a, 3);
     }
 }

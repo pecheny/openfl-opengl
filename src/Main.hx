@@ -10,8 +10,8 @@ class Main extends Sprite{
         super();
         var a = new OGLContainer();
         var b = new OGLContainerCopy();
-        addChild(new Pointer());
         addChild(a);
+        addChild(new Pointer());
         addChild(b);
     }
 
