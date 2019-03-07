@@ -76,7 +76,7 @@ class OGLContainer extends DisplayObject {
 
             state = new GlState(gl, program);
             state.addAttribute(AttribAliases.NAME_POSITION, 2, DataType.float32);
-            state.addAttribute(AttribAliases.NAME_CLOLOR_IN, 3, DataType.uint8);
+            state.addAttribute(AttribAliases.NAME_CLOLOR_IN, 4, DataType.uint8);
             state.rebuildAttributes();
             state.unbind();
 
