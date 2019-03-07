@@ -1,5 +1,5 @@
-Trying to built in custom OpenGL renderer into  OpenFL rendering pipeline.
-For now targeting to Windows (+android) only.
+Custom OpenGL renderer within OpenFL display list.
+Works on windows, android and html5 targets.
 
 ### The sample
 
@@ -11,17 +11,17 @@ OGLContainerCopy renders mirrored triangle with offset and color hardcoded into 
 
 ### Issues
 
-1. If i put any other Sprite with non-empty graphics, the app crashes on first (?invalidate()/update())
-2. Two mirrored triangles render well as long as i do not call invalidate() or move/resize window. After any of those actions shader of second object renders the same data as first (i can see both triangles thanks to offset hardcoded into the shader).
-I don't know if the data of first VBO is overwritten or the both sharer program got reference to same VBO. I have noted this effect even if VBOs had different sets of attributes.
+1. ~If i put any other Sprite with non-empty graphics, the app crashes on first (?invalidate()/update()).~
+
+ Resolved with adding define @openfl_disable_context_cache@
 
 ### Versions
 
-Fresh develop branches on 2/10/19
+Fresh develop branches on 3/4/19
 
-OpenFL 231d183500d2e386c74806dfa4b07632ff7f5259
+OpenFL f30f86abe0a2433a557a1fe4fe43d285d74cba8d
 
-Lime d9dbea7f6bbfa97a853b98f81bf169bcc0573dd0
+Lime d1cd3be6863f3bb65168b85418f37b4856601fac
 
 hxcpp [4.0.4]
 
