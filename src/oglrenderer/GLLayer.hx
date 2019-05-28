@@ -27,6 +27,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var set:AttribSet;
     var attrsState:ShadersAttrs;
     var dataView:ArrayBufferView;
+    var indDataView:ArrayBufferView;
     private var indicesBuffer:GLBuffer;
 
 
@@ -39,6 +40,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         addEventListener(RenderEvent.RENDER_OPENGL, render);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
         dataView = new ArrayBufferView(null, None);
+        indDataView = new ArrayBufferView(null, None);
     }
 
     public function init(gl, prog, set:AttribSet) {
@@ -70,33 +72,39 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     inline function fetchData() {}
 
     var data = new ExtensibleBytes(64);
+    var inds = new ExtensibleBytes(64);
 
 
     @:access(lime.utils.ArrayBufferView)
     public function render(event:RenderEvent) {
-        trace("rend");
         var renderer:OpenGLRenderer = cast event.renderer;
         gl = renderer.gl;
         if (program == null)
             return;
-        var ind = [];
+        var indCount = 0;
         var pos = 0;
         for (child in children) {
             var b = child.getVerts();
-            data.blit(pos, b, 0, b.length);
-            pos +=b.length;
-            ind = ind.concat(child.getInds());
-        }
-        trace("Ind: "  + ind);
+            var len = child.getVertsCount() * set.stride;
+            data.blit(pos, b, 0, len);
+            pos += len;
 
+            var ic = child.getIndsCount();
+            inds.blit(indCount * UInt16Array.BYTES_PER_ELEMENT, child.getInds(), 0, ic * UInt16Array.BYTES_PER_ELEMENT);
+            indCount += ic;
+
+
+//            ind = ind.concat(child.getInds());
+        }
         bind();
         dataView.initBuffer(data.bytes);
+        indDataView.initBuffer(inds.bytes);
         gl.bufferData(gl.ARRAY_BUFFER, dataView, gl.DYNAMIC_DRAW);
 //         set uniforms
         gl.uniform1f(screenTIdx, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
-        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new UInt16Array(ind), gl.DYNAMIC_DRAW);
-        gl.drawElements(gl.TRIANGLES, ind.length, gl.UNSIGNED_SHORT, 0);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indDataView, gl.DYNAMIC_DRAW);
+        gl.drawElements(gl.TRIANGLES, indCount, gl.UNSIGNED_SHORT, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         unbind();
     }

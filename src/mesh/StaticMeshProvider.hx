@@ -1,4 +1,5 @@
 package mesh;
+import haxe.io.UInt16Array;
 import gltools.AttribAliases;
 import gltools.AttribSet;
 import gltools.ByteDataWriter;
@@ -10,7 +11,7 @@ import oglrenderer.OGLContainerCopy.SolidColorProvider;
 import oglrenderer.OGLContainerCopy.TriPosProvider;
 class StaticMeshProvider<T:AttribSet> implements VertDataProvider<T> {
     var data:ByteDataWriter;
-    var inds = [0,1,2];
+    var inds:ByteDataWriter;
 
     public function new() {
         var builder = new VertexBuilder(ColorSet.instance);
@@ -21,14 +22,25 @@ class StaticMeshProvider<T:AttribSet> implements VertDataProvider<T> {
         builder.regSetter(AttribAliases.NAME_CLOLOR_IN, color.getCC);
         builder.fetchFertices(3);
         data = builder.getData();
+        inds = Bytes.alloc(3 * UInt16Array.BYTES_PER_ELEMENT);
+        for (i in 0...3)
+            inds.setUint16(i * UInt16Array.BYTES_PER_ELEMENT, i);
     }
 
     public function getVerts():Bytes {
         return data;
     }
 
-    public function getInds():Array<Int> {
+    public function getInds() {
         return inds;
+    }
+
+    public function getVertsCount():Int {
+        return 3;
+    }
+
+    public function getIndsCount():Int {
+        return 3;
     }
 
 
