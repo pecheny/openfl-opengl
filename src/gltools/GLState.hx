@@ -1,6 +1,7 @@
 package gltools;
 
-import gltools.AttributeDescription.DataType;
+import haxe.io.Bytes;
+import gltools.AttributeState.DataType;
 import lime.graphics.opengl.GLBuffer;
 import lime.graphics.opengl.GLProgram;
 import lime.utils.ArrayBuffer;
@@ -20,66 +21,64 @@ import lime.graphics.WebGLRenderContext;
 
 class GlState {
     public var gl:WebGLRenderContext ;
-    var attributes:Array<AttributeDescription> = [];
-    var attribPointers:Map<String, Int> = new Map();
+//    var attributes:Array<AttributeState> = [];
+//    var attribPointers:Map<String, Int> = new Map();
     public var buffer:GLBuffer;
     public var program:GLProgram;
-    var stride:Int = 0;
+//    var stride:Int = 0;
     var data:DataContainer;
+    var set:AttribSet;
+    var attrsState:ShadersAttrs;
 //    var arrayBuffer:ArrayBuffer;
 
-    public function new(gl:WebGLRenderContext, program:GLProgram) {
+    public function new(gl:WebGLRenderContext, program:GLProgram, set:AttribSet) {
         this.gl = gl;
         this.program = program;
+        this.set = set;
+        attrsState = set.buildState(gl, program);
         buffer = gl.createBuffer();
     }
 
-    public function addAttribute(name:String, numComponents:Int, type:DataType) {
-        var posIdx = gl.getAttribLocation(program, name);
-        var descr = new AttributeDescription(posIdx, numComponents, type, name);
-        stride += descr.numComponents * descr.getGlSize(gl);
-        attribPointers[name] = attributes.length;
-        attributes.push(descr);
+
+
+//    public function rebuildAttributes() {
+//        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+//        enambleAttributes();
+//        gl.bindBuffer(gl.ARRAY_BUFFER, null);
+//    }
+
+
+    public function loadBytes(b:Bytes){
+        data = DataContainer.fromBuffer(b);
     }
 
-    public function rebuildAttributes() {
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        enambleAttributes();
-        gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    }
-
-    public function initDataContainer(vertCount) {
-        var size = stride * vertCount;
-        var arrayBuffer = new ArrayBuffer(size);
-        data = DataContainer.fromBuffer(arrayBuffer);
-//        var buffer = new ArrayBuffer(size);
-    }
-
-    public function enambleAttributes() {
-        var offset = 0;
-        for (i in 0...attributes.length) {
-            var descr = attributes[i];
-            descr.offset = offset;
-            gl.enableVertexAttribArray(descr.idx);
-            var normalized = ("colorIn" == descr.name);
-            gl.vertexAttribPointer(descr.idx, descr.numComponents, descr.getGlType(gl), normalized, stride, offset);
-            offset += descr.numComponents * descr.getGlSize(gl);
-        }
-    }
+//    public function enambleAttributes() {
+//        var offset = 0;
+//        for (i in 0...attributes.length) {
+//            var descr = attributes[i];
+//            descr.offset = offset;
+//            gl.enableVertexAttribArray(descr.idx);
+//            var normalized = ("colorIn" == descr.name);
+//            gl.vertexAttribPointer(descr.idx, descr.numComponents, descr.getGlType(gl), normalized, stride, offset);
+//            offset += descr.numComponents * descr.getGlSize(gl);
+//        }
+//    }
 
     public function initData() {
-//        bufferData = new ArrayBufferView(null, None);
-//        bufferData.initBuffer(data.buffer);
         gl.useProgram(program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    }
+
+    public function getBytes():Bytes {
+        return cast (data, ArrayBufferView).buffer;
     }
 
     @:access(lime.utils.ArrayBufferView)
     public function bind() {
         gl.useProgram(program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-        enambleAttributes();
+        set.enableAttributes(gl, attrsState);
     }
 
     public function unbind() {
@@ -87,19 +86,8 @@ class GlState {
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
     }
 
-    public function setValue(attribName:String, vertIdx:Int, value:Any, cmpIdx = 0) {
-        var descr = attributes[attribPointers[attribName]];
-        var offset = stride * vertIdx + descr.offset + cmpIdx * descr.getGlSize(gl);
-        switch descr.type {
-            case int8 : data.setInt8(offset, value);
-            case int16 : data.setInt16(offset, value);
-            case int32 : data.setInt32(offset, value);
-            case uint8 : data.setUint8(offset, value);
-            case uint16 : data.setUint16(offset, value);
-            case uint32 : data.setUint32(offset, value);
-            case float32 : data.setFloat32(offset, value);
-        }
-    }
+
+
 }
 @:forward(setInt8, setFloat32, setInt16, setInt32, setUint8, setUint16, setUint32)
 abstract JsDataContainer(DataView) to DataView {
