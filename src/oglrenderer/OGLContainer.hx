@@ -2,6 +2,7 @@ package oglrenderer;
 #if !boo
 import lime.graphics.WebGLRenderContext;
 #end
+import shader.DummyShader;
 import gltools.sets.ColorSet;
 import haxe.io.Bytes;
 import lime.utils.ArrayBuffer;
@@ -45,36 +46,9 @@ class OGLContainer extends DisplayObject {
 //    var indices = [];
 
 
-    function createProgram(gl:WebGLRenderContext) {
-        var vs = '
-              attribute vec2 ${AttribAliases.NAME_POSITION};
-              attribute vec4 ${AttribAliases.NAME_CLOLOR_IN};
-              uniform float ${AttribAliases.NAME_SCREENSPACE_T};
-              varying vec4 ${AttribAliases.NAME_CLOLOR_OUT};
-
-              void main() {
-                float offset = mod(${AttribAliases.NAME_SCREENSPACE_T} , 1.0);
-                gl_Position =  vec4(${AttribAliases.NAME_POSITION}.x + offset, ${AttribAliases.NAME_POSITION}.y,  0, 1);
-                ${AttribAliases.NAME_CLOLOR_OUT} = ${AttribAliases.NAME_CLOLOR_IN};
-              }';
-
-        var fs =
-            #if (!desktop || rpi)
-        "precision mediump float;" +
-            #end
-        'varying vec4 ${AttribAliases.NAME_CLOLOR_OUT};
-              void main(){
-                 gl_FragColor = ${AttribAliases.NAME_CLOLOR_OUT};
-              }';
-
-        program = GLProgram.fromSources(gl, vs, fs);
-        return program;
-    }
-
-
     public function init(gl:WebGLRenderContext) {
         if (!inited) {
-            this.program = createProgram(gl);
+            this.program =DummyShader.createDummyShader(gl);
 
             screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
 

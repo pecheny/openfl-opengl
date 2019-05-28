@@ -2,6 +2,7 @@ package oglrenderer;
 #if !boo
 import lime.graphics.WebGLRenderContext;
 #end
+import shader.DummyShader;
 import gltools.AttribAliases;
 import gltools.GLState.GlState;
 import gltools.sets.ColorSet;
@@ -46,29 +47,7 @@ class OGLContainerCopy extends DisplayObject {
     var screenTIdx:GLUniformLocation;
 
     function createProgram(gl:WebGLRenderContext) {
-           var vs = '
-                 attribute vec2 ${AttribAliases.NAME_POSITION};
-                 attribute vec4 ${AttribAliases.NAME_CLOLOR_IN};
-                 uniform float ${AttribAliases.NAME_SCREENSPACE_T};
-                 varying vec4 ${AttribAliases.NAME_CLOLOR_OUT};
-
-                 void main() {
-                   float offset = mod(${AttribAliases.NAME_SCREENSPACE_T} , 1.0);
-                   gl_Position =  vec4(${AttribAliases.NAME_POSITION}.x + offset, ${AttribAliases.NAME_POSITION}.y,  0, 1);
-                   ${AttribAliases.NAME_CLOLOR_OUT} = ${AttribAliases.NAME_CLOLOR_IN};
-                 }';
-
-           var fs =
-               #if (!desktop || rpi)
-           "precision mediump float;" +
-               #end
-           'varying vec4 ${AttribAliases.NAME_CLOLOR_OUT};
-                 void main(){
-                    gl_FragColor = ${AttribAliases.NAME_CLOLOR_OUT};
-                 }';
-
-           program = GLProgram.fromSources(gl, vs, fs);
-           return program;
+          return DummyShader.createDummyShader(gl);
        }
     
 //    function createProgram(gl:WebGLRenderContext) {
@@ -139,8 +118,6 @@ class OGLContainerCopy extends DisplayObject {
         var renderer:OpenGLRenderer = cast event.renderer;
         var gl:WebGLRenderContext = renderer.gl;
         init(renderer.gl);
-        if (program == null)
-            return;
         state.bind();
         gl.uniform1f(screenTIdx, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
