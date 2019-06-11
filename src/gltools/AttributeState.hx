@@ -1,5 +1,4 @@
 package gltools;
-import gltools.AttributeState.DataType;
 import lime.utils.Float32Array;
 import lime.utils.Int16Array;
 import lime.utils.Int32Array;
@@ -7,7 +6,7 @@ import lime.utils.UInt16Array;
 import lime.utils.UInt32Array;
 import lime.utils.UInt8Array;
 #if !boo
-import lime.graphics.WebGLRenderContext;
+//import lime.graphics.WebGLRenderContext;
 #end
 class AttributeState {
     public var numComponents:Int;
@@ -23,20 +22,10 @@ class AttributeState {
         this.type = type;
     }
 
-    public inline function getGlType(gl:WebGLRenderContext) {
-        return switch type {
-//            case int8 : gl.BYTE;
-            case int16 : gl.SHORT;
-            case int32 : gl.INT;
-            case uint8 : gl.UNSIGNED_BYTE;
-            case uint16 : gl.UNSIGNED_SHORT;
-            case uint32 : gl.UNSIGNED_INT;
-            case float32 : gl.FLOAT;
-        }
-    }
 
 
-    public inline function getGlSize(gl:WebGLRenderContext) {
+
+    public inline function getGlSize() {
         return switch type {
 //            case int8 : Int8Array.BYTES_PER_ELEMENT;
             case int16 : Int16Array.BYTES_PER_ELEMENT;
