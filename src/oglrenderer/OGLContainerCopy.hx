@@ -2,7 +2,6 @@ package oglrenderer;
 #if !boo
 import lime.graphics.WebGLRenderContext;
 #end
-import shader.DummyShader;
 import gltools.AttribAliases;
 import gltools.GLState.GlState;
 import gltools.sets.ColorSet;
@@ -13,9 +12,12 @@ import lime.graphics.opengl.GLProgram;
 import lime.graphics.opengl.GLUniformLocation;
 import lime.math.Matrix4;
 import lime.utils.UInt16Array;
+import mesh.providers.AttrProviders.SolidColorProvider;
+import mesh.providers.AttrProviders.TriPosProvider;
 import openfl.display.DisplayObject;
 import openfl.display.OpenGLRenderer;
 import openfl.events.RenderEvent;
+import shader.DummyShader;
 import sys.io.File;
 #if !boo
 import lime.graphics.WebGLRenderContext;
@@ -128,51 +130,4 @@ class OGLContainerCopy extends DisplayObject {
 
 }
 
-class PosProvider {
-    var vertx:Array<Float> = [];
-    var verty:Array<Float> = [];
 
-    public function new() {}
-
-    public function addVertex(x, y) {
-        vertx.push(x);
-        verty.push(y);
-    }
-
-}
-
-class SolidColorProvider {
-    var components:Array<Float> = [];
-
-    public function new(r, g, b) {
-        components.push(r);
-        components.push(g);
-        components.push(b);
-        components.push(255);
-    }
-
-    public function getCC(_, cmp) {
-        trace(cmp);
-        return components[cmp];
-    }
-}
-
-class TriPosProvider extends PosProvider {
-
-    public function new(scale, mirror = 1) {
-        super();
-        addVertex(-scale * mirror, -scale);
-        addVertex(scale * mirror, -scale);
-        addVertex(scale * mirror, scale);
-    }
-
-    public function getPos(idx, cmp) {
-        var carr =
-        if (cmp == 0)
-            vertx
-        else if (cmp == 1)
-            verty
-        else throw "Wrong1";
-        return carr[idx];
-    }
-}

@@ -1,5 +1,6 @@
 package mesh;
-import haxe.io.UInt16Array;
+import mesh.providers.AttrProviders.SolidColorProvider;
+import mesh.providers.AttrProviders.TriPosProvider;
 import gltools.AttribAliases;
 import gltools.AttribSet;
 import gltools.ByteDataWriter;
@@ -7,8 +8,7 @@ import gltools.sets.ColorSet;
 import gltools.VertDataProvider;
 import gltools.VertexBuilder;
 import haxe.io.Bytes;
-import oglrenderer.OGLContainerCopy.SolidColorProvider;
-import oglrenderer.OGLContainerCopy.TriPosProvider;
+import haxe.io.UInt16Array;
 class StaticMeshProvider<T:AttribSet> implements VertDataProvider<T> {
     var data:ByteDataWriter;
     var inds:ByteDataWriter;
