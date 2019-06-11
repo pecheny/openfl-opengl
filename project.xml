@@ -7,5 +7,6 @@
     <source path="src"/>
     <haxelib name="openfl"/>
     <haxedef name = "openfl_disable_context_cache" value = "true" />
-
+    <haxeflag name="-dce" value="full" />
+    <assets path="Assets" include="*"/>
 </project>
