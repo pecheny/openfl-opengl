@@ -1,0 +1,4 @@
+-cp src
+-cp lime-parts-src
+-main MeshFileWriter
+-python exporter.py

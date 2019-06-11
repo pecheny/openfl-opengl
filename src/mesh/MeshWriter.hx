@@ -1,0 +1,55 @@
+package mesh;
+import gltools.AttribAliases;
+import gltools.ByteDataWriter;
+import gltools.sets.ColorSet;
+import gltools.VertexBuilder;
+import haxe.io.Bytes;
+import haxe.io.UInt16Array;
+import mesh.providers.AttrProviders.SolidColorProvider;
+class MeshWriter {
+    var data:ByteDataWriter;
+    var inds:ByteDataWriter;
+    var builder:VertexBuilder;
+    var indProvider:Int->Int;
+    public function new() {
+        builder = new VertexBuilder(ColorSet.instance);
+        builder.setTarget(Bytes.alloc(3 * ColorSet.instance.stride));
+        var color = new SolidColorProvider(128, 10, 100);
+        builder.regSetter(AttribAliases.NAME_CLOLOR_IN, color.getCC);
+    }
+
+
+    public function addPosProvider(posProv:VertexAttribProvider){
+        builder.regSetter(AttribAliases.NAME_POSITION, posProv);
+    }
+
+    public function adIndProvider(p:Int->Int){
+        indProvider = p;
+    }
+
+    public function fetch(vertCount:Int, triCount:Int) {
+        builder.fetchFertices(vertCount);
+        data = builder.getData();
+        inds = Bytes.alloc(3 * triCount * UInt16Array.BYTES_PER_ELEMENT);
+        for (i in 0...triCount * 3)
+            inds.setUint16(i * UInt16Array.BYTES_PER_ELEMENT, indProvider(i));
+    }
+
+
+    public function getVerts():Bytes {
+        return data;
+    }
+
+    public function getInds() {
+        return inds;
+    }
+
+    public function getVertsCount():Int {
+        return 3;
+    }
+
+    public function getIndsCount():Int {
+        return 3;
+    }
+
+}
