@@ -8,7 +8,7 @@ class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T>{
     var inds:Bytes;
     var stride:Int;
 
-    public function AssetMeshProvider(path:String, attrs:T) {
+    public function new(path:String, attrs:T) {
         data = lime.utils.Assets.getBytes(path + "/bytes");//sys.io.File.getBytes(path + "bytes")
         inds = lime.utils.Assets.getBytes(path + "/inds");//sys.io.File.getBytes(path + "bytes")
         stride = attrs.stride;
