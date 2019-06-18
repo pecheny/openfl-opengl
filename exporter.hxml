@@ -2,3 +2,4 @@
 -cp lime-parts-src
 -main MeshFileWriter
 -python exporter.py
+-cmd copy exporter.py C:\Users\shoo\Projects\10-Blender\playground\addons\foldered_addon\exporter.py

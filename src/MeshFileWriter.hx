@@ -1,6 +1,5 @@
 package ;
 import mesh.MeshWriter;
-import mesh.providers.AttrProviders.TriPosProvider;
 import mesh.VertexAttribProvider;
 import sys.io.File;
 @:keep
@@ -13,10 +12,10 @@ class MeshFileWriter {
 
     public function new() {
         dataWriter = new MeshWriter();
-        var pos = new TriPosProvider(1, -1);
-        var indPr = i -> i;
-        regProviders(pos.getPos, indPr);
-        witeFiles(3,1,"my_tri");
+//        var pos = new TriPosProvider(1, -1);
+//        var indPr = i -> i;
+//        regProviders(pos.getPos, indPr);
+//        witeFiles(3,1,"my_tri");
     }
 
     public function regProviders(pp:VertexAttribProvider, ip:Int -> Int) {
