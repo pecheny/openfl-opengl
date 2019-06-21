@@ -3,12 +3,22 @@ import gltools.VertDataProvider;
 import lime.utils.UInt16Array;
 import gltools.AttribSet;
 import haxe.io.Bytes;
+using Lambda;
 class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T>{
     var data:Bytes;
     var inds:Bytes;
     var stride:Int;
 
+    @:access(lime.utils.AssetLibrary)
     public function new(path:String, attrs:T) {
+//        var lib = lime.utils.Assets.getLibrary(null);
+//        var ks = lib.paths.keys();
+//        trace(lib.paths.array());
+//        var bts = lib.getBytes(path + "/bytes");
+//        trace(bts  + " " + path);
+//        for (k in ks)
+//            trace(k  + " " + lib.paths.get(k));
+
         data = lime.utils.Assets.getBytes(path + "/bytes");//sys.io.File.getBytes(path + "bytes")
         inds = lime.utils.Assets.getBytes(path + "/inds");//sys.io.File.getBytes(path + "bytes")
         stride = attrs.stride;
@@ -35,14 +45,23 @@ class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T>{
     }
 
     public function getVertsCount():Int {
+//        trace("D: " + data  + " " + (data == null));
         var stride1 = Std.int(data.length / stride);
-        trace("Cert cnt:" + stride1);
+//        trace("Cert cnt:" + stride1);
         return stride1;
     }
 
     public function getIndsCount():Int {
         var ic = Std.int(inds.length / UInt16Array.BYTES_PER_ELEMENT);
-        trace("Ind cnt: " + ic);
+//        trace("Ind cnt: " + ic);
         return ic;
     }
+
+    public function gatherIndices(target:UInt16Array, startFrom:Int, offset) {
+        for (i in 0...getIndsCount()) {
+            target[i + startFrom] = inds.getUInt16(i*2) + offset;
+        }
+    }
+
+
 }

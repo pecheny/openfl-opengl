@@ -5,7 +5,6 @@ import lime.graphics.opengl.GLUniformLocation;
 import gltools.AttribAliases;
 import lime.utils.UInt16Array;
 import lime.utils.ArrayBufferView;
-import haxe.io.Bytes;
 import gltools.AttribSet;
 import gltools.ShadersAttrs;
 import gltools.VertDataProvider;
@@ -27,11 +26,8 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var set:AttribSet;
     var attrsState:ShadersAttrs;
     var dataView:ArrayBufferView;
-    var indDataView:ArrayBufferView;
+    var indDataView:UInt16Array;
     private var indicesBuffer:GLBuffer;
-
-
-
     var screenTIdx:GLUniformLocation;
 
     @:access(lime.utils.ArrayBufferView)
@@ -43,6 +39,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         indDataView = new ArrayBufferView(null, None);
     }
 
+    @:access(lime.utils.ArrayBufferView)
     public function init(gl, prog, set:AttribSet) {
         this.program = prog;
         this.set = set;
@@ -50,9 +47,8 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         buffer = gl.createBuffer();
         indicesBuffer = gl.createBuffer();
         trace(prog);
-
-
         screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
+        indDataView.initBuffer(inds.bytes);
     }
 
     function onEnterFrame(e) {
@@ -81,24 +77,25 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         gl = renderer.gl;
         if (program == null)
             return;
-        var indCount = 0;
         var pos = 0;
+//        trace("______________" + set.stride);
         for (child in children) {
             var b = child.getVerts();
             var len = child.getVertsCount() * set.stride;
             data.blit(pos, b, 0, len);
             pos += len;
-
-            var ic = child.getIndsCount();
-            inds.blit(indCount * UInt16Array.BYTES_PER_ELEMENT, child.getInds(), 0, ic * UInt16Array.BYTES_PER_ELEMENT);
-            indCount += ic;
-
-
+//            var ic += child.getIndsCount();
+////            inds.blit(indCount * UInt16Array.BYTES_PER_ELEMENT, child.getInds(), 0, ic * UInt16Array.BYTES_PER_ELEMENT);
+////            for (vid in indCount...indCount+ic) {
+////                indDataView[vid] += indCount;
+////            }
+//            indCount += ic;
+//            trace(ic);
 //            ind = ind.concat(child.getInds());
         }
+        var indCount = gatherIndices(indDataView, 0, 0);
         bind();
         dataView.initBuffer(data.bytes);
-        indDataView.initBuffer(inds.bytes);
         gl.bufferData(gl.ARRAY_BUFFER, dataView, gl.DYNAMIC_DRAW);
 //         set uniforms
         gl.uniform1f(screenTIdx, 0);
@@ -107,6 +104,17 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         gl.drawElements(gl.TRIANGLES, indCount, gl.UNSIGNED_SHORT, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         unbind();
+    }
+
+    public function gatherIndices(target:UInt16Array, startWith:Int, offset:Int) {
+        var idxPointer = startWith;
+        var vertPoin = offset;
+        for (child in children) {
+             child.gatherIndices(target, idxPointer, vertPoin);
+            idxPointer += child.getIndsCount();
+            vertPoin += child.getVertsCount();
+        }
+        return idxPointer;
     }
 
 

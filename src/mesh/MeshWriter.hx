@@ -13,7 +13,6 @@ class MeshWriter {
     var indProvider:Int->Int;
     public function new() {
         builder = new VertexBuilder(ColorSet.instance);
-        builder.setTarget(Bytes.alloc(3 * ColorSet.instance.stride));
         var color = new SolidColorProvider(128, 10, 100);
         builder.regSetter(AttribAliases.NAME_CLOLOR_IN, color.getCC);
     }
@@ -28,6 +27,8 @@ class MeshWriter {
     }
 
     public function fetch(vertCount:Int, triCount:Int) {
+        trace("! " +  vertCount  + " " + ColorSet.instance.stride);
+        builder.setTarget(Bytes.alloc(vertCount * ColorSet.instance.stride));
         builder.fetchFertices(vertCount);
         data = builder.getData();
         inds = Bytes.alloc(3 * triCount * UInt16Array.BYTES_PER_ELEMENT);
@@ -51,5 +52,4 @@ class MeshWriter {
     public function getIndsCount():Int {
         return 3;
     }
-
 }
