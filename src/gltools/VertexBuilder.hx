@@ -1,4 +1,5 @@
 package gltools;
+import mesh.VertexAttribProvider;
 import haxe.io.Bytes;
 class VertexBuilder {
     var data:ByteDataWriter;
@@ -40,9 +41,9 @@ class VertexBuilder {
 
 //    function setValue(idx, name) {}
 
-    var setters:Map<String, Int -> Int -> Dynamic> = new Map();
+    var setters:Map<String, VertexAttribProvider> = new Map();
 
-    public function regSetter(attrDesc:String, setter:Int -> Int -> Dynamic) {
+    public function regSetter(attrDesc:String, setter:VertexAttribProvider) {
         setters.set(attrDesc,  setter);
     }
 
