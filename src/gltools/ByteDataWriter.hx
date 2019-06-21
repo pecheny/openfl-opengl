@@ -1,7 +1,7 @@
 package gltools;
 import haxe.io.Bytes;
 import lime.utils.ArrayBufferView.ArrayBufferIO;
-abstract ByteDataWriter(Bytes) to Bytes from Bytes {
+abstract ByteDataWriter(Bytes) to Bytes from Bytes to ByteDataReader {
     inline function new(val) this = val;
 
     public inline function setInt8(byteOffset:Int, value:Int)
@@ -25,6 +25,7 @@ abstract ByteDataWriter(Bytes) to Bytes from Bytes {
     public inline function setFloat32(byteOffset:Int, value:Float)
     ArrayBufferIO.setFloat32(this, byteOffset, value);
 
+    public inline function toReader():ByteDataReader return this;
 //    @:access(lime.utils.ArrayBufferView)
 //    public static inline function fromBuffer(buffer:ArrayBuffer) {
 //        var buf = new ArrayBufferView(null, None);
