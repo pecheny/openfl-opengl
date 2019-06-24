@@ -37,38 +37,38 @@ class Main extends Sprite {
 
     public function new() {
         super();
-        addEventListener(RenderEvent.RENDER_OPENGL, render);
+//        addEventListener(RenderEvent.RENDER_OPENGL, render);
         addEventListener(Event.ENTER_FRAME, enterFrame);
-        var a = new OGLContainer();
-        var b = new OGLContainerCopy();
-        c = new GLLayer<ColorSet>();
-        field = new FieldWithItems();
+
+        c = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
         c.addView(new AssetMeshProvider<ColorSet>("Assets/my_tri", ColorSet.instance));
         c.addView(createItem());
-        c.addView(field);
-//        c.addView(new AssetMeshProvider<ColorSet>("Assets/blend_exp", ColorSet.instance));
-//        var f = new StaticMeshProvider<ColorSet>();
 
-//        addChild(a);
-//        addChild(new Pointer());
+        var d = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
+        field = new FieldWithItems();
+        d.addView(field);
+        d.setViewport(100,100,100,100);
+        
+        addChild(new Pointer());
 //        addChild(b);
         addChild(c);
+        addChild(d);
     }
 
     function enterFrame(e) {
         field.update(0.016);
     }
 
-    function render(e) {
-        if (inited)
-            return;
-        trace("init");
-        inited = true;
-        var renderer:OpenGLRenderer = cast e.renderer;
-        var gl:WebGLRenderContext = renderer.gl;
-        c.init(gl, DummyShader.createDummyShader(gl), ColorSet.instance);
-        addChild(c);
-    }
+//    function render(e) {
+//        if (inited)
+//            return;
+//        trace("init");
+//        inited = true;
+//        var renderer:OpenGLRenderer = cast e.renderer;
+//        var gl:WebGLRenderContext = renderer.gl;
+//        c.init(gl, DummyShader.createDummyShader(gl), ColorSet.instance);
+//        addChild(c);
+//    }
 
 
 }

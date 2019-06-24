@@ -1,4 +1,5 @@
 package oglrenderer;
+import lime.math.Rectangle;
 import utils.ExtensibleBytes;
 import flash.events.Event;
 import lime.graphics.opengl.GLUniformLocation;
@@ -21,6 +22,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var program:GLProgram;
     var children:Array<VertDataProvider<T>> = [];
     var gl:WebGLRenderContext;
+    var viewport:ViewportRect;
 
     var buffer:GLBuffer;
     var set:AttribSet;
@@ -30,9 +32,13 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     private var indicesBuffer:GLBuffer;
     var screenTIdx:GLUniformLocation;
 
+
+    var shaderBuilder:WebGLRenderContext->GLProgram;
     @:access(lime.utils.ArrayBufferView)
-    public function new() {
+    public function new(set:T, shaderBuilder:WebGLRenderContext->GLProgram) {
         super();
+        this.set = set;
+        this.shaderBuilder = shaderBuilder;
         addEventListener(RenderEvent.RENDER_OPENGL, render);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
         dataView = new ArrayBufferView(null, None);
@@ -40,13 +46,11 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     }
 
     @:access(lime.utils.ArrayBufferView)
-    public function init(gl, prog, set:AttribSet) {
-        this.program = prog;
-        this.set = set;
+    function init(gl) {
+        this.program = shaderBuilder(gl);
         attrsState = set.buildState(gl, program);
         buffer = gl.createBuffer();
         indicesBuffer = gl.createBuffer();
-        trace(prog);
         screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
         indDataView.initBuffer(inds.bytes);
     }
@@ -75,26 +79,20 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     public function render(event:RenderEvent) {
         var renderer:OpenGLRenderer = cast event.renderer;
         gl = renderer.gl;
-        if (program == null)
-            return;
+        if (program == null) {
+            init(gl);
+        }
         var pos = 0;
-//        trace("______________" + set.stride);
         for (child in children) {
             var b = child.getVerts();
             var len = child.getVertsCount() * set.stride;
             data.blit(pos, b, 0, len);
             pos += len;
-//            var ic += child.getIndsCount();
-////            inds.blit(indCount * UInt16Array.BYTES_PER_ELEMENT, child.getInds(), 0, ic * UInt16Array.BYTES_PER_ELEMENT);
-////            for (vid in indCount...indCount+ic) {
-////                indDataView[vid] += indCount;
-////            }
-//            indCount += ic;
-//            trace(ic);
-//            ind = ind.concat(child.getInds());
         }
         var indCount = gatherIndices(indDataView, 0, 0);
         bind();
+        if (viewport != null)
+            gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
         dataView.initBuffer(data.bytes);
         gl.bufferData(gl.ARRAY_BUFFER, dataView, gl.DYNAMIC_DRAW);
 //         set uniforms
@@ -117,6 +115,10 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         return idxPointer;
     }
 
+    public function setViewport(x, y, w, h) {
+        this.viewport = new ViewportRect(x,y,w,h);
+    }
+
 
     @:access(lime.utils.ArrayBufferView)
     public function bind() {
@@ -130,6 +132,20 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
     }
 }
+
+class ViewportRect {
+    public var x:Int;
+    public var y:Int;
+    public var width:Int;
+    public var height:Int;
+    public function new (x,y,w,h) {
+        this.x = x;
+        this.y = y;
+        this.width = w;
+        this.height = h;
+    }
+}
+
 
 
 
