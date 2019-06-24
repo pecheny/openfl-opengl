@@ -30,7 +30,7 @@ class AttribSet {
         attributes.push(descr);
     }
 
-    public function getDescr(name) {
+    public function getDescr(name):AttributeDescr {
         for (d in attributes) {
             if (d.name == name)
                 return d;
