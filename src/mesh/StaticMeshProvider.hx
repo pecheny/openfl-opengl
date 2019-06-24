@@ -19,7 +19,7 @@ class StaticMeshProvider<T:AttribSet> implements VertDataProvider<T> {
         var pos = new TriPosProvider(1, -1);
         var color = new SolidColorProvider(128, 10, 100);
         builder.regSetter(AttribAliases.NAME_POSITION, pos.getPos);
-        builder.regSetter(AttribAliases.NAME_CLOLOR_IN, color.getCC);
+        builder.regSetter(AttribAliases.NAME_COLOR_IN, color.getCC);
         builder.fetchFertices(3);
         data = builder.getData();
         inds = Bytes.alloc(3 * UInt16Array.BYTES_PER_ELEMENT);

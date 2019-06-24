@@ -29,7 +29,7 @@ class Main extends Sprite {
         var ch = new Instance2DVertexDataProvider(ColorSet.instance);
         ch.adIndProvider(ip);
         ch.addDataSource(AttribAliases.NAME_POSITION, pp);
-        ch.addDataSource(AttribAliases.NAME_CLOLOR_IN, cp);
+        ch.addDataSource(AttribAliases.NAME_COLOR_IN, cp);
         ch.fetchFertices(3, 3);
         ch.x = -0.2;
         return ch;
@@ -41,8 +41,9 @@ class Main extends Sprite {
         addEventListener(Event.ENTER_FRAME, enterFrame);
 
         c = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
-        c.addView(new AssetMeshProvider<ColorSet>("Assets/my_tri", ColorSet.instance));
-        c.addView(createItem());
+        c.addView(new AssetMeshProvider<ColorSet>("Assets/blend_exp", ColorSet.instance));
+//        c.addView(new AssetMeshProvider<ColorSet>("Assets/my_tri", ColorSet.instance));
+//        c.addView(createItem());
 
         var d = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
         field = new FieldWithItems();
@@ -52,7 +53,7 @@ class Main extends Sprite {
         addChild(new Pointer());
 //        addChild(b);
         addChild(c);
-        addChild(d);
+//        addChild(d);
     }
 
     function enterFrame(e) {

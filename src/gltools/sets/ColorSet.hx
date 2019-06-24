@@ -6,6 +6,6 @@ class ColorSet extends AttribSet{
     function new() {
         super();
         addAttribute(AttribAliases.NAME_POSITION, 2, DataType.float32);
-        addAttribute(AttribAliases.NAME_CLOLOR_IN, 4, DataType.uint8);
+        addAttribute(AttribAliases.NAME_COLOR_IN, 4, DataType.uint8);
     }
 }

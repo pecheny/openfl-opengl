@@ -31,7 +31,7 @@ class FieldWithItems implements VertDataProvider<ColorSet> {
             var ch = new Instance2DVertexDataProvider(attrs);
             ch.adIndProvider(ip);
             ch.addDataSource(AttribAliases.NAME_POSITION, pp);
-            ch.addDataSource(AttribAliases.NAME_CLOLOR_IN, cp);
+            ch.addDataSource(AttribAliases.NAME_COLOR_IN, cp);
             ch.fetchFertices(3, 3);
             children.push(ch);
             ch.x = i * 0.3 - 0.9;

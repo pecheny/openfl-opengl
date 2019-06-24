@@ -14,7 +14,7 @@ class MeshWriter {
     public function new() {
         builder = new VertexBuilder(ColorSet.instance);
         var color = new SolidColorProvider(128, 10, 100);
-        builder.regSetter(AttribAliases.NAME_CLOLOR_IN, color.getCC);
+        builder.regSetter(AttribAliases.NAME_COLOR_IN, color.getCC);
     }
 
 
@@ -24,6 +24,10 @@ class MeshWriter {
 
     public function adIndProvider(p:Int->Int){
         indProvider = p;
+    }
+
+    public function addCustomProvider(name, prov){
+        builder.regSetter(name, prov);
     }
 
     public function fetch(vertCount:Int, triCount:Int) {

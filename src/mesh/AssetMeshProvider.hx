@@ -1,4 +1,8 @@
 package mesh;
+import gltools.ByteDataWriter;
+import gltools.AttribAliases;
+import gltools.sets.ColorSet;
+import mesh.providers.AttrProviders.PosProvider;
 import gltools.VertDataProvider;
 import lime.utils.UInt16Array;
 import gltools.AttribSet;
@@ -22,6 +26,17 @@ class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T>{
         data = lime.utils.Assets.getBytes(path + "/bytes");//sys.io.File.getBytes(path + "bytes")
         inds = lime.utils.Assets.getBytes(path + "/inds");//sys.io.File.getBytes(path + "bytes")
         stride = attrs.stride;
+
+
+        var printer = new VertPrinter(attrs);
+        trace(printer.print(this));
+
+//        var pp = new PosProvider();
+//        var posDescr = ColorSet.instance.getDescr(AttribAliases.NAME_POSITION);
+//        var posOfffset = posDescr.offset;
+//        pp.load(data, posOfffset, posOfffset + AttribSet.getGlSize(posDescr.type), stride);
+
+
 
 //        var builder = new VertexBuilder(ColorSet.instance);
 //        builder.setTarget(Bytes.alloc(3 * ColorSet.instance.stride));
