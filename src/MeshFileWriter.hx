@@ -23,6 +23,10 @@ class MeshFileWriter {
         dataWriter.adIndProvider(ip);
     }
 
+    public function addCustomProvider(name, prov) {
+        dataWriter.addCustomProvider(name, prov);
+    }
+
     public function witeFiles(vertCount, triCount, path) {
         if (!sys.FileSystem.isDirectory(path))
             sys.FileSystem.createDirectory(path);
