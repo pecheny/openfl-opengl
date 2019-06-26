@@ -5,13 +5,11 @@ import lime.graphics.opengl.GLProgram;
 import lime.graphics.WebGLRenderContext;
 #end
 #end
-import lime.utils.Int16Array;
-import haxe.io.Int32Array;
-import haxe.io.UInt8Array;
-import haxe.io.UInt16Array;
-import haxe.io.UInt32Array;
-import haxe.io.Float32Array;
 import gltools.AttributeState.DataType;
+import haxe.io.Float32Array;
+import haxe.io.Int32Array;
+import haxe.io.UInt16Array;
+import haxe.io.UInt8Array;
 class AttribSet {
     function new() {}
     public var stride(default, null):Int = 0;
@@ -38,14 +36,31 @@ class AttribSet {
         throw "No such attr " + name;
     }
 
-    public static inline function getGlSize(type) {
+    public static inline function getValue(reader:ByteDataReader, type:DataType, offset) {
+        return
+            switch type {
+                case uint8 : reader.getUInt8(offset);
+                case int32 : reader.getInt32(offset);
+                case uint16 : reader.getUInt16(offset);
+                case float32 : reader.getFloat32(offset);
+            }
+    }
+
+    public static inline function setValue(reader:ByteDataWriter, type:DataType, offset:Int, val:Dynamic) {
+        return
+            switch type {
+                case uint8 : reader.setUint8(offset, val);
+                case int32 : reader.setInt32(offset, val);
+                case uint16 : reader.setUint16(offset, val);
+                case float32 : reader.setFloat32(offset, val);
+            }
+    }
+
+    public static inline function getGlSize(type:DataType) {
         return switch type {
-//            case int8 : Int8Array.BYTES_PER_ELEMENT;
-            case int16 : Int16Array.BYTES_PER_ELEMENT;
             case int32 : Int32Array.BYTES_PER_ELEMENT;
             case uint8 : UInt8Array.BYTES_PER_ELEMENT;
             case uint16 : UInt16Array.BYTES_PER_ELEMENT;
-            case uint32 : UInt32Array.BYTES_PER_ELEMENT;
             case float32 : Float32Array.BYTES_PER_ELEMENT;
         }
     }
@@ -80,14 +95,11 @@ class AttribSet {
         }
     }
 
-    public inline function getGlType(type, gl:WebGLRenderContext) {
+    public inline function getGlType(type:DataType, gl:WebGLRenderContext) {
         return switch type {
-//            case int8 : gl.BYTE;
-            case int16 : gl.SHORT;
             case int32 : gl.INT;
             case uint8 : gl.UNSIGNED_BYTE;
             case uint16 : gl.UNSIGNED_SHORT;
-            case uint32 : gl.UNSIGNED_INT;
             case float32 : gl.FLOAT;
         }
     }

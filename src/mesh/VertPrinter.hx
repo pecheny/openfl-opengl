@@ -19,16 +19,8 @@ class VertPrinter <T:AttribSet> {
                 result += "(";
                 for (cmp in 0...at.numComponents) {
                     var offset = attrs.stride * i + at.offset + cmp * AttribSet.getGlSize(at.type);
-                    result += (""+
-                    (switch at.type {
-                        case int16 : reader.getInt16(offset);
-                        case int32 : reader.getInt32(offset);
-                        case uint8 : reader.getUint8(offset);
-                        case uint16 : reader.getUint16(offset);
-                        case uint32 : reader.getUint32(offset);
-                        case float32 : reader.getFloat32(offset);
-                    })
-                    + ", ");
+                    result +=
+                        AttribSet.getValue(reader, at.type, offset) + ", ";
                 }
                 result += "), ";
             }

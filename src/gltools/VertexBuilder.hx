@@ -23,16 +23,8 @@ class VertexBuilder {
                 for (cmp in 0...atr.numComponents) {
                     var value = setters.get(atr.name)(i, cmp);
                     var offset = a.stride * i + atr.offset + cmp * AttribSet.getGlSize(atr.type);
+                    AttribSet.setValue(data, atr.type, offset, value);
                     trace(atr.type);
-                    switch atr.type {
-//            case int8 : data.setInt8(offset, value);
-                        case int16 : data.setInt16(offset, value);
-                        case int32 : data.setInt32(offset, value);
-                        case uint8 : data.setUint8(offset, value);
-                        case uint16 : data.setUint16(offset, value);
-                        case uint32 : data.setUint32(offset, value);
-                        case float32 : data.setFloat32(offset, value);
-                    }
                 }
             }
         }

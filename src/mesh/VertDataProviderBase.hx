@@ -27,12 +27,9 @@ class VertDataProviderBase {
 
     inline function setTyped(type:DataType, offset, value:Dynamic) {
         switch type {
-            //            case int8 : data.setInt8(offset, value);
-            case int16 : vertData.setInt16(offset, value);
             case int32 : vertData.setInt32(offset, value);
             case uint8 : vertData.setUint8(offset, value);
             case uint16 : vertData.setUint16(offset, value);
-            case uint32 : vertData.setUint32(offset, value);
             case float32 :
                 vertData.setFloat32(offset, value);
         }
