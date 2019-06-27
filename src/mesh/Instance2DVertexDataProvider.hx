@@ -61,11 +61,17 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
         return attributes.stride * vertIdx + atr.offset + cmpIdx * AttribSet.getGlSize(atr.type);
     }
 
-    public function gatherIndices(target:UInt16Array, startFrom:Int, offset) {
-        for (i in 0...getIndsCount()) {
-            var locInd = indData.toReader().getUInt16(i * UInt16Array.BYTES_PER_ELEMENT);
-            target[i + startFrom] = locInd + offset;
-        }
-    }
+    public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
+          for (i in 0...getIndsCount()) {
+              var uInt = indData.toReader().getUInt16(i * 2);
+              target.setUint16(i*2 + startFrom, uInt, true);
+          }
+      }
+//    public function gatherIndices(target:UInt16Array, startFrom:Int, offset) {
+//        for (i in 0...getIndsCount()) {
+//            var locInd = indData.toReader().getUInt16(i * UInt16Array.BYTES_PER_ELEMENT);
+//            target[i + startFrom] = locInd + offset;
+//        }
+//    }
 
 }

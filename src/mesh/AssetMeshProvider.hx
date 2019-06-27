@@ -72,9 +72,13 @@ class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T>{
         return ic;
     }
 
-    public function gatherIndices(target:UInt16Array, startFrom:Int, offset) {
+    public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
+        var r0 = "";
         for (i in 0...getIndsCount()) {
-            target[i + startFrom] = inds.getUInt16(i*2) + offset;
+            var uInt = inds.getUInt16(i * 2);
+            r0+=uInt + ", ";
+            target.setUint16(i*2 + startFrom, uInt);
+//            target[i + startFrom] = inds.getUInt16(i*2) + offset;
         }
     }
 

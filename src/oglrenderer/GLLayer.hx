@@ -1,4 +1,9 @@
 package oglrenderer;
+import js.html.Uint8Array;
+import js.lib.Float32Array;
+import js.lib.Uint16Array;
+import js.lib.DataView;
+import haxe.io.Bytes;
 import lime.math.Rectangle;
 import utils.ExtensibleBytes;
 import flash.events.Event;
@@ -27,13 +32,12 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var buffer:GLBuffer;
     var set:AttribSet;
     var attrsState:ShadersAttrs;
-    var dataView:ArrayBufferView;
-    var indDataView:UInt16Array;
+    var dataView:Uint8Array;
+    var indDataView:Uint8Array;
     private var indicesBuffer:GLBuffer;
     var screenTIdx:GLUniformLocation;
-
-
     var shaderBuilder:WebGLRenderContext->GLProgram;
+    
     @:access(lime.utils.ArrayBufferView)
     public function new(set:T, shaderBuilder:WebGLRenderContext->GLProgram) {
         super();
@@ -41,8 +45,10 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         this.shaderBuilder = shaderBuilder;
         addEventListener(RenderEvent.RENDER_OPENGL, render);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
+        #if !js
         dataView = new ArrayBufferView(null, None);
         indDataView = new ArrayBufferView(null, None);
+        #end
     }
 
     @:access(lime.utils.ArrayBufferView)
@@ -52,7 +58,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         buffer = gl.createBuffer();
         indicesBuffer = gl.createBuffer();
         screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
-        indDataView.initBuffer(inds.bytes);
+        setIndData(inds.bytes);
     }
 
     function onEnterFrame(e) {
@@ -84,16 +90,22 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         }
         var pos = 0;
         for (child in children) {
-            var b = child.getVerts();
+            var b:Bytes = child.getVerts();
+
             var len = child.getVertsCount() * set.stride;
+            var r = "ch: " + len  + " " ;
             data.blit(pos, b, 0, len);
+           for (i in 0...6) {
+                r += data.bytes.getFloat(i*Float32Array.BYTES_PER_ELEMENT) + ", ";
+            }
+            trace(r);
             pos += len;
         }
         var indCount = gatherIndices(indDataView, 0, 0);
         bind();
         if (viewport != null)
             gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-        dataView.initBuffer(data.bytes);
+        setVertData(data.bytes);
         gl.bufferData(gl.ARRAY_BUFFER, dataView, gl.DYNAMIC_DRAW);
 //         set uniforms
         gl.uniform1f(screenTIdx, 0);
@@ -104,11 +116,12 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         unbind();
     }
 
-    public function gatherIndices(target:UInt16Array, startWith:Int, offset:Int) {
+    public function gatherIndices(target, startWith:Int, offset:Int) {
+        var view = new DataView(target.buffer);
         var idxPointer = startWith;
         var vertPoin = offset;
         for (child in children) {
-             child.gatherIndices(target, idxPointer, vertPoin);
+             child.gatherIndices(view, idxPointer, vertPoin);
             idxPointer += child.getIndsCount();
             vertPoin += child.getVertsCount();
         }
@@ -130,6 +143,48 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     public function unbind() {
         gl.useProgram(null);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    }
+
+    @:access(haxe.io.Bytes)
+    function setIndData(b:Bytes) {
+        #if js
+//            indDataView = cast b.b;
+            indDataView = new js.lib.Uint8Array(b.getData());
+//            trace(haxe.io.BytesData.isView(indDataView ));
+//            printU16(indDataView);
+        #else
+            indDataView.initBuffer(b);
+        #end
+    }
+
+    @:access(haxe.io.Bytes)
+     function setVertData(b:Bytes) {
+        #if js
+
+            dataView = new js.lib.Uint8Array(b.getData());
+//            dataView.setFloat32(0, 0.5);
+//            trace("data: "  + " " + b.get(0)  + " " +  dataView.getUint8(0));
+//        trace("data: "  + " " + b.getFloat(0)  + " " +  dataView.getFloat32(0, true));
+//            dataView = b.b;
+        #else
+            dataView.initBuffer(b);
+        #end
+    }
+
+    function printF32(dv:DataView) {
+           var r = "";
+           for (i in 0...Std.int(dv.byteLength / Float32Array.BYTES_PER_ELEMENT)) {
+               r += dv.getUint16(i*Float32Array.BYTES_PER_ELEMENT) + ", ";
+           }
+           trace(r);
+       }
+
+    function printU16(dv:DataView) {
+        var r = "";
+        for (i in 0...Std.int(dv.byteLength / UInt16Array.BYTES_PER_ELEMENT)) {
+            r += dv.getUint16(i*Uint16Array.BYTES_PER_ELEMENT) + ", ";
+        }
+        trace(r);
     }
 }
 

@@ -1,5 +1,5 @@
 package gltools;
-import lime.utils.UInt16Array;
+import js.lib.DataView;
 import haxe.io.Bytes;
 interface VertDataProvider<T:AttribSet> {
     function getVerts():Bytes;
@@ -11,5 +11,15 @@ interface VertDataProvider<T:AttribSet> {
 *   startFrom - offset within target to write to,
 *   offset - lenth of prev vert buffer to add on each vert index
 **/
-    function gatherIndices(target:UInt16Array, startFrom:Int, offset:Int):Void;
+    function gatherIndices(target:VerticesBuffer, startFrom:Int, offset:Int):Void;
 }
+
+typedef VerticesBuffer = DataView
+
+//= IndicesTarget;
+//
+//abstract IndicesTarget(DataView) from DataView to DataView {
+//    @arrayAccess public inline function set(key, val) {
+//
+//    }
+//}
