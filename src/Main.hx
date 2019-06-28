@@ -37,7 +37,7 @@ class Main extends Sprite {
         #end
         super();
         addEventListener(Event.ENTER_FRAME, enterFrame);
-
+        throw "WRONG";
         c = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
         c.addView(createItem());
         c.addView(new AssetMeshProvider<ColorSet>("Assets/blend_exp", ColorSet.instance));

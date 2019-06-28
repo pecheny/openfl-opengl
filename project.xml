@@ -6,7 +6,11 @@
     <window background="0" fps="60" orientation="portrait"/>
     <source path="src"/>
     <haxelib name="openfl"/>
+    <haxelib name="hxcpp-debugger"/>
     <haxedef name = "openfl_disable_context_cache" value = "true" />
+
+    <haxedef name = "HXCPP_DEBUGGER"  />
+
     <haxeflag name="-dce" value="full" />
     <assets path="Assets" include="*"/>
 </project>
