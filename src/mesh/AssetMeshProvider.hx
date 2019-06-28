@@ -1,14 +1,10 @@
 package mesh;
-import gltools.ByteDataWriter;
-import gltools.AttribAliases;
-import gltools.sets.ColorSet;
-import mesh.providers.AttrProviders.PosProvider;
-import gltools.VertDataProvider;
-import lime.utils.UInt16Array;
 import gltools.AttribSet;
+import gltools.VertDataProvider;
 import haxe.io.Bytes;
+import lime.utils.UInt16Array;
 using Lambda;
-class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T>{
+class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T> {
     var data:Bytes;
     var inds:Bytes;
     var stride:Int;
@@ -35,7 +31,6 @@ class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T>{
 //        var posDescr = ColorSet.instance.getDescr(AttribAliases.NAME_POSITION);
 //        var posOfffset = posDescr.offset;
 //        pp.load(data, posOfffset, posOfffset + AttribSet.getGlSize(posDescr.type), stride);
-
 
 
 //        var builder = new VertexBuilder(ColorSet.instance);
@@ -72,15 +67,16 @@ class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T>{
         return ic;
     }
 
+
     public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
-        var r0 = "";
-        for (i in 0...getIndsCount()) {
-            var uInt = inds.getUInt16(i * 2);
-            r0+=uInt + ", ";
-            target.setUint16(i*2 + startFrom, uInt);
-//            target[i + startFrom] = inds.getUInt16(i*2) + offset;
-        }
+        IndicesFetcher.gatherIndices(target, startFrom, offset, inds, getIndsCount());
     }
+
+//    public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
+//        for (i in 0...getIndsCount()) {
+//            target[i + startFrom] = inds.getUInt16(i*2) + offset;
+//        }
+//    }
 
 
 }

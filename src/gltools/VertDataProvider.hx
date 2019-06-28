@@ -1,5 +1,6 @@
 package gltools;
-import js.lib.DataView;
+import haxe.io.UInt16Array;
+import utils.ExtensibleBytes;
 import haxe.io.Bytes;
 interface VertDataProvider<T:AttribSet> {
     function getVerts():Bytes;
@@ -14,12 +15,21 @@ interface VertDataProvider<T:AttribSet> {
     function gatherIndices(target:VerticesBuffer, startFrom:Int, offset:Int):Void;
 }
 
-typedef VerticesBuffer = DataView
+class IndicesFetcher {
+    public static inline function gatherIndices(target:VerticesBuffer, startFrom:Int, offset, source:Bytes, count) {
+          for (i in 0...count) {
+              var uInt = source.getUInt16(i * UInt16Array.BYTES_PER_ELEMENT);
+              var pos = (i + startFrom ) * UInt16Array.BYTES_PER_ELEMENT;
+              target.grantCapacity(pos + UInt16Array.BYTES_PER_ELEMENT);
+              target.bytes.setUInt16(pos, uInt + offset);
+          }
+      }
+}
 
-//= IndicesTarget;
-//
+typedef VerticesBuffer = ExtensibleBytes;
+
 //abstract IndicesTarget(DataView) from DataView to DataView {
-//    @arrayAccess public inline function set(key, val) {
-//
+//    @:arrayAccess public inline function set(key, val) {
+//        this.setUint16(key * UInt16Array.BYTES_PER_ELEMENT, val, true);
 //    }
 //}

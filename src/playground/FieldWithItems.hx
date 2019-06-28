@@ -49,31 +49,28 @@ class FieldWithItems implements VertDataProvider<ColorSet> {
         vertPointer = 0;
         indPointer = 0;
 
-
         for (child in children) {
             child.updatePositions();
             var b = child.getVerts();
             var len = child.getVertsCount() * attrs.stride;
             vertBlitWrapper.blit(vertPointer, b, 0, len);
-//            trace(vertPointer, b, 0, len);
-//            trace(vertBlitWrapper.bytes);
             vertPointer += len;
-
             var ic = child.getIndsCount();
             indBlitWrapper.blit(indPointer * UInt16Array.BYTES_PER_ELEMENT, child.getInds(), 0, ic * UInt16Array.BYTES_PER_ELEMENT);
             indPointer += ic;
         }
     }
 
-    public function gatherIndices(target:UInt16Array, startWith:Int, offset:Int){
+    public function gatherIndices(target:VerticesBuffer, startWith:Int, offset:Int) {
         var idxPointer = startWith;
         var vertPoin = offset;
         for (child in children) {
-             child.gatherIndices(target, idxPointer, vertPoin);
+            child.gatherIndices(target, idxPointer, vertPoin);
             idxPointer += child.getIndsCount();
             vertPoin += child.getVertsCount();
         }
     }
+
     public function getVerts():Bytes {
         return vertBlitWrapper.bytes;
     }

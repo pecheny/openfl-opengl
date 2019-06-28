@@ -1,18 +1,14 @@
 package ;
+import openfl.events.Event;
+import playground.FieldWithItems;
 import mesh.AssetMeshProvider;
-import mesh.providers.AttrProviders.TriPosProvider;
-import mesh.providers.AttrProviders.SolidColorProvider;
-import mesh.Instance2DVertexDataProvider;
 import gltools.AttribAliases;
 import gltools.sets.ColorSet;
+import mesh.Instance2DVertexDataProvider;
+import mesh.providers.AttrProviders.SolidColorProvider;
+import mesh.providers.AttrProviders.TriPosProvider;
 import oglrenderer.GLLayer;
-import oglrenderer.OGLContainer;
-import oglrenderer.OGLContainerCopy;
-import openfl.display.OpenGLRenderer;
 import openfl.display.Sprite;
-import openfl.events.Event;
-import openfl.events.RenderEvent;
-import playground.FieldWithItems;
 import shader.DummyShader;
 #if !boo
 import lime.graphics.WebGLRenderContext;
@@ -21,7 +17,7 @@ class Main extends Sprite {
     var c:GLLayer<ColorSet>;
     var inited = false;
     var field:FieldWithItems;
-
+//
     function createItem() {
         var pp = new TriPosProvider(0.5).getPos;
         var cp = new SolidColorProvider(2, 50, 200).getCC;
@@ -36,14 +32,16 @@ class Main extends Sprite {
     }
 
     public function new() {
+        #if cpp
+        new debugger.HaxeRemote(true, "localhost", 6972);
+        #end
         super();
-//        addEventListener(RenderEvent.RENDER_OPENGL, render);
         addEventListener(Event.ENTER_FRAME, enterFrame);
 
         c = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
+        c.addView(createItem());
         c.addView(new AssetMeshProvider<ColorSet>("Assets/blend_exp", ColorSet.instance));
 //        c.addView(new AssetMeshProvider<ColorSet>("Assets/my_tri", ColorSet.instance));
-//        c.addView(createItem());
 
         var d = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
         field = new FieldWithItems();
@@ -51,26 +49,13 @@ class Main extends Sprite {
         d.setViewport(100,100,100,100);
         
         addChild(new Pointer());
-//        addChild(b);
         addChild(c);
-//        addChild(d);
+        addChild(d);
     }
 
     function enterFrame(e) {
         field.update(0.016);
     }
-
-//    function render(e) {
-//        if (inited)
-//            return;
-//        trace("init");
-//        inited = true;
-//        var renderer:OpenGLRenderer = cast e.renderer;
-//        var gl:WebGLRenderContext = renderer.gl;
-//        c.init(gl, DummyShader.createDummyShader(gl), ColorSet.instance);
-//        addChild(c);
-//    }
-
 
 }
 
