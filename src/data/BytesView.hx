@@ -1,6 +1,5 @@
 package data;
 import gltools.AttribSet;
-import gltools.AttributeState.DataType;
 import haxe.io.Bytes;
 @:keep
 class BytesView {

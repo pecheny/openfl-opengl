@@ -1,11 +1,12 @@
 package gltools;
 #if (cpp || js)
+import data.DataTypeUtils;
+import data.DataType;
 import lime.graphics.opengl.GLProgram;
 #if !boo
 import lime.graphics.WebGLRenderContext;
 #end
 #end
-import gltools.AttributeState.DataType;
 import haxe.io.Float32Array;
 import haxe.io.Int32Array;
 import haxe.io.UInt16Array;
@@ -91,7 +92,7 @@ class AttribSet {
             gl.enableVertexAttribArray(descr.idx);
             var normalized = ("colorIn" == descr.name);
             gl.vertexAttribPointer(descr.idx, descr.numComponents, getGlType(descr.type, gl), normalized, stride, offset);
-            offset += descr.numComponents * descr.getGlSize();
+            offset += descr.numComponents * DataTypeUtils.getGlSize(descr.type);
         }
     }
 

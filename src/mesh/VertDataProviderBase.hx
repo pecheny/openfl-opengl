@@ -1,7 +1,7 @@
 package mesh;
-import gltools.AttributeState.DataType;
-import haxe.io.Bytes;
+import data.DataType;
 import gltools.ByteDataWriter;
+import haxe.io.Bytes;
 class VertDataProviderBase {
     var vertData:ByteDataWriter;
     var indData:ByteDataWriter;

@@ -1,5 +1,5 @@
 package gltools.sets;
-import gltools.AttributeState.DataType;
+import data.DataType;
 class ColorSet extends AttribSet{
     public static var instance(default, null):ColorSet = new ColorSet();
 
