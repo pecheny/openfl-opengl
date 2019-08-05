@@ -35,6 +35,15 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
     }
 
 
+    public function updateAttribute(name) {
+        var posSource = attrSources.get(name);
+        var posAtr = attributes.getDescr(name);
+        for (vi in 0...vertCount) {
+            setTyped(posAtr.type, getOffset(vi, 0, posAtr), posSource(vi, 0) + x);
+            setTyped(posAtr.type, getOffset(vi, 1, posAtr), posSource(vi, 1) + y);
+        }
+    }
+
     public function fetchFertices(vertCount:Int, indCount:Int) {
         vertData = Bytes.alloc(vertCount * attributes.stride);
         this.posSource = attrSources.get(posAtr.name);
