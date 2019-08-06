@@ -9,17 +9,19 @@ class BytesView {
     var numComponent:Int;
     var componentType:DataType;
     var componentSize:Int;
+    var startFrom:Int;
 
-    public function new(bytes:Bytes, offset:Int, stride:Int, numComponent:Int, componentType:DataType) {
+    public function new(bytes:Bytes, offset:Int, stride:Int, numComponent:Int, componentType:DataType, startFrom:Int) {
         this.bytes = bytes;
         this.offset = offset;
         this.stride = stride;
         this.numComponent = numComponent;
         this.componentType = componentType;
+        this.startFrom = startFrom;
         componentSize = AttribSet.getGlSize(componentType);
     }
 
     public function getValue(vertId, compId){
-        return AttribSet.getValue(bytes, componentType, vertId*stride  + compId * componentSize);
+        return AttribSet.getValue(bytes, componentType, startFrom + offset + vertId*stride  + compId * componentSize);
     }
 }

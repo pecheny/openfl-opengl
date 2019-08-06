@@ -1,8 +1,8 @@
 package data;
-enum DataType {
-    int32;
-    uint8;
-    uint16;
-    float32;
+@:enum abstract DataType(Int) {
+    var int32 = 0;
+    var uint8 = 1;
+    var uint16 = 2;
+    var float32 = 3;
 }
 
