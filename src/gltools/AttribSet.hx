@@ -12,12 +12,12 @@ import haxe.io.Int32Array;
 import haxe.io.UInt16Array;
 import haxe.io.UInt8Array;
 class AttribSet {
-    function new() {}
+    public function new() {}
     public var stride(default, null):Int = 0;
     public var attributes:Array<AttributeDescr> = [];
 //    var offset:Int = 0;
 
-    function addAttribute(name:String, numComponents:Int, type:DataType) {
+   public function addAttribute(name:String, numComponents:Int, type:DataType) {
         var descr = {
             name:name,
             numComponents:numComponents,
