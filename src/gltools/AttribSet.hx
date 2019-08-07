@@ -1,7 +1,7 @@
 package gltools;
+import data.DataType;
 #if (cpp || js)
 import data.DataTypeUtils;
-import data.DataType;
 import lime.graphics.opengl.GLProgram;
 #if !boo
 import lime.graphics.WebGLRenderContext;
