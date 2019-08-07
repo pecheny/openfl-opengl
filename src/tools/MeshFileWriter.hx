@@ -1,4 +1,4 @@
-package ;
+package tools;
 import mesh.MeshWriter;
 import mesh.VertexAttribProvider;
 import sys.io.File;

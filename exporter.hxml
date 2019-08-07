@@ -1,5 +1,8 @@
 -cp src
 -cp lime-parts-src
--main MeshFileWriter
+animation.serialization.AnimationSerializer
+tools.AnimationWriter
+animation.keyframes.ProviderKeyframe
+-main tools.MeshFileWriter
 -python exporter.py
 -cmd copy exporter.py C:\Users\shoo\Projects\10-Blender\playground\addons\foldered_addon\exporter.py
