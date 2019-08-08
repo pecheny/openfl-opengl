@@ -1,7 +1,6 @@
 package gltools;
 
 import haxe.io.Bytes;
-import gltools.AttributeState.DataType;
 import lime.graphics.opengl.GLBuffer;
 import lime.graphics.opengl.GLProgram;
 import lime.utils.ArrayBuffer;
@@ -21,15 +20,11 @@ import lime.graphics.WebGLRenderContext;
 
 class GlState {
     public var gl:WebGLRenderContext ;
-//    var attributes:Array<AttributeState> = [];
-//    var attribPointers:Map<String, Int> = new Map();
     public var buffer:GLBuffer;
     public var program:GLProgram;
-//    var stride:Int = 0;
     var data:DataContainer;
     var set:AttribSet;
     var attrsState:ShadersAttrs;
-//    var arrayBuffer:ArrayBuffer;
 
     public function new(gl:WebGLRenderContext, program:GLProgram, set:AttribSet) {
         this.gl = gl;
@@ -39,30 +34,9 @@ class GlState {
         buffer = gl.createBuffer();
     }
 
-
-
-//    public function rebuildAttributes() {
-//        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-//        enambleAttributes();
-//        gl.bindBuffer(gl.ARRAY_BUFFER, null);
-//    }
-
-
     public function loadBytes(b:Bytes){
         data = DataContainer.fromBuffer(b);
     }
-
-//    public function enambleAttributes() {
-//        var offset = 0;
-//        for (i in 0...attributes.length) {
-//            var descr = attributes[i];
-//            descr.offset = offset;
-//            gl.enableVertexAttribArray(descr.idx);
-//            var normalized = ("colorIn" == descr.name);
-//            gl.vertexAttribPointer(descr.idx, descr.numComponents, descr.getGlType(gl), normalized, stride, offset);
-//            offset += descr.numComponents * descr.getGlSize(gl);
-//        }
-//    }
 
     public function initData() {
         gl.useProgram(program);
@@ -74,7 +48,6 @@ class GlState {
         return cast (data, ArrayBufferView).buffer;
     }
 
-    @:access(lime.utils.ArrayBufferView)
     public function bind() {
         gl.useProgram(program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);

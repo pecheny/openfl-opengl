@@ -1,5 +1,4 @@
 package oglrenderer;
-import haxe.io.Float32Array;
 import flash.events.Event;
 import gltools.AttribAliases;
 import gltools.AttribSet;
@@ -31,7 +30,6 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var screenTIdx:GLUniformLocation;
     var shaderBuilder:WebGLRenderContext->GLProgram;
     
-    @:access(lime.utils.ArrayBufferView)
     public function new(set:T, shaderBuilder:WebGLRenderContext->GLProgram) {
         super();
         this.set = set;
@@ -40,7 +38,6 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
     }
 
-    @:access(lime.utils.ArrayBufferView)
     function init(gl) {
         this.program = shaderBuilder(gl);
         attrsState = set.buildState(gl, program);
@@ -70,7 +67,6 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var inds = new ExtensibleBytes(64);
 
 
-    @:access(lime.utils.ArrayBufferView)
     public function render(event:RenderEvent) {
         var renderer:OpenGLRenderer = cast event.renderer;
         gl = renderer.gl;
@@ -115,7 +111,6 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     }
 
 
-    @:access(lime.utils.ArrayBufferView)
     public function bind() {
         gl.useProgram(program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);

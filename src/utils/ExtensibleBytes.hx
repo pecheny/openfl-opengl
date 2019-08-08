@@ -15,7 +15,9 @@ class ExtensibleBytes {
         this.bytes = create(size);
     }
 
+    #if lime
     @:access(lime.utils.ArrayBufferView)
+    #end
     inline function create(size) {
         var b = Bytes.alloc(size);
         #if js

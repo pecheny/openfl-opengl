@@ -1,9 +1,9 @@
 package playground;
+import data.IndexCollection;
 import gltools.AttribAliases;
 import gltools.sets.ColorSet;
 import gltools.VertDataProvider;
 import haxe.io.Bytes;
-import lime.utils.UInt16Array;
 import mesh.Instance2DVertexDataProvider;
 import mesh.providers.AttrProviders.SolidColorProvider;
 import mesh.providers.AttrProviders.TriPosProvider;
@@ -56,7 +56,7 @@ class FieldWithItems implements VertDataProvider<ColorSet> {
             vertBlitWrapper.blit(vertPointer, b, 0, len);
             vertPointer += len;
             var ic = child.getIndsCount();
-            indBlitWrapper.blit(indPointer * UInt16Array.BYTES_PER_ELEMENT, child.getInds(), 0, ic * UInt16Array.BYTES_PER_ELEMENT);
+            indBlitWrapper.blit(indPointer * IndexCollection.ELEMENT_SIZE, child.getInds(), 0, ic * IndexCollection.ELEMENT_SIZE);
             indPointer += ic;
         }
     }

@@ -73,12 +73,4 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
     public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
         IndicesFetcher.gatherIndices(target, startFrom, offset, indData, getIndsCount());
     }
-
-//    public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
-//        for (i in 0...getIndsCount()) {
-//            var locInd = indData.toReader().getUInt16(i * UInt16Array.BYTES_PER_ELEMENT);
-//            target[i + startFrom] = locInd + offset;
-//        }
-//    }
-
 }

@@ -17,11 +17,6 @@ abstract ByteDataWriter(Bytes) to Bytes from Bytes to ByteDataReader {
     this.setFloat(byteOffset, value);
 
     public inline function toReader():ByteDataReader return this;
-//    @:access(lime.utils.ArrayBufferView)
-//    public static inline function fromBuffer(buffer:ArrayBuffer) {
-//        var buf = new ArrayBufferView(null, None);
-//        buf.initBuffer(buffer);
-//        return new NativeDataContainer(buf);
-//    }
+
 }
 

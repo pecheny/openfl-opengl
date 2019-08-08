@@ -40,7 +40,6 @@ class MeshWriter {
             inds.setUint16(i * UInt16Array.BYTES_PER_ELEMENT, indProvider(i));
     }
 
-
     public function getVerts():Bytes {
         return data;
     }

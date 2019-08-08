@@ -15,4 +15,10 @@ abstract IndexCollection(Bytes) from Bytes to Bytes {
     public inline function set(i, val) {
         return this.setUInt16(i * ELEMENT_SIZE, val);
     }
+
+    public var length(get, never):Int;
+
+    inline function get_length():Int {
+        return Std.int(this.length / ELEMENT_SIZE);
+    }
 }
