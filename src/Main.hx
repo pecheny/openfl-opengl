@@ -1,4 +1,6 @@
 package ;
+import playground.AnimatedLoader;
+import playground.AnimatedTri;
 import openfl.events.Event;
 import playground.FieldWithItems;
 import mesh.AssetMeshProvider;
@@ -45,11 +47,12 @@ class Main extends Sprite {
 
         var d = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
         field = new FieldWithItems();
-        d.addView(field);
-        d.setViewport(100,100,100,100);
+//        d.addView(field);
+        d.addView(new AnimatedLoader().build());
+//        d.setViewport(100,100,100,100);
         
-        addChild(new Pointer());
-        addChild(c);
+//        addChild(new Pointer());
+//        addChild(c);
         addChild(d);
     }
 

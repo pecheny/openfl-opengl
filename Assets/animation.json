@@ -1,0 +1,29 @@
+{
+ "channels": [
+  {
+   "descr": {
+    "name": "position",
+    "numComponents": 2,
+    "type": 3,
+    "offset": 0
+   },
+   "frames": [
+    {
+     "vertCount": 3,
+     "time": 0
+    },
+    {
+     "vertCount": 3,
+     "time": 1
+    }
+   ]
+  }
+ ],
+ "channelViews": [
+  {
+   "byteLength": 48,
+   "byteOffset": 0
+  }
+ ],
+ "data": "AACAvwAAgL8AAIA/AACAPwAAgD8AAIC/AACAvwAAgL8AAABAAACAPwAAgD8AAIC/AAAAAAAAAAAAAAAAAAAAAA=="
+}
