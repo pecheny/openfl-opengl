@@ -1,4 +1,5 @@
 package ;
+import utils.EmbedLocalFile;
 import gltools.AttribAliases;
 import gltools.sets.ColorSet;
 import mesh.AssetMeshProvider;
@@ -45,11 +46,13 @@ class Main extends Sprite {
         var d = new GLLayer(ColorSet.instance, DummyShader.createDummyShader);
         field = new FieldWithItems();
 //        d.addView(field);
-        d.addView(new AnimatedLoader().build());
+        d.addView(new AnimatedLoader().build(EmbedLocalFile.embedJsonAsset("animation.json")));
 //        d.setViewport(100,100,100,100);
 //        addChild(new Pointer());
 //        addChild(c);
         addChild(d);
+
+
     }
 
     function enterFrame(e) {

@@ -15,14 +15,13 @@ class AnimatedLoader extends AbstractEngine {
     var instance:Instance2DVertexDataProvider<ColorSet>;
     var anim:Animation;
 
-    public function build() {
+    public function build(data:AnimationRecord) {
         var cp = new SolidColorProvider(2, 50, 50).getCC;
         var ip = vid -> vid;
         var view = new Instance2DVertexDataProvider(ColorSet.instance);
         view.adIndProvider(ip);
         view.addDataSource(AttribAliases.NAME_COLOR_IN, cp);
         var serializer = new AnimationSerializer();
-        var data = haxe.Json.parse(openfl.Assets.getText("Assets/animation.json"));
         var danim = serializer.deserialize(data);
         this.anim = danim;
         for (i in 0...danim.channels.length) {
