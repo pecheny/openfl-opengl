@@ -1,5 +1,5 @@
 package mesh;
-import lime.utils.UInt16Array;
+import data.IndexCollection;
 import gltools.AttribAliases;
 import gltools.AttribSet;
 import gltools.AttributeDescr;
@@ -12,7 +12,7 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
     public var y:Float = 0;
     var posAtr:AttributeDescr;
     var posSource:VertexAttribProvider;
-    var indProvider:Int->Int;
+    var indProvider:Int -> Int;
 
     public function new(attrs:T) {
         posAtr = attrs.getDescr(AttribAliases.NAME_POSITION);
@@ -23,7 +23,7 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
         attrSources.set(attrName, pr);
     }
 
-    public function adIndProvider(p:Int->Int){
+    public function adIndProvider(p:Int -> Int) {
         indProvider = p;
     }
 
@@ -59,10 +59,10 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
                 }
             }
         }
-        indData = Bytes.alloc(indCount * UInt16Array.BYTES_PER_ELEMENT);
+        indData = new IndexCollection(indCount);
         for (i in 0...indCount) {
             var ind = indProvider(i);
-            indData.setUint16(i * UInt16Array.BYTES_PER_ELEMENT, ind);
+            indData[i] = ind;
         }
     }
 
@@ -73,7 +73,7 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
     public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
         IndicesFetcher.gatherIndices(target, startFrom, offset, indData, getIndsCount());
     }
-    
+
 //    public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
 //        for (i in 0...getIndsCount()) {
 //            var locInd = indData.toReader().getUInt16(i * UInt16Array.BYTES_PER_ELEMENT);

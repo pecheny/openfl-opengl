@@ -1,10 +1,11 @@
 package mesh;
+import data.IndexCollection;
 import data.DataType;
 import gltools.ByteDataWriter;
 import haxe.io.Bytes;
 class VertDataProviderBase {
     var vertData:ByteDataWriter;
-    var indData:ByteDataWriter;
+    var indData:IndexCollection;
     var vertCount:Int;
     var indCount:Int;
 

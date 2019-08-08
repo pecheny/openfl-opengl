@@ -1,4 +1,5 @@
 package mesh;
+import data.IndexCollection;
 import mesh.providers.AttrProviders.SolidColorProvider;
 import mesh.providers.AttrProviders.TriPosProvider;
 import gltools.AttribAliases;
@@ -22,9 +23,9 @@ class StaticMeshProvider<T:AttribSet> implements VertDataProvider<T> {
         builder.regSetter(AttribAliases.NAME_COLOR_IN, color.getCC);
         builder.fetchFertices(3);
         data = builder.getData();
-        inds = Bytes.alloc(3 * UInt16Array.BYTES_PER_ELEMENT);
+        inds = new IndexCollection(3);
         for (i in 0...3)
-            inds.setUint16(i * UInt16Array.BYTES_PER_ELEMENT, i);
+            inds[i] = i;
     }
 
     public function getVerts():Bytes {
