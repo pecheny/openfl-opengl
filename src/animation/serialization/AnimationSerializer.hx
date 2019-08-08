@@ -9,8 +9,6 @@ class AnimationSerializer {
     public function new() {
     }
 
-    var b1:Bytes;
-    var b2:Bytes;
 
     @:access(animation.Animation)
     @:access(animation.AnimationChannel)
@@ -65,9 +63,6 @@ class AnimationSerializer {
             }
         }
 
-        trace("SBuf: " + buffer.bytes.getFloat(0)  + " " + buffer.bytes.getFloat(4));
-
-        b1 = buffer.bytes;
         result.data = haxe.crypto.Base64.encode(buffer.bytes);
         return result;
     }
@@ -95,8 +90,6 @@ class AnimationSerializer {
             }
 
         }
-        b2 = buffer;
-        trace("Compare: " + b1.compare(b2));
         return anim;
     }
 }
