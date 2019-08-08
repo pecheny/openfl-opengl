@@ -1,11 +1,9 @@
 package gltools;
+import bindings.WebGLRenderContext;
 import data.DataType;
 #if (cpp || js)
 import data.DataTypeUtils;
 import lime.graphics.opengl.GLProgram;
-#if !boo
-import lime.graphics.WebGLRenderContext;
-#end
 #end
 import haxe.io.Float32Array;
 import haxe.io.Int32Array;

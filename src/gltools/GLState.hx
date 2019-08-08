@@ -1,8 +1,8 @@
 package gltools;
 
+import bindings.GLProgram;
+import bindings.GLBuffer;
 import haxe.io.Bytes;
-import lime.graphics.opengl.GLBuffer;
-import lime.graphics.opengl.GLProgram;
 import lime.utils.ArrayBuffer;
 import lime.utils.ArrayBufferView;
 import lime.utils.DataView;

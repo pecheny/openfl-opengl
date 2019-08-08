@@ -16,8 +16,6 @@ class AnimatedLoader extends AbstractEngine {
     var anim:Animation;
 
     public function build() {
-
-
         var cp = new SolidColorProvider(2, 50, 50).getCC;
         var ip = vid -> vid;
         var view = new Instance2DVertexDataProvider(ColorSet.instance);
@@ -28,7 +26,6 @@ class AnimatedLoader extends AbstractEngine {
         var danim = serializer.deserialize(data);
         this.anim = danim;
         for (i in 0...danim.channels.length) {
-
             var ch = danim.channels[i];
             var desc = anim.descriptors[i];
             view.addDataSource(desc.name, ch.getValue);

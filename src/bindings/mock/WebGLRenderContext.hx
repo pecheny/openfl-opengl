@@ -1,4 +1,4 @@
-package;
+package bindings.mock;
 
 import lime.graphics.opengl.*;
 import lime.utils.ArrayBufferView;

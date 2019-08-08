@@ -1,25 +1,22 @@
 package ;
-import playground.AnimatedLoader;
-import playground.AnimatedTri;
-import openfl.events.Event;
-import playground.FieldWithItems;
-import mesh.AssetMeshProvider;
 import gltools.AttribAliases;
 import gltools.sets.ColorSet;
+import mesh.AssetMeshProvider;
 import mesh.Instance2DVertexDataProvider;
 import mesh.providers.AttrProviders.SolidColorProvider;
 import mesh.providers.AttrProviders.TriPosProvider;
 import oglrenderer.GLLayer;
 import openfl.display.Sprite;
+import openfl.events.Event;
+import playground.AnimatedLoader;
+import playground.FieldWithItems;
 import shader.DummyShader;
-#if !boo
-import lime.graphics.WebGLRenderContext;
-#end
+
 class Main extends Sprite {
     var c:GLLayer<ColorSet>;
     var inited = false;
     var field:FieldWithItems;
-//
+
     function createItem() {
         var pp = new TriPosProvider(0.5).getPos;
         var cp = new SolidColorProvider(2, 50, 200).getCC;
@@ -50,7 +47,6 @@ class Main extends Sprite {
 //        d.addView(field);
         d.addView(new AnimatedLoader().build());
 //        d.setViewport(100,100,100,100);
-        
 //        addChild(new Pointer());
 //        addChild(c);
         addChild(d);

@@ -1,4 +1,5 @@
 package oglrenderer;
+import bindings.WebGLRenderContext;
 import flash.events.Event;
 import gltools.AttribAliases;
 import gltools.AttribSet;
@@ -13,9 +14,6 @@ import openfl.display.OpenGLRenderer;
 import openfl.events.RenderEvent;
 import utils.ExtensibleBytes;
 
-#if !boo
-import lime.graphics.WebGLRenderContext;
-#end
 class GLLayer<T:AttribSet> extends DisplayObject {
     var program:GLProgram;
     var children:Array<VertDataProvider<T>> = [];
