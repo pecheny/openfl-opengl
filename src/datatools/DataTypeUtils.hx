@@ -1,9 +1,9 @@
 package datatools;
 import data.AttributeDescr;
 import data.AttributeView;
+import data.VertexAttribProvider;
 import data.DataType;
 import datatools.ByteDataWriter;
-import mesh.VertexAttribProvider;
 class DataTypeUtils {
 
     public static inline function getGlSize(type:DataType) {

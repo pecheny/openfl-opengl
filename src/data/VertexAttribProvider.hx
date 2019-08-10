@@ -1,2 +1,2 @@
-package mesh;
+package data;
 typedef VertexAttribProvider = Int->Int->Dynamic

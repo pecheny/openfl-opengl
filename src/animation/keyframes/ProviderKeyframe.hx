@@ -1,5 +1,5 @@
 package animation.keyframes;
-import mesh.VertexAttribProvider;
+import data.VertexAttribProvider;
 class ProviderKeyframe implements Keyframe {
     var provider:VertexAttribProvider;
     var time:Float;

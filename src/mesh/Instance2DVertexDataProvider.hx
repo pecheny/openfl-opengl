@@ -1,4 +1,5 @@
 package mesh;
+import data.VertexAttribProvider;
 import data.AttributeDescr;
 import data.IndexCollection;
 import data.AttribAliases;
