@@ -1,4 +1,4 @@
-package gltools;
+package data;
 import data.DataType;
 class AttributeState {
     public var numComponents:Int;

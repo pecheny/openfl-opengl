@@ -1,5 +1,5 @@
 package mesh.providers;
-import gltools.ByteDataReader;
+import datatools.ByteDataReader;
 class TriPosProvider extends PosProvider {
 
     public function new(scale:Float, mirror = 1) {

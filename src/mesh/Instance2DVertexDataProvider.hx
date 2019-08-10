@@ -1,8 +1,8 @@
 package mesh;
+import data.AttributeDescr;
 import data.IndexCollection;
-import gltools.AttribAliases;
-import gltools.AttribSet;
-import gltools.AttributeDescr;
+import data.AttribAliases;
+import data.AttribSet;
 import gltools.VertDataProvider;
 import haxe.io.Bytes;
 class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase implements VertDataProvider<T> {

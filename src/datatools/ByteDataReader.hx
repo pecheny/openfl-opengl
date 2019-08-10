@@ -1,4 +1,4 @@
-package gltools;
+package datatools;
 import haxe.io.Bytes;
 @:forward
 abstract ByteDataReader (Bytes) to Bytes from Bytes {

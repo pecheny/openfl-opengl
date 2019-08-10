@@ -1,10 +1,10 @@
 package animation.serialization;
-import haxe.io.Bytes;
+import data.AttributeDescr;
 import animation.keyframes.ByteKeyframe;
 import data.AttributeView;
-import data.DataTypeUtils;
-import gltools.AttributeDescr;
-import utils.ExtensibleBytes;
+import datatools.DataTypeUtils;
+import haxe.io.Bytes;
+import datatools.ExtensibleBytes;
 class AnimationSerializer {
     public function new() {
     }

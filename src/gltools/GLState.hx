@@ -1,5 +1,6 @@
 package gltools;
 
+import bindings.WebGLRenderContext;
 import bindings.GLProgram;
 import bindings.GLBuffer;
 import haxe.io.Bytes;
@@ -7,11 +8,6 @@ import lime.utils.ArrayBuffer;
 import lime.utils.ArrayBufferView;
 import lime.utils.DataView;
 
-#if !boo //define used for ide since IDEA got crazy slow on this import. i use lite wersion of WebGLRenderContext for completion purposes only.
-import lime.graphics.WebGLRenderContext;
-#end
-
-//using lime.utils.ArrayBufferView.ArrayBufferIO;
 
 /**
 *  Incapsulates work with different attributes on single buffer.

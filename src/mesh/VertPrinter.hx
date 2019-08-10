@@ -1,8 +1,8 @@
 package mesh;
-import haxe.io.UInt16Array;
-import gltools.AttribSet;
-import gltools.ByteDataReader;
+import datatools.ByteDataReader;
+import data.AttribSet;
 import gltools.VertDataProvider;
+import haxe.io.UInt16Array;
 class VertPrinter <T:AttribSet> {
     var attrs:T;
 

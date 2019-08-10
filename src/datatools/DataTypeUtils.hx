@@ -1,6 +1,7 @@
-package data;
+package datatools;
+import data.AttributeView;
+import datatools.ByteDataWriter;
 import data.DataType;
-import gltools.ByteDataWriter;
 import mesh.VertexAttribProvider;
 class DataTypeUtils {
 

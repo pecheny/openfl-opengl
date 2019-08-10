@@ -1,6 +1,6 @@
 package ;
 import utils.EmbedLocalFile;
-import gltools.AttribAliases;
+import data.AttribAliases;
 import gltools.sets.ColorSet;
 import mesh.AssetMeshProvider;
 import mesh.Instance2DVertexDataProvider;

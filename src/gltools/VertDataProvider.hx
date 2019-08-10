@@ -1,7 +1,8 @@
 package gltools;
-import haxe.io.UInt16Array;
-import utils.ExtensibleBytes;
+import data.AttribSet;
+import datatools.ExtensibleBytes;
 import haxe.io.Bytes;
+import haxe.io.UInt16Array;
 interface VertDataProvider<T:AttribSet> {
     function getVerts():Bytes;
     function getVertsCount():Int;

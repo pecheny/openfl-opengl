@@ -1,4 +1,4 @@
-package gltools;
+package data;
 @:keep
 @:expose
 class AttribAliases {

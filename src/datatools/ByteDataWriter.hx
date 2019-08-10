@@ -1,4 +1,4 @@
-package gltools;
+package datatools;
 import haxe.io.Bytes;
 
 abstract ByteDataWriter(Bytes) to Bytes from Bytes to ByteDataReader {

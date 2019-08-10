@@ -1,13 +1,13 @@
 package playground;
 import data.IndexCollection;
-import gltools.AttribAliases;
+import data.AttribAliases;
 import gltools.sets.ColorSet;
 import gltools.VertDataProvider;
 import haxe.io.Bytes;
 import mesh.Instance2DVertexDataProvider;
 import mesh.providers.AttrProviders.SolidColorProvider;
 import mesh.providers.AttrProviders.TriPosProvider;
-import utils.ExtensibleBytes;
+import datatools.ExtensibleBytes;
 class FieldWithItems implements VertDataProvider<ColorSet> {
     var children:Array<Instance2DVertexDataProvider<ColorSet>> = [];
     var vertBlitWrapper:ExtensibleBytes;

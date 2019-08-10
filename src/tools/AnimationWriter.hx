@@ -2,7 +2,7 @@ package tools;
 import animation.Animation;
 import animation.AnimationChannel;
 import data.DataType;
-import gltools.AttribSet;
+import data.AttribSet;
 class AnimationWriter {
     public function new() {
     }

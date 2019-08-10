@@ -1,5 +1,5 @@
 package shader;
-import gltools.AttribAliases;
+import data.AttribAliases;
 import lime.graphics.opengl.GLProgram;
 class DummyShader {
     public function new() {

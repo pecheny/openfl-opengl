@@ -1,9 +1,9 @@
 package oglrenderer;
 import bindings.WebGLRenderContext;
 import flash.events.Event;
-import gltools.AttribAliases;
-import gltools.AttribSet;
-import gltools.ShadersAttrs;
+import data.AttribAliases;
+import data.AttribSet;
+import data.ShadersAttrs;
 import gltools.VertDataProvider;
 import haxe.io.Bytes;
 import lime.graphics.opengl.GLBuffer;
@@ -12,7 +12,7 @@ import lime.graphics.opengl.GLUniformLocation;
 import openfl.display.DisplayObject;
 import openfl.display.OpenGLRenderer;
 import openfl.events.RenderEvent;
-import utils.ExtensibleBytes;
+import datatools.ExtensibleBytes;
 
 class GLLayer<T:AttribSet> extends DisplayObject {
     var program:GLProgram;

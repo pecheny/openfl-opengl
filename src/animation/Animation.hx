@@ -1,5 +1,5 @@
 package animation;
-import gltools.AttributeDescr;
+import data.AttributeDescr;
 class Animation {
     public var channels:Array<AnimationChannel> = [];
     public var descriptors:Array<AttributeDescr> = []; // todo replace public with accessors

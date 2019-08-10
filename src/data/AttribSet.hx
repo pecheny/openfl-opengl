@@ -1,8 +1,11 @@
-package gltools;
+package data;
+import datatools.ByteDataWriter;
+import datatools.ByteDataReader;
+import data.AttributeDescr;
 import bindings.WebGLRenderContext;
 import data.DataType;
 #if (cpp || js)
-import data.DataTypeUtils;
+import datatools.DataTypeUtils;
 import lime.graphics.opengl.GLProgram;
 #end
 import haxe.io.Float32Array;

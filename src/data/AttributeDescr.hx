@@ -1,4 +1,4 @@
-package gltools;
+package data;
 
 import data.DataType;
 typedef AttributeDescr = {

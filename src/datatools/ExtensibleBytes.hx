@@ -1,5 +1,5 @@
-package utils;
-import gltools.ArrayViewBase;
+package datatools;
+import bindings.ArrayViewBase;
 import haxe.io.Bytes;
 class ExtensibleBytes {
     public var bytes(default, null):Bytes;

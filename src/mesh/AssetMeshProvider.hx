@@ -1,6 +1,6 @@
 package mesh;
 import data.IndexCollection;
-import gltools.AttribSet;
+import data.AttribSet;
 import gltools.VertDataProvider;
 import haxe.io.Bytes;
 using Lambda;
