@@ -1,4 +1,5 @@
 package animation.serialization;
+import data.serialization.BufferView;
 import data.AttributeDescr;
 import animation.keyframes.ByteKeyframe;
 import data.AttributeView;
@@ -110,9 +111,5 @@ typedef AnimationChannelRecord = {
     var frames:Array<KeyframeRecord>;
 }
 
-typedef BufferView = {
-    var byteLength:Int;
-    var byteOffset:Int;
-}
 
 
