@@ -1,6 +1,6 @@
 package mesh;
+import datatools.ByteDataWriter;
 import data.AttribAliases;
-import gltools.ByteDataWriter;
 import gltools.sets.ColorSet;
 import gltools.VertexBuilder;
 import haxe.io.Bytes;
