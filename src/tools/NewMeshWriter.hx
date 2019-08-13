@@ -1,9 +1,12 @@
 package tools;
 import data.AttribSet;
 import data.AttributeDescr;
+import data.AttributeView.AttrViewInstances;
 import data.DataType;
 import datatools.DataTypeUtils;
 import datatools.ExtensibleBytes;
+import gltools.sets.ColorSet;
+import mesh.Instance2DVertexDataProvider;
 import mesh.serialization.data.MeshRecord;
 import mesh.VertexAttribProvider;
 class NewMeshWriter {
@@ -48,6 +51,28 @@ class NewMeshWriter {
         var stream = sys.io.File.write(filename);
         stream.writeString(haxe.Json.stringify(rec, null, " "));
         stream.close();
+    }
+
+    public static function deserialize(data:MeshRecord) {
+        var bytes = haxe.crypto.Base64.decode(data.data);
+        var mesh = new Instance2DVertexDataProvider(ColorSet.instance);
+        var vertCount = 0;
+
+        for (ch in data.channels) {
+            var accessor = new datatools.BufferView(bytes, ch.view, DataTypeUtils.descToView(ch.desc));
+            vertCount = accessor.length;
+            mesh.addDataSource(ch.desc.name, accessor.getValue);
+        }
+
+        if (data.indices != null) {
+            var inds = new datatools.BufferView(bytes, data.indices, AttrViewInstances.IND_VIEW);
+            mesh.adIndProvider(inds.getMonoValue);
+            mesh.fetchFertices(vertCount, inds.length)
+        } else {
+            mesh.adIndProvider(n -> n);
+            mesh.fetchFertices(vertCount, vertCount);
+        }
+        return mesh;
     }
 
 //    public function saveVertsAndInds(filename:String, vertCount:Int, indCount:Int) {}

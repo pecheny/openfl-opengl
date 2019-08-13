@@ -6,3 +6,12 @@ typedef AttributeView = {
     var numComponents:Int;
     var type:DataType;
 }
+
+class AttrViewInstances {
+    public static inline var IND_VIEW:AttributeView = {
+        stride:IndexCollection.ELEMENT_SIZE,
+        offset:0,
+        numComponents:1,
+        type:DataType.uint16
+    }
+}
