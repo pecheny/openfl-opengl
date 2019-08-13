@@ -18,7 +18,7 @@ class AttribSet {
     public var attributes:Array<AttributeDescr> = [];
 //    var offset:Int = 0;
 
-   public function addAttribute(name:String, numComponents:Int, type:DataType) {
+    public function addAttribute(name:String, numComponents:Int, type:DataType) {
         var descr = {
             name:name,
             numComponents:numComponents,
@@ -106,4 +106,12 @@ class AttribSet {
         }
     }
     #end
+
+    public static function createAttribute(name:String, numComponents:Int, type:DataType):AttributeDescr {
+        return {
+            name:name,
+            numComponents:numComponents,
+            type:type,
+        }
+    }
 }

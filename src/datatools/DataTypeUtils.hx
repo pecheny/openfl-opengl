@@ -1,7 +1,8 @@
 package datatools;
+import data.AttributeDescr;
 import data.AttributeView;
-import datatools.ByteDataWriter;
 import data.DataType;
+import datatools.ByteDataWriter;
 import mesh.VertexAttribProvider;
 class DataTypeUtils {
 
@@ -31,6 +32,16 @@ class DataTypeUtils {
                 var offset = startFrom + view.offset + v * view.stride + c * cs;
                 DataTypeUtils.setTyped(vertData, view.type, offset, source(v, c));
             }
+        }
+    }
+
+    public static function descToView(desc:AttributeDescr):AttributeView {
+        var vertSize = DataTypeUtils.getGlSize(desc.type) * desc.numComponents;
+        return {
+            stride:vertSize,
+            offset:0,
+            numComponents:desc.numComponents,
+            type:desc.type
         }
     }
 }

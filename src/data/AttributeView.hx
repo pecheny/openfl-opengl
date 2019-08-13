@@ -1,4 +1,5 @@
 package data;
+// todo merge with AttrDesc
 typedef AttributeView = {
     var stride:Int;
     var offset:Int;

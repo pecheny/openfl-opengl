@@ -2,6 +2,7 @@
 -cp lime-parts-src
 animation.serialization.AnimationSerializer
 tools.AnimationWriter
+tools.NewMeshWriter
 animation.keyframes.ProviderKeyframe
 -main tools.MeshFileWriter
 -python exporter.py

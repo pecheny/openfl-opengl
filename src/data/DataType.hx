@@ -1,4 +1,5 @@
 package data;
+//todo macro generator of const
 @:enum abstract DataType(Int) {
     var int32 = 0;
     var uint8 = 1;
