@@ -18,7 +18,7 @@ class BufferView {
         return AttribSet.getValue(bytes, attrView.type, offset);
     }
 
-    public function getMonoValue(vertId) {
+    public function getMonoValue(vertId):Dynamic {
         var offset = view.byteOffset + attrView.stride * vertId + attrView.offset;
         return AttribSet.getValue(bytes, attrView.type, offset);
     }

@@ -8,10 +8,11 @@ typedef AttributeView = {
 }
 
 class AttrViewInstances {
-    public static inline var IND_VIEW:AttributeView = {
-        stride:IndexCollection.ELEMENT_SIZE,
-        offset:0,
-        numComponents:1,
-        type:DataType.uint16
-    }
+    public static inline function getIndView():AttributeView
+        return {
+            stride:IndexCollection.ELEMENT_SIZE,
+            offset:0,
+            numComponents:1,
+            type:DataType.uint16
+        }
 }

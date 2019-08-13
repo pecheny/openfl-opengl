@@ -1,4 +1,7 @@
 package tools;
+import data.AttribAliases;
+import mesh.providers.AttrProviders.SolidColorProvider;
+import data.VertexAttribProvider;
 import data.AttribSet;
 import data.AttributeDescr;
 import data.AttributeView.AttrViewInstances;
@@ -8,7 +11,6 @@ import datatools.ExtensibleBytes;
 import gltools.sets.ColorSet;
 import mesh.Instance2DVertexDataProvider;
 import mesh.serialization.data.MeshRecord;
-import mesh.VertexAttribProvider;
 class NewMeshWriter {
     var sources:Map<String, VertexAttribProvider> = new Map();
     var descriptors:Map<String, AttributeDescr> = new Map();
@@ -59,15 +61,18 @@ class NewMeshWriter {
         var vertCount = 0;
 
         for (ch in data.channels) {
-            var accessor = new datatools.BufferView(bytes, ch.view, DataTypeUtils.descToView(ch.desc));
+            var accessor = new datatools.BufferView(bytes, ch.view, DataTypeUtils.descToView(ch.descr));
             vertCount = accessor.length;
-            mesh.addDataSource(ch.desc.name, accessor.getValue);
+            mesh.addDataSource(ch.descr.name, accessor.getValue);
         }
 
+        var cp = new SolidColorProvider(200,200,200);
+        mesh.addDataSource(AttribAliases.NAME_COLOR_IN, cp.getCC);
+        
         if (data.indices != null) {
-            var inds = new datatools.BufferView(bytes, data.indices, AttrViewInstances.IND_VIEW);
+            var inds = new datatools.BufferView(bytes, data.indices, AttrViewInstances.getIndView());
             mesh.adIndProvider(inds.getMonoValue);
-            mesh.fetchFertices(vertCount, inds.length)
+            mesh.fetchFertices(vertCount, inds.length);
         } else {
             mesh.adIndProvider(n -> n);
             mesh.fetchFertices(vertCount, vertCount);
