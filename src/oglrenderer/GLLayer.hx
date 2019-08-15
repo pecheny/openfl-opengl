@@ -85,6 +85,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
 //        setVertData(data.bytes);
         gl.bufferData(gl.ARRAY_BUFFER, data.getView(), gl.DYNAMIC_DRAW);
 //         set uniforms
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.uniform1f(screenTIdx, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, inds.getView(), gl.DYNAMIC_DRAW);
