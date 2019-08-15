@@ -11,6 +11,8 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
     var attributes:AttribSet;
     public var x:Float = 0;
     public var y:Float = 0;
+    public var scaleX:Float = 1;
+    public var scaleY:Float = 1;
     var posAtr:AttributeDescr;
     var posSource:VertexAttribProvider;
     var indProvider:Int -> Int;
@@ -30,18 +32,20 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
 
     public function updatePositions() {
         for (vi in 0...vertCount) {
-            setTyped(posAtr.type, getOffset(vi, 0, posAtr), posSource(vi, 0) + x);
-            setTyped(posAtr.type, getOffset(vi, 1, posAtr), posSource(vi, 1) + y);
+            setTyped(posAtr.type, getOffset(vi, 0, posAtr), scaleX * posSource(vi, 0) + x);
+            setTyped(posAtr.type, getOffset(vi, 1, posAtr), scaleY * posSource(vi, 1) + y);
         }
     }
 
 
     public function updateAttribute(name) {
+        if (name == AttribAliases.NAME_POSITION)
+            return updatePositions();
         var posSource = attrSources.get(name);
         var posAtr = attributes.getDescr(name);
         for (vi in 0...vertCount) {
-            setTyped(posAtr.type, getOffset(vi, 0, posAtr), posSource(vi, 0) + x);
-            setTyped(posAtr.type, getOffset(vi, 1, posAtr), posSource(vi, 1) + y);
+            setTyped(posAtr.type, getOffset(vi, 0, posAtr), posSource(vi, 0) );
+            setTyped(posAtr.type, getOffset(vi, 1, posAtr), posSource(vi, 1) );
         }
     }
 
