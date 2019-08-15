@@ -1,6 +1,6 @@
 package tools;
+import data.VertexAttribProvider;
 import mesh.MeshWriter;
-import mesh.VertexAttribProvider;
 import sys.io.File;
 @:keep
 class MeshFileWriter {

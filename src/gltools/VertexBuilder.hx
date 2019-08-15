@@ -1,7 +1,7 @@
 package gltools;
+import data.VertexAttribProvider;
 import data.AttribSet;
 import datatools.ByteDataWriter;
-import mesh.VertexAttribProvider;
 import haxe.io.Bytes;
 class VertexBuilder {
     var data:ByteDataWriter;

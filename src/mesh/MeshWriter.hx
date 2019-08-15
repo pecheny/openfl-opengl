@@ -1,4 +1,5 @@
 package mesh;
+import data.VertexAttribProvider;
 import datatools.ByteDataWriter;
 import data.AttribAliases;
 import gltools.sets.ColorSet;
