@@ -27,5 +27,11 @@ class BufferView {
         return Std.int(view.byteLength / attrView.stride);
     }
 
+    public static function wholeBytesOf(b:haxe.io.Bytes):BufferViewRec {
+        return {
+            byteLength:b.length,
+            byteOffset:0
+        }
+    }
 
 }

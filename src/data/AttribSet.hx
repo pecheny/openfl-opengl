@@ -114,4 +114,17 @@ class AttribSet {
             type:type,
         }
     }
+
+    public function getView(alias:String) {
+        for (desc in attributes) {
+            if (desc.name == alias)
+                return{
+                    stride:stride,
+                    offset:desc.offset,
+                    numComponents:desc.numComponents,
+                    type:desc.type
+                }
+        }
+        throw "Wrong! " + alias;
+    }
 }
