@@ -7,8 +7,7 @@ class DGridGenerator extends PosProvider {
     public function new(w, h, hSubd, vSubd) {
         super();
         var triPerLine = (hSubd - 1) * 2 + 1;
-        var indCount = triPerLine * hSubd * 3;//138;// (hSubd * vSubd + Math.ceil(vSubd - 1 / 2)) * 6;
-        trace("IND: " + indCount);
+        var indCount = triPerLine * hSubd * 3;
         inds = new IndexCollection(indCount);
 
         var yStep = h / vSubd;
@@ -27,9 +26,7 @@ class DGridGenerator extends PosProvider {
         var i = 0;
         function getInx(ix:Int, iy:Int) {
             var oddCount = Math.ceil(iy / 2) ;
-//            var oddCount = Math.ceil((iy +0.5) / 2) - 1;
-            var ix1:Int = iy * hSubd + oddCount + ix;//+ ((ix >= hSubd)? 1 : 0);
-            trace(ix1);
+            var ix1:Int = iy * hSubd + oddCount + ix;
             if (ix1 >= getVertCount())
                 throw 'Wrong $ix, $iy';
             return ix1;
@@ -54,15 +51,12 @@ class DGridGenerator extends PosProvider {
                     inds[i++] = getInx(ix + 1, iy + 1);
                     if (hSubd - ix == 1)
                         continue;
-                    inds[i++] = getInx(ix + 1, iy) ;//+ (last? 11 : 0) ;
+                    inds[i++] = getInx(ix + 1, iy) ;
                     inds[i++] = getInx(ix + 1, iy + 1);
-                    inds[i++] = getInx(ix, iy) ;//+ (last? 11 : 0) ;
+                    inds[i++] = getInx(ix, iy) ;
                 }
             }
         }
-
-        trace("Sug ind count " + indCount + ", filled " + i + ", verts: " + getVertCount());
-
     }
 
     public function getInds():IndexCollection {
