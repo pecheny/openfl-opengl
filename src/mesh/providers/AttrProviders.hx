@@ -43,6 +43,10 @@ class PosProvider {
         }
     }
 
+    public function getVertCount() {
+        return verty.length;
+    }
+
 }
 
 class SolidColorProvider {
