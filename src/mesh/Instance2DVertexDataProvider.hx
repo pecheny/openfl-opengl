@@ -1,4 +1,5 @@
 package mesh;
+import gltools.sets.ColorSet;
 import data.VertexAttribProvider;
 import data.AttributeDescr;
 import data.IndexCollection;
@@ -44,8 +45,8 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
         var posSource = attrSources.get(name);
         var posAtr = attributes.getDescr(name);
         for (vi in 0...vertCount) {
-            setTyped(posAtr.type, getOffset(vi, 0, posAtr), posSource(vi, 0) );
-            setTyped(posAtr.type, getOffset(vi, 1, posAtr), posSource(vi, 1) );
+            for (c in 0...posAtr.numComponents)
+            setTyped(posAtr.type, getOffset(vi, c, posAtr), posSource(vi, c) );
         }
     }
 
@@ -54,15 +55,8 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
         this.posSource = attrSources.get(posAtr.name);
         this.vertCount = vertCount;
         this.indCount = indCount;
-        for (i in 0...vertCount) {
             for (atr in attributes.attributes) {
-                for (cmp in 0...atr.numComponents) {
-                    var value:Dynamic = attrSources.get(atr.name)(i, cmp);
-                    var offset = getOffset(i, cmp, atr);
-                    setTyped(atr.type, offset, value);
-//                    trace('set ${atr.name}:${atr.type}} $value at $i[$cmp]');
-                }
-            }
+                updateAttribute(atr.name);
         }
         indData = new IndexCollection(indCount);
         for (i in 0...indCount) {
@@ -77,5 +71,21 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
 
     public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
         IndicesFetcher.gatherIndices(target, startFrom, offset, indData, getIndsCount());
+    }
+
+
+    // todo avoid exact set, put to app place
+    public function toSeparated(cp) {
+        var inds:IndexCollection = this.getInds();
+        var data = this.getVerts();
+        var posView = new datatools.BufferView(data, datatools.BufferView.wholeBytesOf(data), attributes.getView(AttribAliases.NAME_POSITION));
+        var separated = new Instance2DVertexDataProvider(ColorSet.instance);
+        separated.addDataSource(AttribAliases.NAME_POSITION, (v,c) -> {
+            posView.getValue(inds[v], c);
+        });
+        separated.addDataSource(AttribAliases.NAME_COLOR_IN, (v,c) -> cp (Math.floor(v / 3), c));
+        separated.adIndProvider( n-> n);
+        separated.fetchFertices(inds.length , inds.length);
+        return separated;
     }
 }
