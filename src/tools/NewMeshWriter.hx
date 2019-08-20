@@ -1,4 +1,5 @@
 package tools;
+import gltools.sets.PosSet;
 import data.AttribAliases;
 import data.AttribSet;
 import data.AttributeDescr;
@@ -88,9 +89,9 @@ class NewMeshWriter {
     }
 
 
-    public static function deserialize(data:MeshRecord, colorProvider:VertexAttribProvider) {
+    public static function deserialize(data:MeshRecord) {
         var bytes = haxe.crypto.Base64.decode(data.data);
-        var mesh = new Instance2DVertexDataProvider(ColorSet.instance);
+        var mesh = new Instance2DVertexDataProvider(PosSet.instance);
         var vertCount = 0;
 
         for (ch in data.channels) {
@@ -98,8 +99,6 @@ class NewMeshWriter {
             vertCount = accessor.length;
             mesh.addDataSource(ch.descr.name, accessor.getValue);
         }
-
-        mesh.addDataSource(AttribAliases.NAME_COLOR_IN, colorProvider);
 
         if (data.indices != null) {
             var inds = new datatools.BufferView(bytes, data.indices, AttrViewInstances.getIndView());

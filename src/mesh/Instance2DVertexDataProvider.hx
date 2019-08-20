@@ -75,7 +75,7 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
 
 
     // todo avoid exact set, put to app place
-    public function toSeparated(cp) {
+    public function toSeparated(cp:VertexAttribProvider) {
         var inds:IndexCollection = this.getInds();
         var data = this.getVerts();
         var posView = new datatools.BufferView(data, datatools.BufferView.wholeBytesOf(data), attributes.getView(AttribAliases.NAME_POSITION));
