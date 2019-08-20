@@ -12,4 +12,3 @@ typedef StaticMeshChannelRecord = {
     var view:BufferView;
 }
 
-

@@ -37,9 +37,7 @@ class NewMeshWriter {
         writeAttributes(rec, b, vertCcount);
         writeIndices(rec, b, indCount);
         rec.data = haxe.crypto.Base64.encode(b.buffer.bytes);
-        var stream = sys.io.File.write(filename);
-        stream.writeString(haxe.Json.stringify(rec, null, " "));
-        stream.close();
+        return rec;
     }
 
     public function saveVertsOnly(filename:String, count:Int) {
@@ -49,12 +47,8 @@ class NewMeshWriter {
         }
         var b = new BufferWrapper();
         writeAttributes(rec, b, count);
-
         rec.data = haxe.crypto.Base64.encode(b.buffer.bytes);
-
-        var stream = sys.io.File.write(filename);
-        stream.writeString(haxe.Json.stringify(rec, null, " "));
-        stream.close();
+        return rec;
     }
 
     function writeIndices(rec:MeshRecord, b:BufferWrapper, indCount) {

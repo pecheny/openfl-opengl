@@ -1,5 +1,8 @@
 -cp src
 -cp lime-parts-src
+mesh.serialization.data.MeshCollection
+tools.MeshCollectionWriter
+tools.SaveJson
 animation.serialization.AnimationSerializer
 tools.AnimationWriter
 tools.NewMeshWriter
