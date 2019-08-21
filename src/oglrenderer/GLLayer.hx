@@ -1,4 +1,7 @@
 package oglrenderer;
+import bindings.GLUniformLocation;
+import bindings.GLBuffer;
+import bindings.GLProgram;
 import bindings.WebGLRenderContext;
 import flash.events.Event;
 import data.AttribAliases;
@@ -6,9 +9,6 @@ import data.AttribSet;
 import data.ShadersAttrs;
 import gltools.VertDataProvider;
 import haxe.io.Bytes;
-import lime.graphics.opengl.GLBuffer;
-import lime.graphics.opengl.GLProgram;
-import lime.graphics.opengl.GLUniformLocation;
 import openfl.display.DisplayObject;
 import openfl.display.OpenGLRenderer;
 import openfl.events.RenderEvent;
