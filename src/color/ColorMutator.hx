@@ -13,6 +13,8 @@ class ColorMutator {
     public function mutate(color:HSL):HSL {
         color.hue += (random() - 0.5) * stepHue;
         color.lightness += (random() - 0.5) * stepLigh;
+        if (color.lightness > 90)
+            color.lightness = 90;
         color.saturation += (random() - 0.5) * stepSaturation;
         return color;
     }
