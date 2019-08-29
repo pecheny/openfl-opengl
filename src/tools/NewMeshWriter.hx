@@ -90,7 +90,7 @@ class NewMeshWriter {
 
 
 // todo  make this metod generic by AttSet and provide it attFactories contex as an argument
-    public static function deserialize(data:MeshRecord):Instance2DVertexDataProvider {
+    public static function deserialize(data:MeshRecord):Instance2DVertexDataProvider<PosSet> {
         var bytes = haxe.crypto.Base64.decode(data.data);
         var mesh = new Instance2DVertexDataProvider(PosSet.instance);
         var vertCount = 0;
