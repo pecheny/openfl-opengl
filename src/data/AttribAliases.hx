@@ -10,4 +10,5 @@ class AttribAliases {
     public static var NAME_SCREENSPACE_T = "t";
     public static var NAME_SPEED = "speed";
     public static var NAME_SIZE = "size";
+    public static var NAME_UV_0 = "uv0";
 }
