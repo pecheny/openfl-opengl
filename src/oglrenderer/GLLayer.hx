@@ -23,26 +23,26 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var buffer:GLBuffer;
     var set:AttribSet;
     var attrsState:ShadersAttrs;
-//    var indDataView:Uint8Array;
     private var indicesBuffer:GLBuffer;
     var screenTIdx:GLUniformLocation;
     var shaderBuilder:WebGLRenderContext->GLProgram;
-    
-    public function new(set:T, shaderBuilder:WebGLRenderContext->GLProgram) {
+    var renderingAspect:RenderingElement;
+    public function new(set:T, shaderBuilder:WebGLRenderContext->GLProgram, aspect:RenderingElement) {
         super();
+        this.renderingAspect = aspect;
         this.set = set;
         this.shaderBuilder = shaderBuilder;
         addEventListener(RenderEvent.RENDER_OPENGL, render);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
     }
 
-    function init(gl) {
+    function init(gl:WebGLRenderContext) {
         this.program = shaderBuilder(gl);
         attrsState = set.buildState(gl, program);
         buffer = gl.createBuffer();
         indicesBuffer = gl.createBuffer();
         screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
-//        setIndData(inds.bytes);
+        renderingAspect.init(gl, program);
     }
 
     function onEnterFrame(e) {
@@ -114,11 +114,15 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         gl.useProgram(program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         set.enableAttributes(gl, attrsState);
+        if (renderingAspect!=null)
+            renderingAspect.bind();
     }
 
     public function unbind() {
         gl.useProgram(null);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
+        if (renderingAspect!=null)
+            renderingAspect.unbind();
     }
 }
 
@@ -134,6 +138,17 @@ class ViewportRect {
         this.height = h;
     }
 }
+
+interface Bindable {
+    function bind():Void;
+    function unbind():Void;
+}
+
+interface GLInitable {
+    public function init(gl:WebGLRenderContext, program:GLProgram):Void;
+}
+
+interface RenderingElement extends Bindable extends GLInitable {}
 
 
 
