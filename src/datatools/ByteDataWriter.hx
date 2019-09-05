@@ -1,6 +1,7 @@
 package datatools;
 import haxe.io.Bytes;
 
+@:forward(length)
 abstract ByteDataWriter(Bytes) to Bytes from Bytes to ByteDataReader {
     inline function new(val) this = val;
 

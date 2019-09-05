@@ -1,25 +1,31 @@
 package mesh;
-import data.AttribSources;
 import gltools.sets.ColorSet;
-import data.VertexAttribProvider;
-import data.AttributeDescr;
 import data.IndexCollection;
-import data.AttribAliases;
-import data.AttribSet;
-import gltools.VertDataProvider;
 import haxe.io.Bytes;
-class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase implements VertDataProvider<T> {
-    var attrSources:AttribSources<T> = new AttribSources<T>();
+import data.AttribAliases;
+import data.AttributeDescr;
+import gltools.VertDataProvider;
+import data.VertexAttribProvider;
+import data.AttribSet;
+class I2DCompoundTypedDP<T:AttribSet> extends I2DCompoundDP implements VertDataProvider<T>{
+    public function new (attrs:T) {
+        super(attrs);
+    }
+}
+
+class I2DCompoundDP extends VertDataProviderBase  {
+    var attrSources:Map<String, VertexAttribProvider> = new Map();
     var attributes:AttribSet;
-    public var x:Float = 0;
-    public var y:Float = 0;
-    public var scaleX:Float = 1;
-    public var scaleY:Float = 1;
     var posAtr:AttributeDescr;
     var posSource:VertexAttribProvider;
     var indProvider:Int -> Int;
 
-    public function new(attrs:T) {
+    public dynamic function getX(){return 0;}
+    public dynamic function getY(){return 0;}
+    public dynamic function getScaleX(){return 1;}
+    public dynamic function getScaleY(){return 1;}
+
+    public function new(attrs:AttribSet) {
         posAtr = attrs.getDescr(AttribAliases.NAME_POSITION);
         attributes = attrs;
     }
@@ -34,14 +40,11 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
 
     public function updatePositions() {
         for (vi in 0...vertCount) {
-            setTyped(posAtr.type, getOffset(vi, 0, posAtr), scaleX * posSource(vi, 0) + x);
-            setTyped(posAtr.type, getOffset(vi, 1, posAtr), scaleY * posSource(vi, 1) + y);
+            setTyped(posAtr.type, getOffset(vi, 0, posAtr), getScaleX() * posSource(vi, 0) + getX());
+            setTyped(posAtr.type, getOffset(vi, 1, posAtr), getScaleY() * posSource(vi, 1) + getY());
         }
     }
 
-    public function getSources():AttribSources<T>{
-        return attrSources.copy();
-    }
 
     public function updateAttribute(name) {
         if (name == AttribAliases.NAME_POSITION)
@@ -54,8 +57,10 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
         }
     }
 
-    public function fetchFertices(vertCount:Int, indCount:Int) {
-        vertData = Bytes.alloc(vertCount * attributes.stride);
+    public function fetchVertices(vertCount:Int, indCount:Int) {
+        if (vertData == null || vertData.length != vertCount * attributes.stride) {
+            vertData = Bytes.alloc(vertCount * attributes.stride);
+        }
         this.posSource = attrSources.get(posAtr.name);
         this.vertCount = vertCount;
         this.indCount = indCount;
