@@ -18,7 +18,7 @@ class VertDataProviderBase {
         return vertCount;
     }
 
-    public function getInds():Bytes {
+    public function getInds():IndexCollection {
         return indData;
     }
 
