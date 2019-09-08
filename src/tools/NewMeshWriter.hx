@@ -1,6 +1,6 @@
 package tools;
-import gltools.sets.PosSet;
 import data.AttribAliases;
+import mesh.serialization.data.Asset2DRecord;
 import data.AttribSet;
 import data.AttributeDescr;
 import data.AttributeView.AttrViewInstances;
@@ -9,7 +9,7 @@ import data.IndexCollection;
 import data.VertexAttribProvider;
 import datatools.DataTypeUtils;
 import datatools.ExtensibleBytes;
-import gltools.sets.ColorSet;
+import gltools.sets.PosSet;
 import mesh.Instance2DVertexDataProvider;
 import mesh.serialization.data.MeshRecord;
 class NewMeshWriter {
@@ -29,7 +29,7 @@ class NewMeshWriter {
         this.indProvider = p;
     }
 
-    public function saveVertsAndInds(filename:String, vertCcount:Int, indCount:Int) {
+    public function saveVertsAndInds(vertCcount:Int, indCount:Int) {
         var rec:MeshRecord = {
             data:"",
             channels:[]
@@ -41,7 +41,7 @@ class NewMeshWriter {
         return rec;
     }
 
-    public function saveVertsOnly(filename:String, count:Int) {
+    public function saveVertsOnly(count:Int) {
         var rec:MeshRecord = {
             data:"",
             channels:[]
@@ -50,6 +50,12 @@ class NewMeshWriter {
         writeAttributes(rec, b, count);
         rec.data = haxe.crypto.Base64.encode(b.buffer.bytes);
         return rec;
+    }
+
+    public function addTexture(rec:MeshRecord, tex:String):Asset2DRecord {
+        var result:Asset2DRecord = cast rec;
+        result.texture = tex;
+        return result;
     }
 
     function writeIndices(rec:MeshRecord, b:BufferWrapper, indCount) {
@@ -90,9 +96,9 @@ class NewMeshWriter {
 
 
 // todo  make this metod generic by AttSet and provide it attFactories contex as an argument
-    public static function deserialize(data:MeshRecord):Instance2DVertexDataProvider<PosSet> {
+    public static function deserialize<T:AttribSet>(attrs:T, data:MeshRecord):Instance2DVertexDataProvider<T> {
         var bytes = haxe.crypto.Base64.decode(data.data);
-        var mesh = new Instance2DVertexDataProvider(PosSet.instance);
+        var mesh = new Instance2DVertexDataProvider(attrs);
         var vertCount = 0;
 
         for (ch in data.channels) {
