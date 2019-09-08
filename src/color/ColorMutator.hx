@@ -28,5 +28,16 @@ class ColorMutator {
     }
 }
 
+class ColorLightener {
+    var step:Int;
+    public function new (step = 1) {
+        this.step = step;
+    }
+    public function mutate(c:HSL) {
+        c.lightness+=step;
+        return c;
+    }
+}
+
 typedef RandomProvider = Void -> Float;
 typedef ColorProvider = Int -> HSL;
