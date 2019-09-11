@@ -7,6 +7,7 @@ animation.serialization.AnimationSerializer
 tools.AnimationWriter
 tools.NewMeshWriter
 animation.keyframes.ProviderKeyframe
+bindings.StringMap
 -main tools.MeshFileWriter
 -python exporter.py
 -cmd copy exporter.py C:\Users\shoo\Projects\10-Blender\playground\addons\foldered_addon\exporter.py
