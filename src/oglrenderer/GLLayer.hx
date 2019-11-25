@@ -42,7 +42,8 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         buffer = gl.createBuffer();
         indicesBuffer = gl.createBuffer();
         screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
-        renderingAspect.init(gl, program);
+        if (renderingAspect!=null)
+            renderingAspect.init(gl, program);
     }
 
     function onEnterFrame(e) {
@@ -83,7 +84,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         if (viewport != null)
             gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
 //        setVertData(data.bytes);
-        gl.bufferData(gl.ARRAY_BUFFER, data.getView(), gl.DYNAMIC_DRAW);
+        gl.bufferData(gl.ARRAY_BUFFER, data.getView(), gl.STREAM_DRAW);
 //         set uniforms
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.uniform1f(screenTIdx, 0);

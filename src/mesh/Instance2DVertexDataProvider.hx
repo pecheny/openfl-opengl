@@ -20,7 +20,8 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
     var indProvider:Int -> Int;
 
     public function new(attrs:T) {
-        posAtr = attrs.getDescr(AttribAliases.NAME_POSITION);
+        if (attrs.hasAttr(AttribAliases.NAME_POSITION))
+            posAtr = attrs.getDescr(AttribAliases.NAME_POSITION);
         attributes = attrs;
     }
 
@@ -56,7 +57,8 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
 
     public function fetchFertices(vertCount:Int, indCount:Int) {
         vertData = Bytes.alloc(vertCount * attributes.stride);
-        this.posSource = attrSources.get(posAtr.name);
+        if (posAtr != null)
+            this.posSource = attrSources.get(posAtr.name);
         this.vertCount = vertCount;
         this.indCount = indCount;
             for (atr in attributes.attributes) {

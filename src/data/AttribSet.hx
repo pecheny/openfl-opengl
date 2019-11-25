@@ -38,6 +38,14 @@ class AttribSet {
         throw "No such attr " + name;
     }
 
+    public function hasAttr(name) {
+        for (d in attributes) {
+            if (d.name == name)
+                return true;
+        }
+        return false;
+    }
+
     public static inline function getValue(reader:ByteDataReader, type:DataType, offset) {
         return
             switch type {
