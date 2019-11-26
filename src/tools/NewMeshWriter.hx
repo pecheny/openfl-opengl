@@ -1,6 +1,4 @@
 package tools;
-import data.AttribAliases;
-import mesh.serialization.data.Asset2DRecord;
 import data.AttribSet;
 import data.AttributeDescr;
 import data.AttributeView.AttrViewInstances;
@@ -9,9 +7,10 @@ import data.IndexCollection;
 import data.VertexAttribProvider;
 import datatools.DataTypeUtils;
 import datatools.ExtensibleBytes;
-import gltools.sets.PosSet;
 import mesh.Instance2DVertexDataProvider;
+import mesh.serialization.data.Asset2DRecord;
 import mesh.serialization.data.MeshRecord;
+import mesh.VertexAttrDataProvider;
 class NewMeshWriter {
     var sources:Map<String, VertexAttribProvider> = new Map();
     var descriptors:Map<String, AttributeDescr> = new Map();
@@ -110,10 +109,23 @@ class NewMeshWriter {
         if (data.indices != null) {
             var inds = new datatools.BufferView(bytes, data.indices, AttrViewInstances.getIndView());
             mesh.adIndProvider(inds.getMonoValue);
-            mesh.fetchFertices(vertCount, inds.length);
+            mesh.fetchVerticesAndIndices(vertCount, inds.length);
         } else {
             mesh.adIndProvider(n -> n);
-            mesh.fetchFertices(vertCount, vertCount);
+            mesh.fetchVerticesAndIndices(vertCount, vertCount);
+        }
+        return mesh;
+    }
+
+    public static function deserializeElement<T:AttribSet>(attrs:T, data:MeshRecord):VertexAttrDataProvider<T> {
+        var bytes = haxe.crypto.Base64.decode(data.data);
+        var mesh = new VertexAttrDataProvider(attrs);
+        var vertCount = 0;
+
+        for (ch in data.channels) {
+            var accessor = new datatools.BufferView(bytes, ch.view, DataTypeUtils.descToView(ch.descr));
+            vertCount = accessor.length;
+            mesh.addDataSource(ch.descr.name, accessor.getValue);
         }
         return mesh;
     }

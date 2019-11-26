@@ -94,7 +94,7 @@ class I2DCompoundDP extends VertDataProviderBase  {
         });
         separated.addDataSource(AttribAliases.NAME_COLOR_IN, (v,c) -> cp (Math.floor(v / 3), c));
         separated.adIndProvider( n-> n);
-        separated.fetchFertices(inds.length , inds.length);
+        separated.fetchVerticesAndIndices(inds.length , inds.length);
         return separated;
     }
 }

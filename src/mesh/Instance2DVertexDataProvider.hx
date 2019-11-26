@@ -7,63 +7,41 @@ import data.IndexCollection;
 import data.VertexAttribProvider;
 import gltools.sets.ColorSet;
 import gltools.VertDataProvider;
-import haxe.io.Bytes;
-class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> implements VertDataProvider<T>{
-    public var x:Float = 0;
-    public var y:Float = 0;
-    public var scaleX:Float = 1;
-    public var scaleY:Float = 1;
-    var posAtr:AttributeDescr;
-    var posSource:VertexAttribProvider;
+
+
+class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> implements VertDataProvider<T> {
+    public var transform(default, null):PosComponet<T>;
+
     var indProvider:Int -> Int;
 
     public function new(attrs:T) {
-        if (attrs.hasAttr(AttribAliases.NAME_POSITION))
-            posAtr = attrs.getDescr(AttribAliases.NAME_POSITION);
         super(attrs);
-    }
-
-    public function addDataSource(attrName:String, pr:VertexAttribProvider) {
-        attrSources.set(attrName, pr);
+        transform = new PosComponet(this);
     }
 
     public function adIndProvider(p:Int -> Int) {
         indProvider = p;
     }
 
-    public function updatePositions() {
-        for (vi in 0...vertCount) {
-            setTyped(posAtr.type, getOffset(vi, 0, posAtr), scaleX * posSource(vi, 0) + x);
-            setTyped(posAtr.type, getOffset(vi, 1, posAtr), scaleY * posSource(vi, 1) + y);
-        }
-    }
-
-    public function getSources():AttribSources<T> {
-        return attrSources.copy();
-    }
-
     override public function updateAttribute(name) {
         if (name == AttribAliases.NAME_POSITION)
-            return updatePositions();
+            return transform.updatePositions();
         return super.updateAttribute(name);
     }
 
-    public function fetchFertices(vertCount:Int, indCount:Int) {
-        vertData = Bytes.alloc(vertCount * attributes.stride);
-        if (posAtr != null)
-            this.posSource = attrSources.get(posAtr.name);
-        this.vertCount = vertCount;
+    public function fetchVerticesAndIndices(vertCount:Int, indCount:Int) {
+        fetchVertices(vertCount);
+        fetchIndices(indCount);
+    }
+
+    function fetchIndices(indCount) {
         this.indCount = indCount;
-        for (atr in attributes.attributes) {
-            updateAttribute(atr.name);
-        }
         indData = new IndexCollection(indCount);
         for (i in 0...indCount) {
             var ind = indProvider(i);
             indData[i] = ind;
         }
     }
-
 
 
     public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
@@ -82,7 +60,32 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> 
         });
         separated.addDataSource(AttribAliases.NAME_COLOR_IN, (v, c) -> cp(Math.floor(v / 3), c));
         separated.adIndProvider(n -> n);
-        separated.fetchFertices(inds.length, inds.length);
+        separated.fetchVerticesAndIndices(inds.length, inds.length);
         return separated;
+    }
+}
+
+@:access(mesh.VertexAttrDataProvider)
+class PosComponet<T:AttribSet> {
+    public var x:Float = 0;
+    public var y:Float = 0;
+    public var scaleX:Float = 1;
+    public var scaleY:Float = 1;
+    var target:VertexAttrDataProvider<T>;
+    var posAtr:AttributeDescr;
+    var posSource:VertexAttribProvider;
+
+    public function new(target:VertexAttrDataProvider<T>) {
+        this.target = target;
+        posAtr = target.attributes.getDescr(AttribAliases.NAME_POSITION);
+    }
+
+    public function updatePositions() {
+        if (posSource == null)
+            this.posSource = target.attrSources.get(posAtr.name);
+        for (vi in 0...target.vertCount) {
+            target.setTyped(posAtr.type, target.getOffset(vi, 0, posAtr), scaleX * posSource(vi, 0) + x);
+            target.setTyped(posAtr.type, target.getOffset(vi, 1, posAtr), scaleY * posSource(vi, 1) + y);
+        }
     }
 }
