@@ -1,16 +1,14 @@
 package mesh;
-import data.AttribSources;
-import gltools.sets.ColorSet;
-import data.VertexAttribProvider;
-import data.AttributeDescr;
-import data.IndexCollection;
 import data.AttribAliases;
 import data.AttribSet;
+import data.AttribSources;
+import data.AttributeDescr;
+import data.IndexCollection;
+import data.VertexAttribProvider;
+import gltools.sets.ColorSet;
 import gltools.VertDataProvider;
 import haxe.io.Bytes;
-class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase implements VertDataProvider<T> {
-    var attrSources:AttribSources<T> = new AttribSources<T>();
-    var attributes:AttribSet;
+class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> implements VertDataProvider<T>{
     public var x:Float = 0;
     public var y:Float = 0;
     public var scaleX:Float = 1;
@@ -22,7 +20,7 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
     public function new(attrs:T) {
         if (attrs.hasAttr(AttribAliases.NAME_POSITION))
             posAtr = attrs.getDescr(AttribAliases.NAME_POSITION);
-        attributes = attrs;
+        super(attrs);
     }
 
     public function addDataSource(attrName:String, pr:VertexAttribProvider) {
@@ -40,19 +38,14 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
         }
     }
 
-    public function getSources():AttribSources<T>{
+    public function getSources():AttribSources<T> {
         return attrSources.copy();
     }
 
-    public function updateAttribute(name) {
+    override public function updateAttribute(name) {
         if (name == AttribAliases.NAME_POSITION)
             return updatePositions();
-        var posSource = attrSources.get(name);
-        var posAtr = attributes.getDescr(name);
-        for (vi in 0...vertCount) {
-            for (c in 0...posAtr.numComponents)
-            setTyped(posAtr.type, getOffset(vi, c, posAtr), posSource(vi, c) );
-        }
+        return super.updateAttribute(name);
     }
 
     public function fetchFertices(vertCount:Int, indCount:Int) {
@@ -61,8 +54,8 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
             this.posSource = attrSources.get(posAtr.name);
         this.vertCount = vertCount;
         this.indCount = indCount;
-            for (atr in attributes.attributes) {
-                updateAttribute(atr.name);
+        for (atr in attributes.attributes) {
+            updateAttribute(atr.name);
         }
         indData = new IndexCollection(indCount);
         for (i in 0...indCount) {
@@ -71,9 +64,7 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
         }
     }
 
-    inline function getOffset(vertIdx, cmpIdx, atr) {
-        return attributes.stride * vertIdx + atr.offset + cmpIdx * AttribSet.getGlSize(atr.type);
-    }
+
 
     public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
         IndicesFetcher.gatherIndices(target, startFrom, offset, indData, getIndsCount());
@@ -86,12 +77,12 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase imp
         var data = this.getVerts();
         var posView = new datatools.BufferView(data, datatools.BufferView.wholeBytesOf(data), attributes.getView(AttribAliases.NAME_POSITION));
         var separated = new Instance2DVertexDataProvider(ColorSet.instance);
-        separated.addDataSource(AttribAliases.NAME_POSITION, (v,c) -> {
+        separated.addDataSource(AttribAliases.NAME_POSITION, (v, c) -> {
             posView.getValue(inds[v], c);
         });
-        separated.addDataSource(AttribAliases.NAME_COLOR_IN, (v,c) -> cp (Math.floor(v / 3), c));
-        separated.adIndProvider( n-> n);
-        separated.fetchFertices(inds.length , inds.length);
+        separated.addDataSource(AttribAliases.NAME_COLOR_IN, (v, c) -> cp(Math.floor(v / 3), c));
+        separated.adIndProvider(n -> n);
+        separated.fetchFertices(inds.length, inds.length);
         return separated;
     }
 }
