@@ -21,4 +21,18 @@ abstract IndexCollection(Bytes) from Bytes to Bytes {
     inline function get_length():Int {
         return Std.int(this.length / ELEMENT_SIZE);
     }
+
+    public static function forQuads(count) {
+        var ic = new IndexCollection(count * 6);
+        for (i in 0...count) {
+            var j = i*6;
+            ic[j] =  i * 4;
+            ic[j + 1] =  i * 4 + 1;
+            ic[j + 2] =  i * 4 + 2;
+            ic[j + 3] =  i * 4 ;
+            ic[j + 4] =  i * 4 + 3;
+            ic[j + 5] =  i * 4 + 2;
+        }
+        return ic;
+    }
 }
