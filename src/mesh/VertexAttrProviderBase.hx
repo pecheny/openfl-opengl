@@ -15,12 +15,6 @@ class VertexAttrProviderBase {
     }
 
     inline function setTyped(type:DataType, offset, value:Dynamic) {
-        switch type {
-            case int32 : vertData.setInt32(offset, value);
-            case uint8 : vertData.setUint8(offset, value);
-            case uint16 : vertData.setUint16(offset, value);
-            case float32 :
-                vertData.setFloat32(offset, value);
-        }
+        vertData.setTyped(type, offset, value);
     }
 }

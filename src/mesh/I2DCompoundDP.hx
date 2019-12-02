@@ -14,8 +14,6 @@ class I2DCompoundTypedDP<T:AttribSet> extends I2DCompoundDP implements VertDataP
 }
 
 class I2DCompoundDP extends VertDataProviderBase  {
-    var attrSources:Map<String, VertexAttribProvider> = new Map();
-    var attributes:AttribSet;
     var posAtr:AttributeDescr;
     var posSource:VertexAttribProvider;
     var indProvider:Int -> Int;
@@ -30,10 +28,6 @@ class I2DCompoundDP extends VertDataProviderBase  {
         attributes = attrs;
     }
 
-    public function addDataSource(attrName:String, pr:VertexAttribProvider) {
-        attrSources.set(attrName, pr);
-    }
-
     public function adIndProvider(p:Int -> Int) {
         indProvider = p;
     }
@@ -43,39 +37,6 @@ class I2DCompoundDP extends VertDataProviderBase  {
             setTyped(posAtr.type, getOffset(vi, 0, posAtr), getScaleX() * posSource(vi, 0) + getX());
             setTyped(posAtr.type, getOffset(vi, 1, posAtr), getScaleY() * posSource(vi, 1) + getY());
         }
-    }
-
-
-    public function updateAttribute(name) {
-        if (name == AttribAliases.NAME_POSITION)
-            return updatePositions();
-        var posSource = attrSources.get(name);
-        var posAtr = attributes.getDescr(name);
-        for (vi in 0...vertCount) {
-            for (c in 0...posAtr.numComponents)
-            setTyped(posAtr.type, getOffset(vi, c, posAtr), posSource(vi, c) );
-        }
-    }
-
-    public function fetchVertices(vertCount:Int, indCount:Int) {
-        if (vertData == null || vertData.length != vertCount * attributes.stride) {
-            vertData = Bytes.alloc(vertCount * attributes.stride);
-        }
-        this.posSource = attrSources.get(posAtr.name);
-        this.vertCount = vertCount;
-        this.indCount = indCount;
-            for (atr in attributes.attributes) {
-                updateAttribute(atr.name);
-        }
-        indData = new IndexCollection(indCount);
-        for (i in 0...indCount) {
-            var ind = indProvider(i);
-            indData[i] = ind;
-        }
-    }
-
-    inline function getOffset(vertIdx, cmpIdx, atr) {
-        return attributes.stride * vertIdx + atr.offset + cmpIdx * AttribSet.getGlSize(atr.type);
     }
 
     public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
