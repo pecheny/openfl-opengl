@@ -1,7 +1,6 @@
 package mesh;
 import data.AttribAliases;
 import data.AttribSet;
-import data.AttribSources;
 import data.AttributeDescr;
 import data.IndexCollection;
 import data.VertexAttribProvider;
@@ -64,13 +63,19 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> 
         return separated;
     }
 }
-
-@:access(mesh.VertexAttrDataProvider)
-class PosComponet<T:AttribSet> {
+class PosComponentBase {
     public var x:Float = 0;
     public var y:Float = 0;
     public var scaleX:Float = 1;
     public var scaleY:Float = 1;
+
+    public function toString() {
+        return '[x:$x, y:$y, sx:$scaleX, sy:$scaleY]';
+    }
+}
+
+@:access(mesh.VertexAttrDataProvider)
+class PosComponet<T:AttribSet> extends PosComponentBase{
     var target:VertexAttrDataProvider<T>;
     var posAtr:AttributeDescr;
     var posSource:VertexAttribProvider;
