@@ -1,6 +1,7 @@
 package gltools;
 import data.AttribSet;
 import datatools.ExtensibleBytes;
+import gltools.VertDataTarget.RenderDataTarget;
 import haxe.io.Bytes;
 import haxe.io.UInt16Array;
 
@@ -10,6 +11,8 @@ interface VertDataProvider<T:AttribSet> {
     function getVertsCount():Int;
     function getInds():Bytes;
     function getIndsCount():Int;
+
+    function render(target:RenderDataTarget):Void;
 
 /**
 *   startFrom - offset within target to write to,
@@ -36,3 +39,5 @@ typedef VerticesBuffer = ExtensibleBytes;
 //        this.setUint16(key * UInt16Array.BYTES_PER_ELEMENT, val, true);
 //    }
 //}
+
+

@@ -1,33 +1,35 @@
 package oglrenderer;
-import bindings.GLUniformLocation;
 import bindings.GLBuffer;
 import bindings.GLProgram;
+import bindings.GLUniformLocation;
 import bindings.WebGLRenderContext;
-import flash.events.Event;
 import data.AttribAliases;
 import data.AttribSet;
 import data.ShadersAttrs;
+import datatools.ExtensibleBytes;
+import flash.events.Event;
 import gltools.VertDataProvider;
-import haxe.io.Bytes;
+import gltools.VertDataRenderer;
+import gltools.VertDataTarget.RenderDataTarget;
 import openfl.display.DisplayObject;
 import openfl.display.OpenGLRenderer;
 import openfl.events.RenderEvent;
-import datatools.ExtensibleBytes;
 
 class GLLayer<T:AttribSet> extends DisplayObject {
     var program:GLProgram;
-    var children:Array<VertDataProvider<T>> = [];
+    var children:Array<VertDataRenderer<T>> = [];
     var gl:WebGLRenderContext;
     var viewport:ViewportRect;
 
     var buffer:GLBuffer;
-    var set:AttribSet;
+    var set:T;
     var attrsState:ShadersAttrs;
     private var indicesBuffer:GLBuffer;
     var screenTIdx:GLUniformLocation;
-    var shaderBuilder:WebGLRenderContext->GLProgram;
+    var shaderBuilder:WebGLRenderContext -> GLProgram;
     var renderingAspect:RenderingElement;
-    public function new(set:T, shaderBuilder:WebGLRenderContext->GLProgram, aspect:RenderingElement) {
+
+    public function new(set:T, shaderBuilder:WebGLRenderContext -> GLProgram, aspect:RenderingElement) {
         super();
         this.renderingAspect = aspect;
         this.set = set;
@@ -42,7 +44,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         buffer = gl.createBuffer();
         indicesBuffer = gl.createBuffer();
         screenTIdx = gl.getUniformLocation(program, AttribAliases.NAME_SCREENSPACE_T);
-        if (renderingAspect!=null)
+        if (renderingAspect != null)
             renderingAspect.init(gl, program);
     }
 
@@ -57,12 +59,15 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     }
 
     public function addView(v:VertDataProvider<T>) {
+        addView2(new VertDataRenderer(set, v));
+    }
+
+    public function addView2(v:VertDataRenderer<T>) {
         children.push(v) ;
     }
 
-    inline function fetchData() {}
 
-    var data = new ExtensibleBytes(16);
+    var data = new RenderDataTarget();
     var inds = new ExtensibleBytes(64);
 
 
@@ -72,18 +77,15 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         if (program == null) {
             init(gl);
         }
-        var pos = 0;
+        data.pos = 0;
         for (child in children) {
-            var b:Bytes = child.getVerts();
-            var len = child.getVertsCount() * set.stride;
-            data.blit(pos, b, 0, len);
-            pos += len;
+            child.render(data);
+            data.pos += child.getVertsCount() * set.stride;
         }
         var indCount = gatherIndices(inds, 0, 0);
         bind();
         if (viewport != null)
             gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
-//        setVertData(data.bytes);
         gl.bufferData(gl.ARRAY_BUFFER, data.getView(), gl.STREAM_DRAW);
 //         set uniforms
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
@@ -107,7 +109,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     }
 
     public function setViewport(x, y, w, h) {
-        this.viewport = new ViewportRect(x,y,w,h);
+        this.viewport = new ViewportRect(x, y, w, h);
     }
 
 
@@ -115,14 +117,14 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         gl.useProgram(program);
         gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
         set.enableAttributes(gl, attrsState);
-        if (renderingAspect!=null)
+        if (renderingAspect != null)
             renderingAspect.bind();
     }
 
     public function unbind() {
         gl.useProgram(null);
         gl.bindBuffer(gl.ARRAY_BUFFER, null);
-        if (renderingAspect!=null)
+        if (renderingAspect != null)
             renderingAspect.unbind();
     }
 }
@@ -132,7 +134,8 @@ class ViewportRect {
     public var y:Int;
     public var width:Int;
     public var height:Int;
-    public function new (x,y,w,h) {
+
+    public function new(x, y, w, h) {
         this.x = x;
         this.y = y;
         this.width = w;
@@ -142,6 +145,7 @@ class ViewportRect {
 
 interface Bindable {
     function bind():Void;
+
     function unbind():Void;
 }
 

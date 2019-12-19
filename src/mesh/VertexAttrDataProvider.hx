@@ -1,4 +1,5 @@
 package mesh;
+import gltools.VertDataTarget.RenderDataTarget;
 import data.AttribSet;
 import data.AttribSources;
 import data.VertexAttribProvider;
@@ -29,6 +30,10 @@ class VertexAttrDataProvider<T:AttribSet> extends VertexAttrProviderBase {
     }
 
 
+    public function render(target:RenderDataTarget){
+        target.getBytes().blit(target.pos, vertData, 0, attributes.stride * getVertsCount());
+    }
+    
     public function fetchVertices(vertCount:Int) {
         vertData = Bytes.alloc(vertCount * attributes.stride);
         this.vertCount = vertCount;
