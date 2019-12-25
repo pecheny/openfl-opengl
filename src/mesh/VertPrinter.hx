@@ -1,4 +1,5 @@
 package mesh;
+import gltools.VertDataTarget.RenderDataTarget;
 import datatools.ByteDataReader;
 import data.AttribSet;
 import gltools.VertDataProvider;
@@ -11,7 +12,9 @@ class VertPrinter <T:AttribSet> {
     }
 
     public function print(src:VertDataProvider<T>) {
-        var reader:ByteDataReader = src.getVerts();
+        var trg = new RenderDataTarget();
+        src.render(trg);
+        var reader:ByteDataReader = trg.getBytes();
         var result = 'Total vert: ${src.getVertsCount()}, ind:${src.getIndsCount()}\n';
         for (at in attrs.attributes) {
             result += at.name + ": [";
