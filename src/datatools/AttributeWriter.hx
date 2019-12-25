@@ -1,5 +1,6 @@
 package datatools;
 
+import data.AttributeDescr;
 class Attribute2Writer<T> {
     var a:ValueWriter<T>;
     var b:ValueWriter<T>;
