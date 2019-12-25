@@ -1,4 +1,6 @@
 package tools;
+import String;
+import datatools.VertValueProvider;
 import data.AttribSet;
 import data.AttributeDescr;
 import data.AttributeView.AttrViewInstances;
@@ -95,19 +97,21 @@ class NewMeshWriter {
 
 
 // todo  make this metod generic by AttSet and provide it attFactories contex as an argument
-    public static function deserialize<T:AttribSet>(attrs:T, data:MeshRecord):Instance2DVertexDataProvider<T> {
+    public static function deserialize<T:AttribSet>(attrs:T, data:MeshRecord, transformFactory:TransformFactory = null):Instance2DVertexDataProvider<T> {
+        if (transformFactory == null)
+            transformFactory = defaultTransFac;
         var bytes = haxe.crypto.Base64.decode(data.data);
         var mesh = new Instance2DVertexDataProvider(attrs);
         var vertCount = 0;
 
         for (ch in data.channels) {
-            var accessor = new datatools.BufferView(bytes, ch.view, DataTypeUtils.descToView(ch.descr));
+            var accessor = new datatools.BufferView<Float>(bytes, ch.view, DataTypeUtils.descToView(ch.descr));
             vertCount = accessor.length;
-            mesh.addDataSource(ch.descr.name, accessor.getValue);
+            mesh.addDataSource(ch.descr.name, transformFactory.getTransform(ch.descr.name, accessor).getValue);
         }
 
         if (data.indices != null) {
-            var inds = new datatools.BufferView(bytes, data.indices, AttrViewInstances.getIndView());
+            var inds = new datatools.BufferView<Int>(bytes, data.indices, AttrViewInstances.getIndView());
             mesh.adIndProvider(inds.getMonoValue);
             mesh.fetchVerticesAndIndices(vertCount, inds.length);
         } else {
@@ -117,20 +121,36 @@ class NewMeshWriter {
         return mesh;
     }
 
-    public static function deserializeElement<T:AttribSet>(attrs:T, data:MeshRecord):VertexAttrDataProvider<T> {
+    public static function deserializeElement<T:AttribSet>(attrs:T, data:MeshRecord, transformFactory:TransformFactory = null):VertexAttrDataProvider<T> {
+        if (transformFactory == null)
+            transformFactory = defaultTransFac;
         var bytes = haxe.crypto.Base64.decode(data.data);
         var mesh = new VertexAttrDataProvider(attrs);
         var vertCount = 0;
 
         for (ch in data.channels) {
-            var accessor = new datatools.BufferView(bytes, ch.view, DataTypeUtils.descToView(ch.descr));
+            var accessor = new datatools.BufferView<Float>(bytes, ch.view, DataTypeUtils.descToView(ch.descr));
             vertCount = accessor.length;
-            mesh.addDataSource(ch.descr.name, accessor.getValue);
+            mesh.addDataSource(ch.descr.name, transformFactory.getTransform(ch.descr.name, accessor).getValue);
         }
         return mesh;
     }
 
+    static var defaultTransFac = new PassthroughTransformFactory();
 
+}
+
+//typedef TransformFactory = BufferView->Transform;
+interface TransformFactory {
+    function getTransform(attribute:String, a:VertValueProvider):VertValueProvider;
+}
+
+class PassthroughTransformFactory implements TransformFactory {
+
+    public function new(){}
+    public function getTransform(attribute:String, a:VertValueProvider):VertValueProvider {
+        return a;
+    }
 }
 
 class BufferWrapper {
