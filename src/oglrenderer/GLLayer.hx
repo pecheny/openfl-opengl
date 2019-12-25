@@ -17,7 +17,7 @@ import openfl.events.RenderEvent;
 
 class GLLayer<T:AttribSet> extends DisplayObject {
     var program:GLProgram;
-    var children:Array<VertDataRenderer<T>> = [];
+    var children:Array<VertDataProvider<T>> = [];
     var gl:WebGLRenderContext;
     var viewport:ViewportRect;
 
@@ -62,7 +62,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         addView2(new VertDataRenderer(set, v));
     }
 
-    public function addView2(v:VertDataRenderer<T>) {
+    public function addView2(v:VertDataProvider<T>) {
         children.push(v) ;
     }
 
