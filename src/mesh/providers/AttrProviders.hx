@@ -1,4 +1,5 @@
 package mesh.providers;
+import datatools.VertValueProvider;
 import datatools.ByteDataReader;
 class TriPosProvider extends PosProvider {
 
@@ -11,7 +12,19 @@ class TriPosProvider extends PosProvider {
 
 
 }
-class PosProvider {
+
+class QuadPosProvider extends PosProvider {
+    public function new (x, y, w, h) {
+        super();
+        addVertex(x,y);
+        addVertex(x+w,y);
+        addVertex(x+w, y+h);
+        addVertex(x, y+h);
+    }
+
+}
+
+class PosProvider implements VertValueProvider {
     var vertx:Array<Float> = [];
     var verty:Array<Float> = [];
 
@@ -30,6 +43,10 @@ class PosProvider {
             verty
         else throw "Wrong1";
         return carr[idx];
+    }
+
+    public function getValue(v,c) {
+        return getPos(v, c);
     }
 
     public function load(vbo:ByteDataReader, ofstX, ofstY, stride) {
