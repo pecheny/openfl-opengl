@@ -2,7 +2,7 @@ package datatools;
 import data.AttribSet;
 import data.AttributeView;
 import data.serialization.BufferView as BufferViewRec;
-class BufferView {
+class BufferView<T:Float> implements VertValueProvider {
     var bytes:haxe.io.Bytes;
     var view:BufferViewRec;
     var attrView:AttributeView;
@@ -13,14 +13,14 @@ class BufferView {
         this.attrView = attrView;
     }
 
-    public function getValue(vertId, cmpId):Dynamic {
+    public function getValue(vertId, cmpId):T {
         var offset = view.byteOffset + attrView.stride * vertId + attrView.offset + cmpId * AttribSet.getGlSize(attrView.type);
-        return AttribSet.getValue(bytes, attrView.type, offset);
+        return cast AttribSet.getValue(bytes, attrView.type, offset);
     }
 
-    public function getMonoValue(vertId):Dynamic {
+    public function getMonoValue(vertId):T {
         var offset = view.byteOffset + attrView.stride * vertId + attrView.offset;
-        return AttribSet.getValue(bytes, attrView.type, offset);
+        return cast AttribSet.getValue(bytes, attrView.type, offset);
     }
 
     function get_length():Int {

@@ -3,7 +3,7 @@ import data.AttribSet;
 import haxe.io.Bytes;
 import gltools.VertDataProvider.VerticesBuffer;
 import gltools.VertDataTarget.RenderDataTarget;
-class VertDataRenderer<T:AttribSet> {
+class VertDataRenderer<T:AttribSet> implements VertDataProvider<T> {
     var lastPos:Int;
     public var dirty = true;
     var attributes:T;
