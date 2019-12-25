@@ -15,5 +15,10 @@ class VertDataProviderBase<T:AttribSet> extends VertexAttrDataProvider<T> {
         return indCount;
     }
 
+    public function setIndData(d:IndexCollection) {
+        this.indData = d;
+        this.indCount = d.length;
+    }
+
 
 }
