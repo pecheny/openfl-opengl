@@ -6,11 +6,13 @@ import haxe.io.Bytes;
 import haxe.io.UInt16Array;
 
 // todo separate vert and ind interfaces
-interface VertDataProvider<T:AttribSet> {
-    function getVerts():Bytes;
-    function getVertsCount():Int;
+interface IndexProvider {
     function getInds():Bytes;
     function getIndsCount():Int;
+}
+interface VertDataProvider<T:AttribSet> extends IndexProvider {
+//    function getVerts():Bytes;
+    function getVertsCount():Int;
 
     function render(target:RenderDataTarget):Void;
 
