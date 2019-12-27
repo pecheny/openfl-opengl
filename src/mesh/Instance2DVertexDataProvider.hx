@@ -58,6 +58,21 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> 
         separated.fetchVerticesAndIndices(inds.length, inds.length);
         return separated;
     }
+
+
+    // well it suggested for exact goal: share providers, indices among instances with independend vertex data (containig merged transforms).
+    @:access(mesh.Instance2DVertexDataProvider)
+    @:access(mesh.VertexAttrProviderBase)
+    @:access(mesh.VertexAttrDataProvider)
+    public function clone() {
+        var copy = new Instance2DVertexDataProvider(attributes);
+        copy.indProvider = indProvider;
+        copy.indData = indData;
+        copy.indCount = indCount;
+        copy.attrSources = cast attrSources;
+        copy.fetchVertices(vertCount);
+        return copy;
+    }
 }
 
 
