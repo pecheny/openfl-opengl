@@ -6,7 +6,7 @@ import data.VertexAttribProvider;
 import haxe.io.Bytes;
 class VertexAttrDataProvider<T:AttribSet> extends VertexAttrProviderBase {
     var attrSources:AttribSources<T> = new AttribSources<T>();
-    var attributes:AttribSet;
+    var attributes:T;
 
     public function new(attrs) {
         this.attributes = attrs;
@@ -29,13 +29,13 @@ class VertexAttrDataProvider<T:AttribSet> extends VertexAttrProviderBase {
         }
     }
 
-
     public function render(target:RenderDataTarget){
         target.getBytes().blit(target.pos, vertData, 0, attributes.stride * getVertsCount());
     }
-    
+
     public function fetchVertices(vertCount:Int) {
-        vertData = Bytes.alloc(vertCount * attributes.stride);
+        if (vertData == null || vertData.length < vertCount * attributes.stride)
+            vertData = Bytes.alloc(vertCount * attributes.stride);
         this.vertCount = vertCount;
         for (atr in attributes.attributes) {
             updateAttribute(atr.name);

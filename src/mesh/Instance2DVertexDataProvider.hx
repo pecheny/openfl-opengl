@@ -33,7 +33,7 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> 
     }
 
     public function with<T:AttribSet>(newSet:T, name, source):Instance2DVertexDataProvider<T>{
-        this.attributes = newSet;
+        this.attributes = cast newSet;
         attrSources = attrSources.with(name, source);
         fetchVertices(vertCount);
         return cast this;
