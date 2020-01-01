@@ -75,8 +75,3 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> 
     }
 }
 
-
-interface Transform {
-    function getValue(vertId:Int, cmpId:Int):Float;
-}
-
