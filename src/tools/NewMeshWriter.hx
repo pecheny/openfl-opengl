@@ -1,4 +1,5 @@
 package tools;
+import transform.TransformFactory;
 import String;
 import datatools.VertValueProvider;
 import data.AttribSet;
@@ -140,13 +141,8 @@ class NewMeshWriter {
 
 }
 
-//typedef TransformFactory = BufferView->Transform;
-interface TransformFactory {
-    function getTransform(attribute:String, a:VertValueProvider):VertValueProvider;
-}
 
 class PassthroughTransformFactory implements TransformFactory {
-
     public function new(){}
     public function getTransform(attribute:String, a:VertValueProvider):VertValueProvider {
         return a;
