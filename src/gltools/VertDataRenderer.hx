@@ -38,7 +38,6 @@ class VertDataRenderer<T:AttribSet> implements VertIndDataProvider<T> {
     public function render(target:RenderDataTarget) {
         var needRender = dirty || (lastPos != target.pos);
         if (needRender){
-            target.grantCapacity(target.pos + source.getVertsCount() * attributes.stride);
             source.render(target);
             lastPos = target.pos;
         }

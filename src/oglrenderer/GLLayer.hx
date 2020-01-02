@@ -59,13 +59,12 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     }
 
     public function addView(v:VertIndDataProvider<T>) {
-        addView2(new VertDataRenderer(set, v, v));
-    }
-
-    public function addView2(v:VertIndDataProvider<T>) {
         children.push(v) ;
     }
 
+    public function removeView(v:VertIndDataProvider<T>) {
+        children.remove(v) ;
+    }
 
     var data = new RenderDataTarget();
     var inds = new ExtensibleBytes(64);
@@ -79,6 +78,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         }
         data.pos = 0;
         for (child in children) {
+            data.grantCapacity(data.pos + child.getVertsCount() * set.stride);
             child.render(data);
             data.pos += child.getVertsCount() * set.stride;
         }
