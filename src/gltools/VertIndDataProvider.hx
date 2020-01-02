@@ -15,7 +15,7 @@ interface IndexProvider {
 **/
     function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset:Int):Void;
 }
-interface VertDataProvider<T:AttribSet> extends IndexProvider {
+interface VertDataProvider<T:AttribSet> {
     function getVertsCount():Int;
 
     function render(target:RenderDataTarget):Void;

@@ -1,4 +1,6 @@
 package gltools;
+import gltools.VertIndDataProvider.IndexProvider;
+import gltools.VertIndDataProvider.VertDataProvider;
 import data.AttribSet;
 import datatools.ExtensibleBytes;
 import gltools.VertDataTarget.RenderDataTarget;
@@ -7,11 +9,13 @@ class VertDataRenderer<T:AttribSet> implements VertIndDataProvider<T> {
     var lastPos:Int;
     public var dirty = true;
     var attributes:T;
-    var source:VertIndDataProvider<T>;
+    var source:VertDataProvider<T>;
+    var inds:IndexProvider;
 
-    public function new(set:T, source:VertIndDataProvider<T>) {
+    public function new(set:T, vertSource:VertDataProvider<T>,indSource:IndexProvider) {
         this.attributes = set;
-        this.source = source;
+        this.source = vertSource;
+        this.inds = indSource;
     }
 
     public function getVertsCount():Int {
@@ -19,15 +23,15 @@ class VertDataRenderer<T:AttribSet> implements VertIndDataProvider<T> {
     }
 
     public function getInds():Bytes {
-        return source.getInds();
+        return inds.getInds();
     }
 
     public function getIndsCount():Int {
-        return source.getIndsCount();
+        return inds.getIndsCount();
     }
 
     public function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset:Int):Void {
-        source.gatherIndices(target, startFrom, offset);
+        inds.gatherIndices(target, startFrom, offset);
     }
 
 

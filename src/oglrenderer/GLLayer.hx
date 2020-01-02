@@ -59,7 +59,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     }
 
     public function addView(v:VertIndDataProvider<T>) {
-        addView2(new VertDataRenderer(set, v));
+        addView2(new VertDataRenderer(set, v, v));
     }
 
     public function addView2(v:VertIndDataProvider<T>) {
