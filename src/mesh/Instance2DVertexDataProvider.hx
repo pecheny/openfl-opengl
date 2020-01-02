@@ -1,13 +1,14 @@
 package mesh;
+import datatools.ExtensibleBytes;
 import data.AttribAliases;
 import data.AttribSet;
 import data.IndexCollection;
 import data.VertexAttribProvider;
 import gltools.sets.ColorSet;
-import gltools.VertDataProvider;
+import gltools.VertIndDataProvider;
 
 
-class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> implements VertDataProvider<T> {
+class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> implements VertIndDataProvider<T> {
     var indProvider:Int -> Int;
 
     public function new(attrs:T) {
@@ -39,7 +40,7 @@ class Instance2DVertexDataProvider<T:AttribSet> extends VertDataProviderBase<T> 
         return cast this;
     }
 
-    public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset) {
+    public function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset) {
         IndicesFetcher.gatherIndices(target, startFrom, offset, indData, getIndsCount());
     }
 

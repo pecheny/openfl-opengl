@@ -1,15 +1,15 @@
 package gltools;
 import data.AttribSet;
-import haxe.io.Bytes;
-import gltools.VertDataProvider.VerticesBuffer;
+import datatools.ExtensibleBytes;
 import gltools.VertDataTarget.RenderDataTarget;
-class VertDataRenderer<T:AttribSet> implements VertDataProvider<T> {
+import haxe.io.Bytes;
+class VertDataRenderer<T:AttribSet> implements VertIndDataProvider<T> {
     var lastPos:Int;
     public var dirty = true;
     var attributes:T;
-    var source:VertDataProvider<T>;
+    var source:VertIndDataProvider<T>;
 
-    public function new(set:T, source:VertDataProvider<T>) {
+    public function new(set:T, source:VertIndDataProvider<T>) {
         this.attributes = set;
         this.source = source;
     }
@@ -26,7 +26,7 @@ class VertDataRenderer<T:AttribSet> implements VertDataProvider<T> {
         return source.getIndsCount();
     }
 
-    public function gatherIndices(target:VerticesBuffer, startFrom:Int, offset:Int):Void {
+    public function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset:Int):Void {
         source.gatherIndices(target, startFrom, offset);
     }
 

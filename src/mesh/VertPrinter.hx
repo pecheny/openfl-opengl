@@ -1,8 +1,9 @@
 package mesh;
+package mesh;
 import gltools.VertDataTarget.RenderDataTarget;
 import datatools.ByteDataReader;
 import data.AttribSet;
-import gltools.VertDataProvider;
+import gltools.VertIndDataProvider;
 import haxe.io.UInt16Array;
 class VertPrinter <T:AttribSet> {
     var attrs:T;
@@ -11,7 +12,7 @@ class VertPrinter <T:AttribSet> {
         this.attrs = attrs;
     }
 
-    public function print(src:VertDataProvider<T>) {
+    public function print(src:VertIndDataProvider<T>) {
         var trg = new RenderDataTarget();
         src.render(trg);
         var reader:ByteDataReader = trg.getBytes();

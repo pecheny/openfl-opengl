@@ -8,7 +8,7 @@ import data.AttribSet;
 import data.ShadersAttrs;
 import datatools.ExtensibleBytes;
 import flash.events.Event;
-import gltools.VertDataProvider;
+import gltools.VertIndDataProvider;
 import gltools.VertDataRenderer;
 import gltools.VertDataTarget.RenderDataTarget;
 import openfl.display.DisplayObject;
@@ -17,7 +17,7 @@ import openfl.events.RenderEvent;
 
 class GLLayer<T:AttribSet> extends DisplayObject {
     var program:GLProgram;
-    var children:Array<VertDataProvider<T>> = [];
+    var children:Array<VertIndDataProvider<T>> = [];
     var gl:WebGLRenderContext;
     var viewport:ViewportRect;
 
@@ -58,11 +58,11 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         #end
     }
 
-    public function addView(v:VertDataProvider<T>) {
+    public function addView(v:VertIndDataProvider<T>) {
         addView2(new VertDataRenderer(set, v));
     }
 
-    public function addView2(v:VertDataProvider<T>) {
+    public function addView2(v:VertIndDataProvider<T>) {
         children.push(v) ;
     }
 

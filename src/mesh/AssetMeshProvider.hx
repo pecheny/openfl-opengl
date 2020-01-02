@@ -1,10 +1,10 @@
 package mesh;
 import data.IndexCollection;
 import data.AttribSet;
-import gltools.VertDataProvider;
+import gltools.VertIndDataProvider;
 import haxe.io.Bytes;
 using Lambda;
-class AssetMeshProvider <T:AttribSet> implements VertDataProvider<T> {
+class AssetMeshProvider <T:AttribSet> implements VertIndDataProvider<T> {
     var data:Bytes;
     var inds:IndexCollection;
     var stride:Int;

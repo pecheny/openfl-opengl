@@ -4,10 +4,10 @@ import data.IndexCollection;
 import haxe.io.Bytes;
 import data.AttribAliases;
 import data.AttributeDescr;
-import gltools.VertDataProvider;
+import gltools.VertIndDataProvider;
 import data.VertexAttribProvider;
 import data.AttribSet;
-class I2DCompoundTypedDP<T:AttribSet> extends I2DCompoundDP implements VertDataProvider<T>{
+class I2DCompoundTypedDP<T:AttribSet> extends I2DCompoundDP implements VertIndDataProvider<T>{
     public function new (attrs:T) {
         super(attrs);
     }
