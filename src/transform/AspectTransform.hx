@@ -81,7 +81,7 @@ class AspectTransformAxisApplier implements AxisApplier {
     }
 }
 
-class StageAspectKeeper implements TransformFactory {
+class StageAspectKeeper {
     var base:Float;
 
     var factors:Array<Float> = [1, 1];
@@ -111,21 +111,8 @@ class StageAspectKeeper implements TransformFactory {
         return factors[cmp];
     }
 
-    var tr:AspectTransform = null;
-
-    public function consume() {
-        var tr = this.tr;
-        this.tr = null;
-        return tr;
-    }
-
-    public function getTransform(attribute:String, a:VertValueProvider):VertValueProvider {
-        if (attribute != AttribAliases.NAME_POSITION)
-            return a;
-        if (tr != null)
-            throw "Prev transform hadnt been consumed";
-        trace("Craating tr");
-        tr = new AspectTransform(this, a);
+    public function getTransform(attribute:String, a:VertValueProvider):AspectTransform {
+        var tr = new AspectTransform(this, a);
         return tr;
     }
 

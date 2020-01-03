@@ -108,7 +108,7 @@ class NewMeshWriter {
         for (ch in data.channels) {
             var accessor = new datatools.BufferView<Float>(bytes, ch.view, DataTypeUtils.descToView(ch.descr));
             vertCount = accessor.length;
-            mesh.addDataSource(ch.descr.name, transformFactory.getTransform(ch.descr.name, accessor).getValue);
+            mesh.addDataSource(ch.descr.name, transformFactory(ch.descr.name, accessor).getValue);
         }
 
         if (data.indices != null) {
@@ -132,17 +132,18 @@ class NewMeshWriter {
         for (ch in data.channels) {
             var accessor = new datatools.BufferView<Float>(bytes, ch.view, DataTypeUtils.descToView(ch.descr));
             vertCount = accessor.length;
-            mesh.addDataSource(ch.descr.name, transformFactory.getTransform(ch.descr.name, accessor).getValue);
+            mesh.addDataSource(ch.descr.name, transformFactory(ch.descr.name, accessor).getValue);
         }
         return mesh;
     }
 
-    static var defaultTransFac = new PassthroughTransformFactory();
+    static var defaultTransFac = new PassthroughTransformFactory().getTransform;
 
 }
 
 
-class PassthroughTransformFactory implements TransformFactory {
+
+class PassthroughTransformFactory {
     public function new(){}
     public function getTransform(attribute:String, a:VertValueProvider):VertValueProvider {
         return a;
