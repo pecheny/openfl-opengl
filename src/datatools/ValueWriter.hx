@@ -1,7 +1,7 @@
 package datatools;
-import data.DataType;
-import data.AttributeDescr;
 import data.AttribSet;
+import data.AttributeDescr;
+import data.DataType;
 class ValueWriter<T> {
     var stride:Int;
     var offset:Int;
@@ -17,8 +17,29 @@ class ValueWriter<T> {
     }
 
     // todo write macro typed set for dataWriter
-    public inline function setValue(vertIdx:Int, value:T) {
+    public function setValue(vertIdx:Int, value:T) {
         target.setTyped(type, vertIdx * stride + offset, value);
+    }
+}
+
+class TransformValueWriter<T> extends ValueWriter<T> {
+    var transform:T -> T;
+
+    public function new(target:ByteDataWriter, attr:AttributeDescr, comp:Int, stride:Int, offset:Int = 0){
+        super(target, attr, comp, stride, offset );
+        transform = passthrough;
+    }
+
+    function passthrough(val) return val;
+
+    public function replaceTransform(newTransform) this.transform = newTransform;
+
+    public function addTransformNode(t) {
+        this.transform = (v) -> t(this.transform(v));
+    }
+
+    override public function setValue(vertIdx:Int, value:T) {
+        super.setValue(vertIdx, transform(value));
     }
 }
 
