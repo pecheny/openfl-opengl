@@ -1,8 +1,8 @@
 package transform;
+import haxe.ds.ReadOnlyArray;
 import al.core.Boundbox;
 import openfl.events.Event;
 import datatools.VertValueProvider;
-import data.AttribAliases;
 import al.al2d.Axis2D;
 import al.core.AxisApplier;
 
@@ -109,6 +109,10 @@ class StageAspectKeeper {
 
     public inline function getFactor(cmp:Int):Float {
         return factors[cmp];
+    }
+
+    public function getFactorsRef():ReadOnlyArray<Float>{
+        return factors;
     }
 
     public function getTransform(attribute:String, a:VertValueProvider):AspectTransform {
