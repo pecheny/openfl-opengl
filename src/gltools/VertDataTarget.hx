@@ -4,7 +4,7 @@ import datatools.ExtensibleBytes;
 import data.DataType;
 class RenderDataTarget {
     var extensible = new ExtensibleBytes(64);
-    public var pos:Int;
+    public var pos:Int = 0;
 
     public function new() {
     }
