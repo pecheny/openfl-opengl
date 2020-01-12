@@ -56,6 +56,25 @@ abstract IndexCollection(Bytes) from Bytes to Bytes {
 
 }
 
+class PartialIndexProvider extends SimpleIndexProvider{
+    public var indCount:Int;
+    public function new(inds:IndexCollection) {
+        super(inds);
+        indCount = inds.length;
+    }
+    override public function getIndsCount():Int {
+        return indCount;
+    }
+
+    override public function getInds():Bytes {
+        throw "Wrong";
+    }
+
+    override public function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset:Int):Void {
+        IndicesFetcher.gatherIndices(target, startFrom, offset, inds, indCount) ;
+    }
+}
+
 class SimpleIndexProvider implements IndexProvider {
     var inds:IndexCollection;
 
@@ -81,6 +100,9 @@ class SimpleIndexProvider implements IndexProvider {
 }
 
 class IndicesFetcher {
+
+//    todo blit!1111
+
     public static inline function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset, source:Bytes, count) {
         for (i in 0...count) {
             var uInt = source.getUInt16(i * UInt16Array.BYTES_PER_ELEMENT);
