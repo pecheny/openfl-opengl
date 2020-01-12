@@ -12,40 +12,32 @@ class MSDFShader {
     public static inline var uv = AttribAliases.NAME_UV_0;
     public static inline var atlasScale = MSDFSet.NAME_ATLAS_SCALE;
 
-
-    public static function createDummyShader(gl) {
-        var vs =
+        public static inline var vs =
 //        '#version 100' +
 #if (!desktop || rpi)
         "precision mediump float;" +
 #end
         '
 					attribute vec2 $position;
-					attribute vec3 $uv;
-					attribute float $atlasScale;
-
-					uniform mat4 $transform;
-					uniform float $fieldRange;
-					uniform vec2 $resolution;
+					attribute vec2 $uv;
+//					attribute float $atlasScale;
+//					uniform float $fieldRange;
+//					uniform vec2 $resolution;
 
 					varying vec2 vUv;
 					varying float vFieldRangeDisplay_px;
 
 					void main() {
-						vUv = $uv.xy;
-
+						vUv = $uv;
 						// determine the field range in pixels when drawn to the framebuffer
-						vec2 scale = abs(vec2(transform[0][0], transform[1][1]));
-						vFieldRangeDisplay_px = fieldRange * scale.y * ($resolution.y * 0.5) / $atlasScale;
+//						vec2 scale = vec2(1,1); //abs(vec2(transform[0][0], transform[1][1]));
+						vFieldRangeDisplay_px = 15;//fieldRange * scale.y * ($resolution.y * 0.5) / $atlasScale;
 						vFieldRangeDisplay_px = max(vFieldRangeDisplay_px, 1.0);
-
-						vec2 p = vec2(position.x * resolution.y / resolution.x, position.y);
-
-						gl_Position = transform * vec4(p, 0.0, 1.0);
+						gl_Position =  vec4($position, 0.0, 1.0);
 					}
 ';
 
-        var fs =
+          public static inline var fs =
 //        '#version 100' +
 #if (!desktop || rpi)
         "precision mediump float;" +
@@ -78,7 +70,7 @@ class MSDFShader {
 						float strokeAlpha = clamp((sigDist - _offset) * vFieldRangeDisplay_px + _offset, 0.0, 1.0);
 
 						gl_FragColor = (
-							color
+							$color
 							* fillAlpha
 							* color.a
 							+ strokeColor * strokeColor.a * strokeAlpha * (1.0 - fillAlpha)
@@ -93,7 +85,7 @@ class MSDFShader {
 						/**/
 					}
 ';
-
+    public static function createDummyShader(gl) {
         return GLProgram.fromSources(gl, vs, fs);
     }
 }
