@@ -20,13 +20,23 @@ class ValueWriter<T> {
     public function setValue(vertIdx:Int, value:T) {
         target.setTyped(type, vertIdx * stride + offset, value);
     }
+
+    public function getValue(vertIdx:Int) {
+         return switch type {
+            case int32 : target.toReader().getInt32(offset);
+            case uint8 : target.toReader().getUInt8(offset);
+            case uint16 : target.toReader().getUInt16(offset);
+            case float32 :
+                target.toReader().getFloat32(offset);
+        }
+    }
 }
 
 class TransformValueWriter<T> extends ValueWriter<T> {
     var transform:T -> T;
 
-    public function new(target:ByteDataWriter, attr:AttributeDescr, comp:Int, stride:Int, offset:Int = 0){
-        super(target, attr, comp, stride, offset );
+    public function new(target:ByteDataWriter, attr:AttributeDescr, comp:Int, stride:Int, offset:Int = 0) {
+        super(target, attr, comp, stride, offset);
         transform = passthrough;
     }
 
