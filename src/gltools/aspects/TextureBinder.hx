@@ -8,6 +8,8 @@ import oglrenderer.GLLayer.RenderingElement;
 class TextureBinder implements RenderingElement {
     var texture:GLTexture;
     var image:Image;
+    var inited:Bool;
+
     public function new(image) {
         this.image = image;
     }
@@ -27,10 +29,10 @@ class TextureBinder implements RenderingElement {
     var gl:WebGLRenderContext;
 
     private function createTexture(gl:WebGLRenderContext, program):Void {
-//        var image = Assets.getImage("Assets/Blackberry.png");
-//        var image = ;
         var imageUniform = gl.getUniformLocation(program, UniformAliases.IMG_0);
         gl.uniform1i(imageUniform, 0);
+        if (inited)
+            return;
         texture = gl.createTexture();
         gl.bindTexture(gl.TEXTURE_2D, texture);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
@@ -39,5 +41,6 @@ class TextureBinder implements RenderingElement {
         gl.generateMipmap(gl.TEXTURE_2D);
         gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
         gl.bindTexture(gl.TEXTURE_2D, null);
+        inited = true;
     }
 }
