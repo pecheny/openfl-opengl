@@ -14,7 +14,7 @@ class DummyShader {
 
                  void main() {
                    float offset = mod(${AttribAliases.NAME_SCREENSPACE_T} , 1.0);
-                   gl_Position =  vec4(${AttribAliases.NAME_POSITION}.x + offset, ${AttribAliases.NAME_POSITION}.y,  0, 1);
+                   gl_Position =  vec4(${AttribAliases.NAME_POSITION}.x + offset, ${AttribAliases.NAME_POSITION}.y,  0., 1.);
                    ${AttribAliases.NAME_COLOR_OUT} = ${AttribAliases.NAME_COLOR_IN};
                  }';
 
