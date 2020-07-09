@@ -79,6 +79,13 @@ class SolidColorProvider {
     public function getCC(_, cmp) {
         return components[cmp];
     }
+
+    public static function fromInt(val:Int) {
+        var r = val >> 16;
+        var g = (val & 0x00ff00) >> 8;
+        var b = (val & 0x0000ff);
+        return new SolidColorProvider(r,g,b);
+    }
 }
 
 
