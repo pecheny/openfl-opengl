@@ -1,4 +1,5 @@
 package mesh;
+import data.AttribSources;
 import gltools.sets.ColorSet;
 import data.IndexCollection;
 import haxe.io.Bytes;
@@ -7,6 +8,9 @@ import data.AttributeDescr;
 import gltools.VertIndDataProvider;
 import data.VertexAttribProvider;
 import data.AttribSet;
+
+// TODO this code seems dead
+
 class I2DCompoundTypedDP<T:AttribSet> extends I2DCompoundDP implements VertIndDataProvider<T>{
     public function new (attrs:T) {
         super(attrs);
@@ -58,4 +62,13 @@ class I2DCompoundDP extends VertDataProviderBase  {
         separated.fetchVerticesAndIndices(inds.length , inds.length);
         return separated;
     }
+
+//    public static function convertToI2DC<T:AttribSet>(set:T, sources:AttribSources<T>, vertCount, indCount):I2DCompoundTypedDP<T> {
+//        var i2d = new I2DCompoundTypedDP(set);
+//        for (name in sources.keys()) {
+//            i2d.addDataSource(name, sources.get(name));
+//        }
+//        i2d.fetchVertices(vertCount, indCount);
+//        return i2d;
+//    }
 }
