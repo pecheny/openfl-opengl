@@ -1,6 +1,6 @@
 package transform;
+import al.al2d.Boundbox;
 import haxe.ds.ReadOnlyArray;
-import al.core.Boundbox;
 import openfl.events.Event;
 import datatools.VertValueProvider;
 import al.al2d.Axis2D;
@@ -27,14 +27,18 @@ class AspectTransform implements VertValueProvider {
         bbAspect = w / h;
     }
 
-    public function getValue(v:Int, c:Int):Float {
-//        var ls = size[c];
+    public inline function transformValue(c:Int, input:Float) {
         var a = Axis2D.fromInt(c);
         var free = size[c] - bounds.size[a] * localScale;
-        var lp = (prv.getValue(v, c) - bounds.pos[a]) * localScale + free / 2;
+        var lp = (input - bounds.pos[a]) * localScale + free / 2;
         return
             (pos[c] + lp) / aspects.getFactor(c) - 1;
 //             pos[c] * aspects.getFactor(c) + prv.getValue(v,c) *  aspects.getFactor(c) * 0.25;
+    }
+
+    public function getValue(v:Int, c:Int):Float {
+//        var ls = size[c];
+        return transformValue(c, prv.getValue(v, c));
     }
 
     function refresh() {
@@ -87,7 +91,7 @@ class StageAspectKeeper {
     var factors:Array<Float> = [1, 1];
 
 
-    public function new(base = 1) {
+    public function new(base:Float = 1) {
         this.base = base;
         openfl.Lib.current.stage.addEventListener(Event.RESIZE, onResize);
         onResize(null);
