@@ -15,7 +15,7 @@ class MeshWriter {
     public function new() {
         builder = new VertexBuilder(ColorSet.instance);
         var color = new SolidColorProvider(128, 10, 100);
-        builder.regSetter(AttribAliases.NAME_COLOR_IN, color.getCC);
+        builder.regSetter(AttribAliases.NAME_COLOR_IN, color.getValue);
     }
 
 

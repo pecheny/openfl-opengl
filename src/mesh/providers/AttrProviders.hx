@@ -76,7 +76,7 @@ class SolidColorProvider {
         components.push(255);
     }
 
-    public function getCC(_, cmp) {
+    public function getValue(_, cmp) {
         return components[cmp];
     }
 
