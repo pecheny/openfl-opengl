@@ -22,12 +22,13 @@ class ValueWriter<T> {
     }
 
     public function getValue(vertIdx:Int) {
+        var o = vertIdx * stride + offset;
          return switch type {
-            case int32 : target.toReader().getInt32(offset);
-            case uint8 : target.toReader().getUInt8(offset);
-            case uint16 : target.toReader().getUInt16(offset);
+            case int32 : target.toReader().getInt32(o);
+            case uint8 : target.toReader().getUInt8(o);
+            case uint16 : target.toReader().getUInt16(o);
             case float32 :
-                target.toReader().getFloat32(offset);
+                target.toReader().getFloat32(o);
         }
     }
 }
