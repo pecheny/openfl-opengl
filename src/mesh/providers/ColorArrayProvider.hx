@@ -7,12 +7,8 @@ class ColorArrayProvider {
     }
 
     public function getValue(v, c) {
-//        if (c == 3)
-//            return 254.;
         if (c == 3)
             return 255.;
-//        return (v % 3 == 0 )? 0. : 255.;
-//            trace(colors[v].getValue(c));
-        return colors[v].getValue(c);
+        return colors[v % (colors.length)].getValue(c);
     }
 }
