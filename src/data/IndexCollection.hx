@@ -54,14 +54,37 @@ abstract IndexCollection(Bytes) from Bytes to Bytes {
         return ic;
     }
 
+    public static function qGrid(w, h) {
+        var qCount = (w-1) * (h-1);
+        var triCount = qCount * 2;
+        var ic = new IndexCollection(triCount * 3);
+        var idx = 0;
+
+        for (line in 0...h - 1) {
+            for (q in 0...w - 1) {
+                ic[idx++] = line * w + q;
+                ic[idx++] = line * w + q + 1;
+                ic[idx++] = (line + 1) * w + q ;
+
+                ic[idx++] = (line + 1) * w + q ;
+                ic[idx++] = line * w + q + 1;
+                ic[idx++] = (line + 1) * w + q +1;
+            }
+        }
+
+        return ic;
+    }
+
 }
 
-class PartialIndexProvider extends SimpleIndexProvider{
+class PartialIndexProvider extends SimpleIndexProvider {
     public var indCount:Int;
+
     public function new(inds:IndexCollection) {
         super(inds);
         indCount = inds.length;
     }
+
     override public function getIndsCount():Int {
         return indCount;
     }
