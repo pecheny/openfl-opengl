@@ -10,7 +10,7 @@ class MSDFShader {
     public static inline var color = "color";
     public static inline var position = AttribAliases.NAME_POSITION;
     public static inline var uv = AttribAliases.NAME_UV_0;
-    public static inline var atlasScale = MSDFSet.NAME_ATLAS_SCALE;
+    public static inline var atlasScale = "atlasScale";
 
         public static inline var vs =
 //        '#version 100' +
