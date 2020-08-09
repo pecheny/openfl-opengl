@@ -8,7 +8,7 @@ class SimpleBlitRenderer<T:AttribSet> implements VertDataProvider<T> {
     var vertData:Bytes;
     var len:Int;
 
-    public function new(attrs:T, data:haxe.io.Bytes, vertCount:Int) {
+    public function new(attrs:T, data:haxe.io.Bytes) {
         this.attributes = attrs;
         this.vertData = data;
         this.len = Std.int(data.length / attrs.stride);
