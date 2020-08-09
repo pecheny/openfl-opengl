@@ -1,4 +1,9 @@
 package oglrenderer;
+#if lime
+import openfl.display.OpenGLRenderer;
+import openfl.events.RenderEvent;
+#end
+import flash.display.DisplayObject;
 import bindings.GLBuffer;
 import bindings.GLProgram;
 import bindings.GLUniformLocation;
@@ -8,13 +13,12 @@ import data.AttribSet;
 import data.ShadersAttrs;
 import datatools.ExtensibleBytes;
 import flash.events.Event;
-import gltools.VertIndDataProvider;
-import gltools.VertDataRenderer;
 import gltools.VertDataTarget.RenderDataTarget;
-import openfl.display.DisplayObject;
-import openfl.display.OpenGLRenderer;
-import openfl.events.RenderEvent;
+import gltools.VertIndDataProvider;
 
+#if nme
+         import nme.gl.GL as gl;
+#end
 class GLLayer<T:AttribSet> extends DisplayObject {
     var program:GLProgram;
     var children:Array<VertIndDataProvider<T>> = [];

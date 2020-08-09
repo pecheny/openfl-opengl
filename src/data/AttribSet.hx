@@ -6,7 +6,7 @@ import bindings.WebGLRenderContext;
 import data.DataType;
 #if (cpp || js)
 import datatools.DataTypeUtils;
-import lime.graphics.opengl.GLProgram;
+import bindings.GLProgram;
 #end
 import haxe.io.Float32Array;
 import haxe.io.Int32Array;

@@ -1,2 +1,7 @@
 package bindings;
-typedef GLTexture = lime.graphics.opengl.GLTexture;
+typedef GLTexture =
+#if nme
+nme.gl.GLTexture
+#elseif lime
+lime.graphics.opengl.GLTexture;
+#end

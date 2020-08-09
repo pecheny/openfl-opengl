@@ -1,4 +1,5 @@
 package datatools;
+import bindings.ArrayBufferView;
 import bindings.ArrayViewBase;
 import haxe.io.Bytes;
 class ExtensibleBytes {
@@ -10,13 +11,17 @@ class ExtensibleBytes {
     public function new(size) {
         this.size = size;
         #if !js
-        view = new lime.utils.ArrayBufferView(null, None);
+        view = new ArrayBufferView(null, None);
         #end
         this.bytes = create(size);
     }
 
     #if !js
+    #if lime
     @:access(lime.utils.ArrayBufferView)
+    #elseif nme
+    @:access(nme.utils.ArrayBufferView)
+    #end
     #end
     inline function create(size) {
         var b = Bytes.alloc(size);
