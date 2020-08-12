@@ -1,5 +1,6 @@
 package oglrenderer;
 #if lime
+import lime.graphics.opengl.GL;
 import openfl.display.OpenGLRenderer;
 import openfl.events.RenderEvent;
 #end
@@ -25,6 +26,9 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var gl:WebGLRenderContext;
     var viewport:ViewportRect;
 
+    public var srcAlpha = GL.SRC_ALPHA;
+    public var dstAlpha = GL.ONE_MINUS_SRC_ALPHA;
+
     var buffer:GLBuffer;
     var set:T;
     var attrsState:ShadersAttrs;
@@ -32,9 +36,11 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     var screenTIdx:GLUniformLocation;
     var shaderBuilder:WebGLRenderContext -> GLProgram;
     var renderingAspect:RenderingElement;
+    var one:Bool;
 
-    public function new(set:T, shaderBuilder:WebGLRenderContext -> GLProgram, aspect:RenderingElement) {
+    public function new(set:T, shaderBuilder:WebGLRenderContext -> GLProgram, aspect:RenderingElement, one = false) {
         super();
+        this.one = one;
         this.renderingAspect = aspect;
         this.set = set;
         this.shaderBuilder = shaderBuilder;
@@ -92,7 +98,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
             gl.viewport(viewport.x, viewport.y, viewport.width, viewport.height);
         gl.bufferData(gl.ARRAY_BUFFER, data.getView(), gl.STREAM_DRAW);
 //         set uniforms
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.blendFunc(srcAlpha, dstAlpha);
         gl.uniform1f(screenTIdx, 0);
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indicesBuffer);
         gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, inds.getView(), gl.DYNAMIC_DRAW);
