@@ -108,7 +108,7 @@ class StageAspectKeeper {
             factors[0] = base;
             factors[1] = (base * height / width);
         }
-        trace(factors);
+//        trace(factors);
     }
 
     public inline function getFactor(cmp:Int):Float {
