@@ -1,13 +1,14 @@
 package datatools;
 
+import datatools.ValueWriter.IValueWriter;
 import data.AttributeDescr;
 class Attribute2Writer<T> {
-    var a:ValueWriter<T>;
-    var b:ValueWriter<T>;
+    var a:IValueWriter;
+    var b:IValueWriter;
 
     public function new(target:ByteDataWriter, attr:AttributeDescr, stride:Int) {
-        a = new ValueWriter(target, attr, 0, stride);
-        b = new ValueWriter(target, attr, 0, stride);
+        a = ValueWriter.create(target, attr, 0, stride);
+        b = ValueWriter.create(target, attr, 0, stride);
     }
 
     public function setValue(i, a, b) {
@@ -17,14 +18,14 @@ class Attribute2Writer<T> {
 }
 
 class Attribute3Writer<T> {
-    var a:ValueWriter<T>;
-    var b:ValueWriter<T>;
-    var c:ValueWriter<T>;
+    var a:IValueWriter;
+    var b:IValueWriter;
+    var c:IValueWriter;
 
     public function new(target:ByteDataWriter, attr:AttributeDescr, stride:Int) {
-        a = new ValueWriter(target, attr, 0, stride);
-        b = new ValueWriter(target, attr, 1, stride);
-        c = new ValueWriter(target, attr, 2, stride);
+        a = ValueWriter.create(target, attr, 0, stride);
+        b = ValueWriter.create(target, attr, 1, stride);
+        c = ValueWriter.create(target, attr, 2, stride);
     }
 
     public function setValue(i, a, b, c) {
@@ -35,16 +36,16 @@ class Attribute3Writer<T> {
 }
 
 class Attribute4Writer<T> {
-    var a:ValueWriter<T>;
-    var b:ValueWriter<T>;
-    var c:ValueWriter<T>;
-    var d:ValueWriter<T>;
+    var a:IValueWriter;
+    var b:IValueWriter;
+    var c:IValueWriter;
+    var d:IValueWriter;
 
     public function new(target:ByteDataWriter, attr:AttributeDescr, stride:Int) {
-        a = new ValueWriter(target, attr, 0, stride);
-        b = new ValueWriter(target, attr, 1, stride);
-        c = new ValueWriter(target, attr, 2, stride);
-        d = new ValueWriter(target, attr, 3, stride);
+        a = ValueWriter.create(target, attr, 0, stride);
+        b = ValueWriter.create(target, attr, 1, stride);
+        c = ValueWriter.create(target, attr, 2, stride);
+        d = ValueWriter.create(target, attr, 3, stride);
     }
 
     public function setValue(i, a, b, c, d) {
