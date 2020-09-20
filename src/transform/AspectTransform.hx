@@ -85,7 +85,11 @@ class AspectTransformAxisApplier implements AxisApplier {
     }
 }
 
-class StageAspectKeeper {
+
+interface AspectFactorsProvider {
+    public function getFactorsRef():ReadOnlyArray<Float>;
+}
+class StageAspectKeeper implements AspectFactorsProvider {
     var base:Float;
 
     var factors:Array<Float> = [1, 1];
@@ -115,7 +119,7 @@ class StageAspectKeeper {
         return factors[cmp];
     }
 
-    public function getFactorsRef():ReadOnlyArray<Float>{
+    public function getFactorsRef():ReadOnlyArray<Float> {
         return factors;
     }
 
