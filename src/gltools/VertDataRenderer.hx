@@ -30,10 +30,6 @@ class VertDataRenderer<T:AttribSet> implements VertIndDataProvider<T> {
         return inds.getIndsCount();
     }
 
-    public function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset:Int):Void {
-        inds.gatherIndices(target, startFrom, offset);
-    }
-
 
     public function render(target:RenderDataTarget) {
         var needRender = dirty || (lastPos != target.pos);

@@ -74,7 +74,11 @@ abstract IndexCollection(Bytes) from Bytes to Bytes {
 
         return ic;
     }
+}
 
+class IndexCollections {
+    public static final QUAD = IndexCollection.forQuads(1);
+    public static final QUAD_ODD = IndexCollection.forQuadsOdd(1);
 }
 
 class PartialIndexProvider extends SimpleIndexProvider {
@@ -91,10 +95,6 @@ class PartialIndexProvider extends SimpleIndexProvider {
 
     override public function getInds():Bytes {
         throw "Wrong";
-    }
-
-    override public function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset:Int):Void {
-        IndicesFetcher.gatherIndices(target, startFrom, offset, inds, indCount) ;
     }
 }
 
@@ -117,15 +117,15 @@ class SimpleIndexProvider implements IndexProvider {
         return inds.length;
     }
 
-    public function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset:Int):Void {
-        IndicesFetcher.gatherIndices(target, startFrom, offset, inds, inds.length) ;
-    }
 }
 
 class IndicesFetcher {
 
 //    todo blit!1111
-
+/**
+*   startFrom - offset within target to write to,
+*   offset - lenth of prev vert buffer to add on each vert index
+**/
     public static inline function gatherIndices(target:ExtensibleBytes, startFrom:Int, offset, source:Bytes, count) {
         for (i in 0...count) {
             var uInt = source.getUInt16(i * UInt16Array.BYTES_PER_ELEMENT);

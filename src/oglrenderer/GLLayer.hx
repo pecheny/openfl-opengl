@@ -1,5 +1,6 @@
 package oglrenderer;
 #if lime
+import data.IndexCollection.IndicesFetcher;
 import lime.graphics.opengl.GL;
 import openfl.display.OpenGLRenderer;
 import openfl.events.RenderEvent;
@@ -111,7 +112,7 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         var idxPointer = startWith;
         var vertPoin = offset;
         for (child in children) {
-            child.gatherIndices(target, idxPointer, vertPoin);
+            IndicesFetcher.gatherIndices(target, idxPointer, vertPoin, child.getInds(), child.getIndsCount()) ;
             idxPointer += child.getIndsCount();
             vertPoin += child.getVertsCount();
         }
