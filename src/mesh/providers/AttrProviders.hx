@@ -69,22 +69,22 @@ class PosProvider implements VertValueProvider {
 class SolidColorProvider {
     var components:Array<Float> = [];
 
-    public function new(r, g, b) {
+    public function new(r, g, b, a = 255) {
         components.push(r);
         components.push(g);
         components.push(b);
-        components.push(255);
+        components.push(a);
     }
 
     public function getValue(_, cmp) {
         return components[cmp];
     }
 
-    public static function fromInt(val:Int) {
+    public static function fromInt(val:Int, a=255) {
         var r = val >> 16;
         var g = (val & 0x00ff00) >> 8;
         var b = (val & 0x0000ff);
-        return new SolidColorProvider(r,g,b);
+        return new SolidColorProvider(r,g,b,a);
     }
 }
 
