@@ -41,10 +41,8 @@ class LineScaleCalculator implements AxisApplier {
         }
     }
 
-    public function applyPos(v:Float):Void {
-    }
 
-    public function applySize(v:Float):Void {
+    public function apply(_, _):Void {
         refresh();
     }
 }
