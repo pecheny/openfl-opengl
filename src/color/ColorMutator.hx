@@ -40,4 +40,3 @@ class ColorLightener {
 }
 
 typedef RandomProvider = Void -> Float;
-typedef ColorProvider = Int -> HSL;
