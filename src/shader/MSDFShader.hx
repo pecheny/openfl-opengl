@@ -1,5 +1,4 @@
 package shader;
-import text.GPUText.MSDFSet;
 import data.AttribAliases;
 import bindings.GLProgram;
 class MSDFShader {
