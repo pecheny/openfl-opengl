@@ -80,11 +80,18 @@ class SolidColorProvider {
         return components[cmp];
     }
 
-    public static function fromInt(val:Int, a=255) {
+    public function setColor(val:Int) {
         var r = val >> 16;
         var g = (val & 0x00ff00) >> 8;
         var b = (val & 0x0000ff);
-        return new SolidColorProvider(r,g,b,a);
+        components[0] = r;
+        components[1] = g;
+        components[2] = b;
+        return this;
+    }
+
+    public static function fromInt(val:Int, a=255) {
+        return new SolidColorProvider(0,0,0,a).setColor(val);
     }
 }
 
