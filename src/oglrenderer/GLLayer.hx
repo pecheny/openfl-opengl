@@ -48,9 +48,13 @@ class GLLayer<T:AttribSet> extends DisplayObject {
         addEventListener(RenderEvent.RENDER_OPENGL, render);
         addEventListener(Event.ENTER_FRAME, onEnterFrame);
     }
-
+    var err:String;
     function init(gl:WebGLRenderContext) {
-        this.program = shaderBuilder(gl);
+        try {
+            this.program = shaderBuilder(gl);
+        } catch (e:Dynamic) {
+           err = ""+e;
+        }
         attrsState = set.buildState(gl, program);
         buffer = gl.createBuffer();
         indicesBuffer = gl.createBuffer();
@@ -83,6 +87,10 @@ class GLLayer<T:AttribSet> extends DisplayObject {
 
     public function render(event:RenderEvent) {
         var renderer:OpenGLRenderer = cast event.renderer;
+        if (err != null) {
+            trace("shader error: " + err);
+            throw err;
+        }
         gl = renderer.gl;
         if (program == null) {
             init(gl);
