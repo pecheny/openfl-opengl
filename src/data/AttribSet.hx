@@ -4,7 +4,7 @@ import datatools.ByteDataReader;
 import data.AttributeDescr;
 import bindings.WebGLRenderContext;
 import data.DataType;
-#if (cpp || js)
+#if (cpp || js || hl)
 import datatools.DataTypeUtils;
 import bindings.GLProgram;
 #end
@@ -81,7 +81,7 @@ class AttribSet {
 //        attributes.push(descr);
 //    }
 
-    #if (cpp || js)
+    #if (cpp || js || hl)
 
     public function buildState(gl:WebGLRenderContext, program:GLProgram) {
         var attrs = [];
