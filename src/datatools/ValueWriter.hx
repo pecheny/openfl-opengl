@@ -1,4 +1,5 @@
 package datatools;
+import data.VertexAttribProvider;
 import data.AttribSet;
 import data.AttributeDescr;
 import data.DataType;
@@ -57,8 +58,10 @@ class Uint8ValueWriter implements IValueWriter {
         return target.toReader().getUInt8(o);
     }
 }
-interface IValueWriter {
 
+
+typedef AttributeWriters = Array<IValueWriter>;
+interface IValueWriter {
     public function setValue(vertIdx:Int, value:Float):Void;
     public function getValue(vertIdx:Int):Float;
 }
@@ -69,6 +72,14 @@ class ValueWriter {
             case float32 : return new FloatValueWriter(target, attr, comp, stride, offset);
             case uint8 : return new Uint8ValueWriter(target, attr, comp, stride, offset);
             case _ : throw "not implemented yet";
+        }
+    }
+
+    public static inline function fetchAll<T:AttribSet>(writers:AttributeWriters, provider:VertexAttribProvider, vertCount:Int) {
+        for (v in 0...vertCount){
+            for (i in 0...writers.length) {
+                writers[i].setValue(v, provider(v, i));
+            }
         }
     }
 }
