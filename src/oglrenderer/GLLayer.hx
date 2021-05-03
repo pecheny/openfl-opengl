@@ -5,7 +5,7 @@ import lime.graphics.opengl.GL;
 import openfl.display.OpenGLRenderer;
 import openfl.events.RenderEvent;
 #end
-import flash.display.DisplayObject;
+import openfl.display.DisplayObject;
 import bindings.GLBuffer;
 import bindings.GLProgram;
 import bindings.GLUniformLocation;
@@ -50,11 +50,17 @@ class GLLayer<T:AttribSet> extends DisplayObject {
     }
     var err:String;
     function init(gl:WebGLRenderContext) {
+//        trace(stage.context3D.driverInfo);
         try {
             this.program = shaderBuilder(gl);
         } catch (e:Dynamic) {
            err = ""+e;
         }
+        if (err!= null){
+            trace(err);
+            return;
+        }
+
         attrsState = set.buildState(gl, program);
         buffer = gl.createBuffer();
         indicesBuffer = gl.createBuffer();
